@@ -1,0 +1,259 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>AFQ.utils.streamlines &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>AFQ.utils.streamlines</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for AFQ.utils.streamlines</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">nibabel</span> <span class="k">as</span> <span class="nn">nib</span>
+<span class="kn">from</span> <span class="nn">nibabel</span> <span class="k">import</span> <span class="n">trackvis</span>
+<span class="kn">from</span> <span class="nn">dipy.tracking.utils</span> <span class="k">import</span> <span class="n">move_streamlines</span>
+
+
+<span class="k">def</span> <span class="nf">add_bundles</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Combine two bundles, using the second bundles affine</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">nib</span><span class="o">.</span><span class="n">streamlines</span><span class="o">.</span><span class="n">Tractogram</span><span class="p">(</span>
+        <span class="nb">list</span><span class="p">(</span><span class="n">t1</span><span class="o">.</span><span class="n">streamlines</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">t2</span><span class="o">.</span><span class="n">streamlines</span><span class="p">),</span>
+        <span class="p">{</span><span class="s">&#39;bundle&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">t1</span><span class="o">.</span><span class="n">data_per_streamline</span><span class="p">[</span><span class="s">&#39;bundle&#39;</span><span class="p">])</span> <span class="o">+</span>
+                    <span class="nb">list</span><span class="p">(</span><span class="n">t2</span><span class="o">.</span><span class="n">data_per_streamline</span><span class="p">[</span><span class="s">&#39;bundle&#39;</span><span class="p">]))},</span>
+        <span class="n">affine_to_rasmm</span><span class="o">=</span><span class="n">t2</span><span class="o">.</span><span class="n">affine_to_rasmm</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="read_trk"><a class="viewcode-back" href="../../../reference/AFQ.data.html#AFQ.data.read_trk">[docs]</a><span class="k">def</span> <span class="nf">read_trk</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read from a .trk file, return streamlines and header</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fname : str</span>
+<span class="sd">        Full path to a trk file containing</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list : list of streamlines (3D coordinates)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    We assume that all streamlines are provided with the &quot;rasmm&quot; points_space.</span>
+<span class="sd">    That is, they have been transformed to the space reported by the affine</span>
+<span class="sd">    associated with the image from whence it came, and saved with this affine</span>
+<span class="sd">    (e.g., using `write_trk`).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">streams</span><span class="p">,</span> <span class="n">hdr</span> <span class="o">=</span> <span class="n">trackvis</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">points_space</span><span class="o">=</span><span class="s">&quot;rasmm&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="write_trk"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.data.write_trk">[docs]</a><span class="k">def</span> <span class="nf">write_trk</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">streamlines</span><span class="p">,</span> <span class="n">affine</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write out a .trk file</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fname : str</span>
+<span class="sd">        Full path to save the file into</span>
+<span class="sd">    streamlines : list</span>
+<span class="sd">        A list of arrays of 3D coordinates</span>
+<span class="sd">    affine : array (4,4), optional.</span>
+<span class="sd">        An affine transformation associated with the streamlines. Defaults to</span>
+<span class="sd">        identity.</span>
+<span class="sd">    shape : 3-element tuple, optional</span>
+<span class="sd">        Spatial dimensions of an image associated with the streamlines.</span>
+<span class="sd">        Defaults to not be set in the file header.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">affine</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">affine</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="n">zooms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">affine</span> <span class="o">*</span> <span class="n">affine</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">streamlines</span> <span class="o">=</span> <span class="n">move_streamlines</span><span class="p">(</span><span class="n">streamlines</span><span class="p">,</span> <span class="n">affine</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="k">None</span><span class="p">,</span> <span class="k">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">streamlines</span><span class="p">)</span>
+
+    <span class="n">voxel_order</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">orientations</span><span class="o">.</span><span class="n">aff2axcodes</span><span class="p">(</span><span class="n">affine</span><span class="p">)</span>
+    <span class="n">voxel_order</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">voxel_order</span><span class="p">)</span>
+
+    <span class="n">hdr</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">trackvis</span><span class="o">.</span><span class="n">empty_header</span><span class="p">()</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s">&#39;voxel_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">zooms</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s">&#39;voxel_order&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">voxel_order</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s">&#39;vox_to_ras&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">affine</span>
+    <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">hdr</span><span class="p">[</span><span class="s">&#39;dim&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shape</span>
+    <span class="n">trackvis</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">hdr</span><span class="p">,</span> <span class="n">points_space</span><span class="o">=</span><span class="s">&quot;rasmm&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

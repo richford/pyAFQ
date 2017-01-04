@@ -1,0 +1,25 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`csd`
+==========
+.. automodule:: AFQ.csd
+
+.. currentmodule:: AFQ.csd
+.. autosummary::
+
+   fit_csd
+   spherical_harmonics
+
+
+.. currentmodule:: AFQ.csd
+
+fit_csd
+~~~~~~~
+
+.. autofunction:: fit_csd
+
+spherical_harmonics
+~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: spherical_harmonics
+

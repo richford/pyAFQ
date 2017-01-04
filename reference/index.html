@@ -1,0 +1,345 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API Reference &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../index.html"/>
+        <link rel="next" title="AFQ" href="AFQ.html"/>
+        <link rel="prev" title="Plotting tract profiles" href="../auto_examples/plot_tract_profile.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/reference/index.rst.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html#id2"><code class="docutils literal"><span class="pre">AFQ</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html#do-preprocessing">do_preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html#dti-fit">dti_fit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html#fetch-callosum-templates">fetch_callosum_templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html#fetch-hcp">fetch_hcp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html#fetch-stanford-hardi-tractography">fetch_stanford_hardi_tractography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html#fetch-templates">fetch_templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html#make-bundle-dict">make_bundle_dict</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html#median-otsu">median_otsu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html#organize-stanford-data">organize_stanford_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html#read-callosum-templates">read_callosum_templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html#read-stanford-hardi-tractography">read_stanford_hardi_tractography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html#read-templates">read_templates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.api.html#afq"><code class="docutils literal"><span class="pre">AFQ</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.api.html#do-preprocessing">do_preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.api.html#dti-fit">dti_fit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.api.html#make-bundle-dict">make_bundle_dict</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.api.html#median-otsu">median_otsu</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.csd.html#fit-csd">fit_csd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.csd.html#spherical-harmonics">spherical_harmonics</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.data.html#fetch-callosum-templates">fetch_callosum_templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.data.html#fetch-hcp">fetch_hcp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.data.html#fetch-stanford-hardi-tractography">fetch_stanford_hardi_tractography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.data.html#fetch-templates">fetch_templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.data.html#organize-stanford-data">organize_stanford_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.data.html#read-callosum-templates">read_callosum_templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.data.html#read-stanford-hardi-tractography">read_stanford_hardi_tractography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.data.html#read-templates">read_templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.data.html#read-trk">read_trk</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dki.html#looseversion"><code class="docutils literal"><span class="pre">LooseVersion</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dki.html#dki-prediction">dki_prediction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dki.html#fit-dki">fit_dki</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dki.html#predict">predict</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dti.html#fit-dti">fit_dti</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dti.html#predict">predict</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dti.html#tensor-odf">tensor_odf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dti.html#vector-norm">vector_norm</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#affinemap"><code class="docutils literal"><span class="pre">AffineMap</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#affineregistration"><code class="docutils literal"><span class="pre">AffineRegistration</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#affinetransform3d"><code class="docutils literal"><span class="pre">AffineTransform3D</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#ccmetric"><code class="docutils literal"><span class="pre">CCMetric</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#diffeomorphicmap"><code class="docutils literal"><span class="pre">DiffeomorphicMap</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#emmetric"><code class="docutils literal"><span class="pre">EMMetric</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#mutualinformationmetric"><code class="docutils literal"><span class="pre">MutualInformationMetric</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#rigidtransform3d"><code class="docutils literal"><span class="pre">RigidTransform3D</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#ssdmetric"><code class="docutils literal"><span class="pre">SSDMetric</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#streamlinelinearregistration"><code class="docutils literal"><span class="pre">StreamlineLinearRegistration</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#symmetricdiffeomorphicregistration"><code class="docutils literal"><span class="pre">SymmetricDiffeomorphicRegistration</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#translationtransform3d"><code class="docutils literal"><span class="pre">TranslationTransform3D</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#affine">affine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#affine-registration">affine_registration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#c-of-mass">c_of_mass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#move-streamlines">move_streamlines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#read-mapping">read_mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#register-dwi">register_dwi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#register-series">register_series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#resample">resample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#rigid">rigid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#set-number-of-points">set_number_of_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#streamline-registration">streamline_registration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#syn-register-dwi">syn_register_dwi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#syn-registration">syn_registration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#transform-centers-of-mass">transform_centers_of_mass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#translation">translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html#write-mapping">write_mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.segmentation.html#looseversion"><code class="docutils literal"><span class="pre">LooseVersion</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.segmentation.html#calculate-tract-profile">calculate_tract_profile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.segmentation.html#gaussian-weights">gaussian_weights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.segmentation.html#mahalanobis">mahalanobis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.segmentation.html#patch-up-roi">patch_up_roi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.segmentation.html#segment">segment</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.tractography.html#deterministicmaximumdirectiongetter"><code class="docutils literal"><span class="pre">DeterministicMaximumDirectionGetter</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.tractography.html#localtracking"><code class="docutils literal"><span class="pre">LocalTracking</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.tractography.html#probabilisticdirectiongetter"><code class="docutils literal"><span class="pre">ProbabilisticDirectionGetter</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.tractography.html#thresholdtissueclassifier"><code class="docutils literal"><span class="pre">ThresholdTissueClassifier</span></code></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.tractography.html#tensor-odf">tensor_odf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.tractography.html#track">track</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.viz.html#visualize-bundles">visualize_bundles</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="AFQ.html" class="btn btn-neutral float-right" title="AFQ">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../auto_examples/plot_tract_profile.html" class="btn btn-neutral" title="Plotting tract profiles"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

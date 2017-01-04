@@ -1,0 +1,265 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`registration`
+===================
+.. automodule:: AFQ.registration
+
+.. currentmodule:: AFQ.registration
+.. autosummary::
+
+   AffineMap
+   AffineRegistration
+   AffineTransform3D
+   CCMetric
+   DiffeomorphicMap
+   EMMetric
+   MutualInformationMetric
+   RigidTransform3D
+   SSDMetric
+   StreamlineLinearRegistration
+   SymmetricDiffeomorphicRegistration
+   TranslationTransform3D
+   affine
+   affine_registration
+   c_of_mass
+   move_streamlines
+   read_mapping
+   register_dwi
+   register_series
+   resample
+   rigid
+   set_number_of_points
+   streamline_registration
+   syn_register_dwi
+   syn_registration
+   transform_centers_of_mass
+   translation
+   write_mapping
+
+
+.. currentmodule:: AFQ.registration
+
+
+:class:`AffineMap`
+~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: AffineMap
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`AffineRegistration`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: AffineRegistration
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`AffineTransform3D`
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: AffineTransform3D
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`CCMetric`
+~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: CCMetric
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`DiffeomorphicMap`
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: DiffeomorphicMap
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`EMMetric`
+~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: EMMetric
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`MutualInformationMetric`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: MutualInformationMetric
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`RigidTransform3D`
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: RigidTransform3D
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`SSDMetric`
+~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: SSDMetric
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`StreamlineLinearRegistration`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: StreamlineLinearRegistration
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`SymmetricDiffeomorphicRegistration`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: SymmetricDiffeomorphicRegistration
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`TranslationTransform3D`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: TranslationTransform3D
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+affine
+~~~~~~
+
+.. autofunction:: affine
+
+affine_registration
+~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: affine_registration
+
+c_of_mass
+~~~~~~~~~
+
+.. autofunction:: c_of_mass
+
+move_streamlines
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: move_streamlines
+
+read_mapping
+~~~~~~~~~~~~
+
+.. autofunction:: read_mapping
+
+register_dwi
+~~~~~~~~~~~~
+
+.. autofunction:: register_dwi
+
+register_series
+~~~~~~~~~~~~~~~
+
+.. autofunction:: register_series
+
+resample
+~~~~~~~~
+
+.. autofunction:: resample
+
+rigid
+~~~~~
+
+.. autofunction:: rigid
+
+set_number_of_points
+~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: set_number_of_points
+
+streamline_registration
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: streamline_registration
+
+syn_register_dwi
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: syn_register_dwi
+
+syn_registration
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: syn_registration
+
+transform_centers_of_mass
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: transform_centers_of_mass
+
+translation
+~~~~~~~~~~~
+
+.. autofunction:: translation
+
+write_mapping
+~~~~~~~~~~~~~
+
+.. autofunction:: write_mapping
+

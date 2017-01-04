@@ -1,0 +1,1725 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Module: tests.test_api &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Module: <code class="docutils literal"><span class="pre">tests.test_api</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/reference/AFQ.tests.rst.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="module-AFQ.tests.test_api">
+<span id="module-tests-test-api"></span><h1>Module: <code class="xref py py-mod docutils literal"><span class="pre">tests.test_api</span></code><a class="headerlink" href="#module-AFQ.tests.test_api" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_api.create_dummy_preproc_path" title="AFQ.tests.test_api.create_dummy_preproc_path"><code class="xref py py-obj docutils literal"><span class="pre">create_dummy_preproc_path</span></code></a>(n_subjects,&nbsp;n_sessions)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_api.test_AFQ_init" title="AFQ.tests.test_api.test_AFQ_init"><code class="xref py py-obj docutils literal"><span class="pre">test_AFQ_init</span></code></a>()</td>
+<td>Test the initialization of the AFQ object</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_api.touch" title="AFQ.tests.test_api.touch"><code class="xref py py-obj docutils literal"><span class="pre">touch</span></code></a>(fname[,&nbsp;times])</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="module-AFQ.tests.test_csd">
+<span id="module-tests-test-csd"></span><h1>Module: <code class="xref py py-mod docutils literal"><span class="pre">tests.test_csd</span></code><a class="headerlink" href="#module-AFQ.tests.test_csd" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_csd.calculate_max_order" title="AFQ.tests.test_csd.calculate_max_order"><code class="xref py py-obj docutils literal"><span class="pre">calculate_max_order</span></code></a>(n_coeffs)</td>
+<td>Calculate the maximal harmonic order, given that you know the         number of parameters that were estimated.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_csd.test_fit_csd" title="AFQ.tests.test_csd.test_fit_csd"><code class="xref py py-obj docutils literal"><span class="pre">test_fit_csd</span></code></a>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="module-AFQ.tests.test_dki">
+<span id="module-tests-test-dki"></span><h1>Module: <code class="xref py py-mod docutils literal"><span class="pre">tests.test_dki</span></code><a class="headerlink" href="#module-AFQ.tests.test_dki" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_dki.make_dki_data" title="AFQ.tests.test_dki.make_dki_data"><code class="xref py py-obj docutils literal"><span class="pre">make_dki_data</span></code></a>(out_fbval,&nbsp;out_fbvec,&nbsp;out_fdata)</td>
+<td>Create a synthetic data-set with a 2-shell acquisition</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_dki.test_fit_dki" title="AFQ.tests.test_dki.test_fit_dki"><code class="xref py py-obj docutils literal"><span class="pre">test_fit_dki</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_dki.test_fit_dki_inputs" title="AFQ.tests.test_dki.test_fit_dki_inputs"><code class="xref py py-obj docutils literal"><span class="pre">test_fit_dki_inputs</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_dki.test_predict_dki" title="AFQ.tests.test_dki.test_predict_dki"><code class="xref py py-obj docutils literal"><span class="pre">test_predict_dki</span></code></a>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="module-AFQ.tests.test_dti">
+<span id="module-tests-test-dti"></span><h1>Module: <code class="xref py py-mod docutils literal"><span class="pre">tests.test_dti</span></code><a class="headerlink" href="#module-AFQ.tests.test_dti" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_dti.make_dti_data" title="AFQ.tests.test_dti.make_dti_data"><code class="xref py py-obj docutils literal"><span class="pre">make_dti_data</span></code></a>(out_fbval,&nbsp;out_fbvec,&nbsp;out_fdata)</td>
+<td>Create a synthetic data-set with a single shell acquisition</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_dti.test_fit_dti" title="AFQ.tests.test_dti.test_fit_dti"><code class="xref py py-obj docutils literal"><span class="pre">test_fit_dti</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_dti.test_predict_dti" title="AFQ.tests.test_dti.test_predict_dti"><code class="xref py py-obj docutils literal"><span class="pre">test_predict_dti</span></code></a>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="module-AFQ.tests.test_registration">
+<span id="module-tests-test-registration"></span><h1>Module: <code class="xref py py-mod docutils literal"><span class="pre">tests.test_registration</span></code><a class="headerlink" href="#module-AFQ.tests.test_registration" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_registration.DiffeomorphicMap" title="AFQ.tests.test_registration.DiffeomorphicMap"><code class="xref py py-obj docutils literal"><span class="pre">DiffeomorphicMap</span></code></a>(dim,&nbsp;disp_shape[,&nbsp;...])</td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_registration.affine" title="AFQ.tests.test_registration.affine"><code class="xref py py-obj docutils literal"><span class="pre">affine</span></code></a>(moving,&nbsp;static,&nbsp;static_affine,&nbsp;...[,&nbsp;...])</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_registration.c_of_mass" title="AFQ.tests.test_registration.c_of_mass"><code class="xref py py-obj docutils literal"><span class="pre">c_of_mass</span></code></a>(moving,&nbsp;static,&nbsp;static_affine,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_registration.move_streamlines" title="AFQ.tests.test_registration.move_streamlines"><code class="xref py py-obj docutils literal"><span class="pre">move_streamlines</span></code></a>(streamlines,&nbsp;output_space)</td>
+<td>Applies a linear transformation, given by affine, to streamlines.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_registration.read_mapping" title="AFQ.tests.test_registration.read_mapping"><code class="xref py py-obj docutils literal"><span class="pre">read_mapping</span></code></a>(disp,&nbsp;domain_img,&nbsp;codomain_img)</td>
+<td>Read a syn registration mapping from a nifti file</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_registration.register_dwi" title="AFQ.tests.test_registration.register_dwi"><code class="xref py py-obj docutils literal"><span class="pre">register_dwi</span></code></a>(data_files,&nbsp;bval_files,&nbsp;bvec_files)</td>
+<td>Register a DWI data-set</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_registration.register_series" title="AFQ.tests.test_registration.register_series"><code class="xref py py-obj docutils literal"><span class="pre">register_series</span></code></a>(series,&nbsp;ref,&nbsp;pipeline)</td>
+<td>Register a series to a reference image.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_registration.rigid" title="AFQ.tests.test_registration.rigid"><code class="xref py py-obj docutils literal"><span class="pre">rigid</span></code></a>(moving,&nbsp;static,&nbsp;static_affine,&nbsp;...[,&nbsp;...])</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_registration.streamline_registration" title="AFQ.tests.test_registration.streamline_registration"><code class="xref py py-obj docutils literal"><span class="pre">streamline_registration</span></code></a>(moving,&nbsp;static[,&nbsp;...])</td>
+<td>Register two collections of streamlines (&#8216;bundles&#8217;) to each other</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_registration.syn_register_dwi" title="AFQ.tests.test_registration.syn_register_dwi"><code class="xref py py-obj docutils literal"><span class="pre">syn_register_dwi</span></code></a>(dwi,&nbsp;gtab[,&nbsp;template])</td>
+<td><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_registration.syn_registration" title="AFQ.tests.test_registration.syn_registration"><code class="xref py py-obj docutils literal"><span class="pre">syn_registration</span></code></a>(moving,&nbsp;static[,&nbsp;...])</td>
+<td>Register a source image (moving) to a target image (static).</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_registration.test_register_dwi" title="AFQ.tests.test_registration.test_register_dwi"><code class="xref py py-obj docutils literal"><span class="pre">test_register_dwi</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_registration.test_register_series" title="AFQ.tests.test_registration.test_register_series"><code class="xref py py-obj docutils literal"><span class="pre">test_register_series</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_registration.test_streamline_registration" title="AFQ.tests.test_registration.test_streamline_registration"><code class="xref py py-obj docutils literal"><span class="pre">test_streamline_registration</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_registration.test_syn_register_dwi" title="AFQ.tests.test_registration.test_syn_register_dwi"><code class="xref py py-obj docutils literal"><span class="pre">test_syn_register_dwi</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_registration.test_syn_registration" title="AFQ.tests.test_registration.test_syn_registration"><code class="xref py py-obj docutils literal"><span class="pre">test_syn_registration</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_registration.translation" title="AFQ.tests.test_registration.translation"><code class="xref py py-obj docutils literal"><span class="pre">translation</span></code></a>(moving,&nbsp;static,&nbsp;static_affine,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_registration.write_mapping" title="AFQ.tests.test_registration.write_mapping"><code class="xref py py-obj docutils literal"><span class="pre">write_mapping</span></code></a>(mapping,&nbsp;fname)</td>
+<td>Write out a syn registration mapping to file</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_registration.write_trk" title="AFQ.tests.test_registration.write_trk"><code class="xref py py-obj docutils literal"><span class="pre">write_trk</span></code></a>(fname,&nbsp;streamlines[,&nbsp;affine,&nbsp;shape])</td>
+<td>Write out a .trk file</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="module-AFQ.tests.test_scripts">
+<span id="module-tests-test-scripts"></span><h1>Module: <code class="xref py py-mod docutils literal"><span class="pre">tests.test_scripts</span></code><a class="headerlink" href="#module-AFQ.tests.test_scripts" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_scripts.ScriptRunner" title="AFQ.tests.test_scripts.ScriptRunner"><code class="xref py py-obj docutils literal"><span class="pre">ScriptRunner</span></code></a>([script_sdir,&nbsp;module_sdir,&nbsp;...])</td>
+<td>Class to run scripts and return output</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_scripts.assert_image_shape_affine" title="AFQ.tests.test_scripts.assert_image_shape_affine"><code class="xref py py-obj docutils literal"><span class="pre">assert_image_shape_affine</span></code></a>(filename,&nbsp;shape,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_scripts.make_dki_data" title="AFQ.tests.test_scripts.make_dki_data"><code class="xref py py-obj docutils literal"><span class="pre">make_dki_data</span></code></a>(out_fbval,&nbsp;out_fbvec,&nbsp;out_fdata)</td>
+<td>Create a synthetic data-set with a 2-shell acquisition</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_scripts.make_dti_data" title="AFQ.tests.test_scripts.make_dti_data"><code class="xref py py-obj docutils literal"><span class="pre">make_dti_data</span></code></a>(out_fbval,&nbsp;out_fbvec,&nbsp;out_fdata)</td>
+<td>Create a synthetic data-set with a single shell acquisition</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_scripts.test_fit_dki" title="AFQ.tests.test_scripts.test_fit_dki"><code class="xref py py-obj docutils literal"><span class="pre">test_fit_dki</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_scripts.test_fit_dti" title="AFQ.tests.test_scripts.test_fit_dti"><code class="xref py py-obj docutils literal"><span class="pre">test_fit_dti</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_scripts.test_predict_dki" title="AFQ.tests.test_scripts.test_predict_dki"><code class="xref py py-obj docutils literal"><span class="pre">test_predict_dki</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_scripts.test_predict_dti" title="AFQ.tests.test_scripts.test_predict_dti"><code class="xref py py-obj docutils literal"><span class="pre">test_predict_dti</span></code></a>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="module-AFQ.tests.test_segmentation">
+<span id="module-tests-test-segmentation"></span><h1>Module: <code class="xref py py-mod docutils literal"><span class="pre">tests.test_segmentation</span></code><a class="headerlink" href="#module-AFQ.tests.test_segmentation" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_segmentation.test_segment" title="AFQ.tests.test_segmentation.test_segment"><code class="xref py py-obj docutils literal"><span class="pre">test_segment</span></code></a>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="module-AFQ.tests.test_tractography">
+<span id="module-tests-test-tractography"></span><h1>Module: <code class="xref py py-mod docutils literal"><span class="pre">tests.test_tractography</span></code><a class="headerlink" href="#module-AFQ.tests.test_tractography" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_tractography.fit_csd" title="AFQ.tests.test_tractography.fit_csd"><code class="xref py py-obj docutils literal"><span class="pre">fit_csd</span></code></a>(data_files,&nbsp;bval_files,&nbsp;bvec_files)</td>
+<td>Fit the CSD model and save file with SH coefficients.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_tractography.fit_dti" title="AFQ.tests.test_tractography.fit_dti"><code class="xref py py-obj docutils literal"><span class="pre">fit_dti</span></code></a>(data_files,&nbsp;bval_files,&nbsp;bvec_files)</td>
+<td>Fit the DTI model using default settings, save files with derived maps</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_tractography.make_tracking_data" title="AFQ.tests.test_tractography.make_tracking_data"><code class="xref py py-obj docutils literal"><span class="pre">make_tracking_data</span></code></a>(out_fbval,&nbsp;out_fbvec,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_tractography.test_csd_tracking" title="AFQ.tests.test_tractography.test_csd_tracking"><code class="xref py py-obj docutils literal"><span class="pre">test_csd_tracking</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_tractography.test_dti_tracking" title="AFQ.tests.test_tractography.test_dti_tracking"><code class="xref py py-obj docutils literal"><span class="pre">test_dti_tracking</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_tractography.track" title="AFQ.tests.test_tractography.track"><code class="xref py py-obj docutils literal"><span class="pre">track</span></code></a>(params_file[,&nbsp;directions,&nbsp;max_angle,&nbsp;...])</td>
+<td>Tractography</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="create-dummy-preproc-path">
+<h2>create_dummy_preproc_path<a class="headerlink" href="#create-dummy-preproc-path" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_api.create_dummy_preproc_path">
+<code class="descclassname">AFQ.tests.test_api.</code><code class="descname">create_dummy_preproc_path</code><span class="sig-paren">(</span><em>n_subjects</em>, <em>n_sessions</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_api.html#create_dummy_preproc_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_api.create_dummy_preproc_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="test-afq-init">
+<h2>test_AFQ_init<a class="headerlink" href="#test-afq-init" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_api.test_AFQ_init">
+<code class="descclassname">AFQ.tests.test_api.</code><code class="descname">test_AFQ_init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_api.html#test_AFQ_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_api.test_AFQ_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test the initialization of the AFQ object</p>
+</dd></dl>
+
+</div>
+<div class="section" id="touch">
+<h2>touch<a class="headerlink" href="#touch" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_api.touch">
+<code class="descclassname">AFQ.tests.test_api.</code><code class="descname">touch</code><span class="sig-paren">(</span><em>fname</em>, <em>times=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_api.html#touch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_api.touch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="calculate-max-order">
+<h2>calculate_max_order<a class="headerlink" href="#calculate-max-order" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_csd.calculate_max_order">
+<code class="descclassname">AFQ.tests.test_csd.</code><code class="descname">calculate_max_order</code><span class="sig-paren">(</span><em>n_coeffs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/reconst/shm.html#calculate_max_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_csd.calculate_max_order" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Calculate the maximal harmonic order, given that you know the</dt>
+<dd>number of parameters that were estimated.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>n_coeffs</strong> : int</p>
+<blockquote>
+<div><p>The number of SH coefficients</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>L</strong> : int</p>
+<blockquote class="last">
+<div><p>The maximal SH order, given the number of coefficients</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p>rac{1}{2} (L+1) (L+2)</p>
+<p>arrow 2n = L^2 + 3L + 2</p>
+<p>arrow L^2 + 3L + 2 - 2n = 0</p>
+<p>arrow L^2 + 3L + 2(1-n) = 0</p>
+<p>arrow L_{1,2} = 
+rac{-3 pm sqrt{9 - 8 (1-n)}}{2}</p>
+<p>arrow L{1,2} = 
+rac{-3 pm sqrt{1 + 8n}}{2}</p>
+<blockquote>
+<div>Finally, the positive value is chosen between the two options.</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="test-fit-csd">
+<h2>test_fit_csd<a class="headerlink" href="#test-fit-csd" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_csd.test_fit_csd">
+<code class="descclassname">AFQ.tests.test_csd.</code><code class="descname">test_fit_csd</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_csd.html#test_fit_csd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_csd.test_fit_csd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="make-dki-data">
+<h2>make_dki_data<a class="headerlink" href="#make-dki-data" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_dki.make_dki_data">
+<code class="descclassname">AFQ.tests.test_dki.</code><code class="descname">make_dki_data</code><span class="sig-paren">(</span><em>out_fbval</em>, <em>out_fbvec</em>, <em>out_fdata</em>, <em>out_shape=(5</em>, <em>6</em>, <em>7)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/utils/testing.html#make_dki_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_dki.make_dki_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a synthetic data-set with a 2-shell acquisition</p>
+<dl class="docutils">
+<dt>out_fbval, out_fbvec, out_fdata</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">str</span><dd>Full paths to generated data and bval/bvec files</dd>
+<dt>out_shape</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span><dd>The 3D shape of the output volum</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="test-fit-dki">
+<h2>test_fit_dki<a class="headerlink" href="#test-fit-dki" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_dki.test_fit_dki">
+<code class="descclassname">AFQ.tests.test_dki.</code><code class="descname">test_fit_dki</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_dki.html#test_fit_dki"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_dki.test_fit_dki" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="test-fit-dki-inputs">
+<h2>test_fit_dki_inputs<a class="headerlink" href="#test-fit-dki-inputs" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_dki.test_fit_dki_inputs">
+<code class="descclassname">AFQ.tests.test_dki.</code><code class="descname">test_fit_dki_inputs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_dki.html#test_fit_dki_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_dki.test_fit_dki_inputs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="test-predict-dki">
+<h2>test_predict_dki<a class="headerlink" href="#test-predict-dki" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_dki.test_predict_dki">
+<code class="descclassname">AFQ.tests.test_dki.</code><code class="descname">test_predict_dki</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_dki.html#test_predict_dki"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_dki.test_predict_dki" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="make-dti-data">
+<h2>make_dti_data<a class="headerlink" href="#make-dti-data" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_dti.make_dti_data">
+<code class="descclassname">AFQ.tests.test_dti.</code><code class="descname">make_dti_data</code><span class="sig-paren">(</span><em>out_fbval</em>, <em>out_fbvec</em>, <em>out_fdata</em>, <em>out_shape=(5</em>, <em>6</em>, <em>7)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/utils/testing.html#make_dti_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_dti.make_dti_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a synthetic data-set with a single shell acquisition</p>
+<dl class="docutils">
+<dt>out_fbval, out_fbvec, out_fdata</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">str</span><dd>Full paths to generated data and bval/bvec files</dd>
+<dt>out_shape</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span><dd>The 3D shape of the output volum</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="test-fit-dti">
+<h2>test_fit_dti<a class="headerlink" href="#test-fit-dti" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_dti.test_fit_dti">
+<code class="descclassname">AFQ.tests.test_dti.</code><code class="descname">test_fit_dti</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_dti.html#test_fit_dti"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_dti.test_fit_dti" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="test-predict-dti">
+<h2>test_predict_dti<a class="headerlink" href="#test-predict-dti" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_dti.test_predict_dti">
+<code class="descclassname">AFQ.tests.test_dti.</code><code class="descname">test_predict_dti</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_dti.html#test_predict_dti"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_dti.test_predict_dti" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="diffeomorphicmap">
+<h2><a class="reference internal" href="#AFQ.tests.test_registration.DiffeomorphicMap" title="AFQ.tests.test_registration.DiffeomorphicMap"><code class="xref py py-class docutils literal"><span class="pre">DiffeomorphicMap</span></code></a><a class="headerlink" href="#diffeomorphicmap" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.tests.test_registration.DiffeomorphicMap">
+<em class="property">class </em><code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">DiffeomorphicMap</code><span class="sig-paren">(</span><em>dim</em>, <em>disp_shape</em>, <em>disp_grid2world=None</em>, <em>domain_shape=None</em>, <em>domain_grid2world=None</em>, <em>codomain_shape=None</em>, <em>codomain_grid2world=None</em>, <em>prealign=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.DiffeomorphicMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_registration.DiffeomorphicMap.allocate" title="AFQ.tests.test_registration.DiffeomorphicMap.allocate"><code class="xref py py-obj docutils literal"><span class="pre">allocate</span></code></a>()</td>
+<td>Creates a zero displacement field</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_registration.DiffeomorphicMap.compute_inversion_error" title="AFQ.tests.test_registration.DiffeomorphicMap.compute_inversion_error"><code class="xref py py-obj docutils literal"><span class="pre">compute_inversion_error</span></code></a>()</td>
+<td>Inversion error of the displacement fields</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_registration.DiffeomorphicMap.expand_fields" title="AFQ.tests.test_registration.DiffeomorphicMap.expand_fields"><code class="xref py py-obj docutils literal"><span class="pre">expand_fields</span></code></a>(expand_factors,&nbsp;new_shape)</td>
+<td>Expands the displacement fields from current shape to new_shape</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_registration.DiffeomorphicMap.get_backward_field" title="AFQ.tests.test_registration.DiffeomorphicMap.get_backward_field"><code class="xref py py-obj docutils literal"><span class="pre">get_backward_field</span></code></a>()</td>
+<td>Deformation field to transform an image in the backward direction</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_registration.DiffeomorphicMap.get_forward_field" title="AFQ.tests.test_registration.DiffeomorphicMap.get_forward_field"><code class="xref py py-obj docutils literal"><span class="pre">get_forward_field</span></code></a>()</td>
+<td>Deformation field to transform an image in the forward direction</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_registration.DiffeomorphicMap.get_simplified_transform" title="AFQ.tests.test_registration.DiffeomorphicMap.get_simplified_transform"><code class="xref py py-obj docutils literal"><span class="pre">get_simplified_transform</span></code></a>()</td>
+<td>Constructs a simplified version of this Diffeomorhic Map</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_registration.DiffeomorphicMap.interpret_matrix" title="AFQ.tests.test_registration.DiffeomorphicMap.interpret_matrix"><code class="xref py py-obj docutils literal"><span class="pre">interpret_matrix</span></code></a>(obj)</td>
+<td>Try to interpret <cite>obj</cite> as a matrix</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_registration.DiffeomorphicMap.inverse" title="AFQ.tests.test_registration.DiffeomorphicMap.inverse"><code class="xref py py-obj docutils literal"><span class="pre">inverse</span></code></a>()</td>
+<td>Inverse of this DiffeomorphicMap instance</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_registration.DiffeomorphicMap.shallow_copy" title="AFQ.tests.test_registration.DiffeomorphicMap.shallow_copy"><code class="xref py py-obj docutils literal"><span class="pre">shallow_copy</span></code></a>()</td>
+<td>Shallow copy of this DiffeomorphicMap instance</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_registration.DiffeomorphicMap.transform" title="AFQ.tests.test_registration.DiffeomorphicMap.transform"><code class="xref py py-obj docutils literal"><span class="pre">transform</span></code></a>(image[,&nbsp;interpolation,&nbsp;...])</td>
+<td>Warps an image in the forward direction</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_registration.DiffeomorphicMap.transform_inverse" title="AFQ.tests.test_registration.DiffeomorphicMap.transform_inverse"><code class="xref py py-obj docutils literal"><span class="pre">transform_inverse</span></code></a>(image[,&nbsp;interpolation,&nbsp;...])</td>
+<td>Warps an image in the backward direction</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tests.test_registration.DiffeomorphicMap.warp_endomorphism" title="AFQ.tests.test_registration.DiffeomorphicMap.warp_endomorphism"><code class="xref py py-obj docutils literal"><span class="pre">warp_endomorphism</span></code></a>(phi)</td>
+<td>Composition of this DiffeomorphicMap with a given endomorphism</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.tests.test_registration.DiffeomorphicMap.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>dim</em>, <em>disp_shape</em>, <em>disp_grid2world=None</em>, <em>domain_shape=None</em>, <em>domain_grid2world=None</em>, <em>codomain_shape=None</em>, <em>codomain_grid2world=None</em>, <em>prealign=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.DiffeomorphicMap.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>DiffeomorphicMap</p>
+<p>Implements a diffeomorphic transformation on the physical space. The
+deformation fields encoding the direct and inverse transformations
+share the same domain discretization (both the discretization grid
+shape and voxel-to-space matrix). The input coordinates (physical
+coordinates) are first aligned using prealign, and then displaced
+using the corresponding vector field interpolated at the aligned
+coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dim</strong> : int, 2 or 3</p>
+<blockquote>
+<div><p>the transformation&#8217;s dimension</p>
+</div></blockquote>
+<p><strong>disp_shape</strong> : array, shape (dim,)</p>
+<blockquote>
+<div><p>the number of slices (if 3D), rows and columns of the deformation
+field&#8217;s discretization</p>
+</div></blockquote>
+<p><strong>disp_grid2world</strong> : the voxel-to-space transform between the def. fields</p>
+<blockquote>
+<div><p>grid and space</p>
+</div></blockquote>
+<p><strong>domain_shape</strong> : array, shape (dim,)</p>
+<blockquote>
+<div><p>the number of slices (if 3D), rows and columns of the default
+discretizatio of this map&#8217;s domain</p>
+</div></blockquote>
+<p><strong>domain_grid2world</strong> : array, shape (dim+1, dim+1)</p>
+<blockquote>
+<div><p>the default voxel-to-space transformation between this map&#8217;s
+discretization and physical space</p>
+</div></blockquote>
+<p><strong>codomain_shape</strong> : array, shape (dim,)</p>
+<blockquote>
+<div><p>the number of slices (if 3D), rows and columns of the images that
+are &#8216;normally&#8217; warped using this transformation in the forward
+direction (this will provide default transformation parameters to
+warp images under this transformation). By default, we assume that
+the inverse transformation is &#8216;normally&#8217; used to warp images with
+the same discretization and voxel-to-space transformation as the
+deformation field grid.</p>
+</div></blockquote>
+<p><strong>codomain_grid2world</strong> : array, shape (dim+1, dim+1)</p>
+<blockquote>
+<div><p>the voxel-to-space transformation of images that are &#8216;normally&#8217;
+warped using this transformation (in the forward direction).</p>
+</div></blockquote>
+<p><strong>prealign</strong> : array, shape (dim+1, dim+1)</p>
+<blockquote class="last">
+<div><p>the linear transformation to be applied to align input images to
+the reference space before warping under the deformation field.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tests.test_registration.DiffeomorphicMap.allocate">
+<code class="descname">allocate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.allocate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.DiffeomorphicMap.allocate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a zero displacement field</p>
+<p>Creates a zero displacement field (the identity transformation).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tests.test_registration.DiffeomorphicMap.compute_inversion_error">
+<code class="descname">compute_inversion_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.compute_inversion_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.DiffeomorphicMap.compute_inversion_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inversion error of the displacement fields</p>
+<p>Estimates the inversion error of the displacement fields by computing
+statistics of the residual vectors obtained after composing the forward
+and backward displacement fields.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>residual</strong> : array, shape (R, C) or (S, R, C)</p>
+<blockquote>
+<div><p>the displacement field resulting from composing the forward and
+backward displacement fields of this transformation (the residual
+should be zero for a perfect diffeomorphism)</p>
+</div></blockquote>
+<p><strong>stats</strong> : array, shape (3,)</p>
+<blockquote class="last">
+<div><p>statistics from the norms of the vectors of the residual
+displacement field: maximum, mean and standard deviation</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Since the forward and backward displacement fields have the same
+discretization, the final composition is given by</p>
+<p>comp[i] = forward[ i + Dinv * backward[i]]</p>
+<p>where Dinv is the space-to-grid transformation of the displacement
+fields</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tests.test_registration.DiffeomorphicMap.expand_fields">
+<code class="descname">expand_fields</code><span class="sig-paren">(</span><em>expand_factors</em>, <em>new_shape</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.expand_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.DiffeomorphicMap.expand_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expands the displacement fields from current shape to new_shape</p>
+<p>Up-samples the discretization of the displacement fields to be of
+new_shape shape.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>expand_factors</strong> : array, shape (dim,)</p>
+<blockquote>
+<div><p>the factors scaling current spacings (voxel sizes) to spacings in
+the expanded discretization.</p>
+</div></blockquote>
+<p><strong>new_shape</strong> : array, shape (dim,)</p>
+<blockquote class="last">
+<div><p>the shape of the arrays holding the up-sampled discretization</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tests.test_registration.DiffeomorphicMap.get_backward_field">
+<code class="descname">get_backward_field</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.get_backward_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.DiffeomorphicMap.get_backward_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deformation field to transform an image in the backward direction</p>
+<p>Returns the deformation field that must be used to warp an image under
+this transformation in the backward direction (note the &#8216;is_inverse&#8217;
+flag).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tests.test_registration.DiffeomorphicMap.get_forward_field">
+<code class="descname">get_forward_field</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.get_forward_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.DiffeomorphicMap.get_forward_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deformation field to transform an image in the forward direction</p>
+<p>Returns the deformation field that must be used to warp an image under
+this transformation in the forward direction (note the &#8216;is_inverse&#8217;
+flag).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tests.test_registration.DiffeomorphicMap.get_simplified_transform">
+<code class="descname">get_simplified_transform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.get_simplified_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.DiffeomorphicMap.get_simplified_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a simplified version of this Diffeomorhic Map</p>
+<p>The simplified version incorporates the pre-align transform, as well as
+the domain and codomain affine transforms into the displacement field.
+The resulting transformation may be regarded as operating on the
+image spaces given by the domain and codomain discretization. As a
+result, self.prealign, self.disp_grid2world, self.domain_grid2world and
+self.codomain affine will be None (denoting Identity) in the resulting
+diffeomorphic map.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tests.test_registration.DiffeomorphicMap.interpret_matrix">
+<code class="descname">interpret_matrix</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.interpret_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.DiffeomorphicMap.interpret_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to interpret <cite>obj</cite> as a matrix</p>
+<p>Some operations are performed faster if we know in advance if a matrix
+is the identity (so we can skip the actual matrix-vector
+multiplication). This function returns None if the given object
+is None or the &#8216;identity&#8217; string. It returns the same object if it is
+a numpy array. It raises an exception otherwise.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : object</p>
+<blockquote>
+<div><p>any object</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj</strong> : object</p>
+<blockquote class="last">
+<div><p>the same object given as argument if <cite>obj</cite> is None or a numpy
+array. None if <cite>obj</cite> is the &#8216;identity&#8217; string.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tests.test_registration.DiffeomorphicMap.inverse">
+<code class="descname">inverse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.DiffeomorphicMap.inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inverse of this DiffeomorphicMap instance</p>
+<p>Returns a diffeomorphic map object representing the inverse of this
+transformation. The internal arrays are not copied but just referenced.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>inv</strong> : DiffeomorphicMap object</p>
+<blockquote class="last">
+<div><p>the inverse of this diffeomorphic map.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tests.test_registration.DiffeomorphicMap.shallow_copy">
+<code class="descname">shallow_copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.shallow_copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.DiffeomorphicMap.shallow_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shallow copy of this DiffeomorphicMap instance</p>
+<p>Creates a shallow copy of this diffeomorphic map (the arrays are not
+copied but just referenced)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_map</strong> : DiffeomorphicMap object</p>
+<blockquote class="last">
+<div><p>the shallow copy of this diffeomorphic map</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tests.test_registration.DiffeomorphicMap.transform">
+<code class="descname">transform</code><span class="sig-paren">(</span><em>image</em>, <em>interpolation='linear'</em>, <em>image_world2grid=None</em>, <em>out_shape=None</em>, <em>out_grid2world=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.DiffeomorphicMap.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Warps an image in the forward direction</p>
+<p>Transforms the input image under this transformation in the forward
+direction. It uses the &#8220;is_inverse&#8221; flag to switch between &#8220;forward&#8221;
+and &#8220;backward&#8221; (if is_inverse is False, then transform(...) warps the
+image forwards, else it warps the image backwards).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>image</strong> : array, shape (s, r, c) if dim = 3 or (r, c) if dim = 2</p>
+<blockquote>
+<div><p>the image to be warped under this transformation in the forward
+direction</p>
+</div></blockquote>
+<p><strong>interpolation</strong> : string, either &#8216;linear&#8217; or &#8216;nearest&#8217;</p>
+<blockquote>
+<div><p>the type of interpolation to be used for warping, either &#8216;linear&#8217;
+(for k-linear interpolation) or &#8216;nearest&#8217; for nearest neighbor</p>
+</div></blockquote>
+<p><strong>image_world2grid</strong> : array, shape (dim+1, dim+1)</p>
+<blockquote>
+<div><p>the transformation bringing world (space) coordinates to voxel
+coordinates of the image given as input</p>
+</div></blockquote>
+<p><strong>out_shape</strong> : array, shape (dim,)</p>
+<blockquote>
+<div><p>the number of slices, rows and columns of the desired warped image</p>
+</div></blockquote>
+<p><strong>out_grid2world</strong> : the transformation bringing voxel coordinates of the</p>
+<blockquote>
+<div><p>warped image to physical space</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>warped</strong> : array, shape = out_shape or self.codomain_shape if None</p>
+<blockquote class="last">
+<div><p>the warped image under this transformation in the forward direction</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>See _warp_forward and _warp_backward documentation for further
+information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tests.test_registration.DiffeomorphicMap.transform_inverse">
+<code class="descname">transform_inverse</code><span class="sig-paren">(</span><em>image</em>, <em>interpolation='linear'</em>, <em>image_world2grid=None</em>, <em>out_shape=None</em>, <em>out_grid2world=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.transform_inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.DiffeomorphicMap.transform_inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Warps an image in the backward direction</p>
+<p>Transforms the input image under this transformation in the backward
+direction. It uses the &#8220;is_inverse&#8221; flag to switch between &#8220;forward&#8221;
+and &#8220;backward&#8221; (if is_inverse is False, then transform_inverse(...)
+warps the image backwards, else it warps the image forwards)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>image</strong> : array, shape (s, r, c) if dim = 3 or (r, c) if dim = 2</p>
+<blockquote>
+<div><p>the image to be warped under this transformation in the forward
+direction</p>
+</div></blockquote>
+<p><strong>interpolation</strong> : string, either &#8216;linear&#8217; or &#8216;nearest&#8217;</p>
+<blockquote>
+<div><p>the type of interpolation to be used for warping, either &#8216;linear&#8217;
+(for k-linear interpolation) or &#8216;nearest&#8217; for nearest neighbor</p>
+</div></blockquote>
+<p><strong>image_world2grid</strong> : array, shape (dim+1, dim+1)</p>
+<blockquote>
+<div><p>the transformation bringing world (space) coordinates to voxel
+coordinates of the image given as input</p>
+</div></blockquote>
+<p><strong>out_shape</strong> : array, shape (dim,)</p>
+<blockquote>
+<div><p>the number of slices, rows and columns of the desired warped image</p>
+</div></blockquote>
+<p><strong>out_grid2world</strong> : the transformation bringing voxel coordinates of the</p>
+<blockquote>
+<div><p>warped image to physical space</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>warped</strong> : array, shape = out_shape or self.codomain_shape if None</p>
+<blockquote class="last">
+<div><p>warped image under this transformation in the backward direction</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>See _warp_forward and _warp_backward documentation for further
+information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tests.test_registration.DiffeomorphicMap.warp_endomorphism">
+<code class="descname">warp_endomorphism</code><span class="sig-paren">(</span><em>phi</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.warp_endomorphism"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.DiffeomorphicMap.warp_endomorphism" title="Permalink to this definition">¶</a></dt>
+<dd><p>Composition of this DiffeomorphicMap with a given endomorphism</p>
+<p>Creates a new DiffeomorphicMap C with the same properties as self and
+composes its displacement fields with phi&#8217;s corresponding fields.
+The resulting diffeomorphism is of the form C(x) = phi(self(x)) with
+inverse C^{-1}(y) = self^{-1}(phi^{-1}(y)). We assume that phi is an
+endomorphism with the same discretization and domain affine as self
+to ensure that the composition inherits self&#8217;s properties (we also
+assume that the pre-aligning matrix of phi is None or identity).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>phi</strong> : DiffeomorphicMap object</p>
+<blockquote>
+<div><p>the endomorphism to be warped by this diffeomorphic map</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>composition</strong> : the composition of this diffeomorphic map with the</p>
+<blockquote class="last">
+<div><p>endomorphism given as input</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>The problem with our current representation of a DiffeomorphicMap is
+that the set of Diffeomorphism that can be represented this way (a
+pre-aligning matrix followed by a non-linear endomorphism given as a
+displacement field) is not closed under the composition operation.</p>
+<p>Supporting a general DiffeomorphicMap class, closed under composition,
+may be extremely costly computationally, and the kind of
+transformations we actually need for Avants&#8217; mid-point algorithm (SyN)
+are much simpler.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="affine">
+<h2>affine<a class="headerlink" href="#affine" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.affine">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">affine</code><span class="sig-paren">(</span><em>moving</em>, <em>static</em>, <em>static_affine</em>, <em>moving_affine</em>, <em>reg</em>, <em>starting_affine</em>, <em>params0=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#affine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.affine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="c-of-mass">
+<h2>c_of_mass<a class="headerlink" href="#c-of-mass" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.c_of_mass">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">c_of_mass</code><span class="sig-paren">(</span><em>moving</em>, <em>static</em>, <em>static_affine</em>, <em>moving_affine</em>, <em>reg</em>, <em>starting_affine</em>, <em>params0=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#c_of_mass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.c_of_mass" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="move-streamlines">
+<h2>move_streamlines<a class="headerlink" href="#move-streamlines" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.move_streamlines">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">move_streamlines</code><span class="sig-paren">(</span><em>streamlines</em>, <em>output_space</em>, <em>input_space=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/tracking/utils.html#move_streamlines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.move_streamlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies a linear transformation, given by affine, to streamlines.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>streamlines</strong> : sequence</p>
+<blockquote>
+<div><p>A set of streamlines to be transformed.</p>
+</div></blockquote>
+<p><strong>output_space</strong> : array (4, 4)</p>
+<blockquote>
+<div><p>An affine matrix describing the target space to which the streamlines
+will be transformed.</p>
+</div></blockquote>
+<p><strong>input_space</strong> : array (4, 4), optional</p>
+<blockquote>
+<div><p>An affine matrix describing the current space of the streamlines, if no
+<code class="docutils literal"><span class="pre">input_space</span></code> is specified, it&#8217;s assumed the streamlines are in the
+reference space. The reference space is the same as the space
+associated with the affine matrix <code class="docutils literal"><span class="pre">np.eye(4)</span></code>.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>streamlines</strong> : generator</p>
+<blockquote class="last">
+<div><p>A sequence of transformed streamlines.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="read-mapping">
+<h2>read_mapping<a class="headerlink" href="#read-mapping" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.read_mapping">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">read_mapping</code><span class="sig-paren">(</span><em>disp</em>, <em>domain_img</em>, <em>codomain_img</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#read_mapping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.read_mapping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a syn registration mapping from a nifti file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>disp</strong> : str or Nifti1Image</p>
+<blockquote>
+<div><p>A file of image containing the mapping displacement field in each voxel
+Shape (x, y, z, 3, 2)</p>
+</div></blockquote>
+<p><strong>domain_img</strong> : str or Nifti1Image</p>
+<p><strong>codomain_img</strong> : str or Nifti1Image</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="#AFQ.tests.test_registration.DiffeomorphicMap" title="AFQ.tests.test_registration.DiffeomorphicMap"><code class="xref py py-class docutils literal"><span class="pre">DiffeomorphicMap</span></code></a> object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="register-dwi">
+<h2>register_dwi<a class="headerlink" href="#register-dwi" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.register_dwi">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">register_dwi</code><span class="sig-paren">(</span><em>data_files, bval_files, bvec_files, b0_ref=0, pipeline=[&lt;function c_of_mass&gt;, &lt;function translation&gt;, &lt;function rigid&gt;, &lt;function affine&gt;], out_dir=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#register_dwi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.register_dwi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a DWI data-set</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data_files</strong> : str or list</p>
+<blockquote>
+<div><p>Files containing DWI data. If this is a str, that&#8217;s the full path to a
+single file. If it&#8217;s a list, each entry is a full path.</p>
+</div></blockquote>
+<p><strong>bval_files</strong> : str or list</p>
+<blockquote>
+<div><p>Equivalent to <cite>data_files</cite>.</p>
+</div></blockquote>
+<p><strong>bvec_files</strong> : str or list</p>
+<blockquote class="last">
+<div><p>Equivalent to <cite>data_files</cite>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="register-series">
+<h2>register_series<a class="headerlink" href="#register-series" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.register_series">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">register_series</code><span class="sig-paren">(</span><em>series</em>, <em>ref</em>, <em>pipeline</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#register_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.register_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a series to a reference image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>series</strong> : Nifti1Image object</p>
+<blockquote>
+<div><p>The data is 4D with the last dimension separating different 3D volumes</p>
+</div></blockquote>
+<p><strong>ref</strong> : Nifti1Image or integer or iterable</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">transformed_list, affine_list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="rigid">
+<h2>rigid<a class="headerlink" href="#rigid" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.rigid">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">rigid</code><span class="sig-paren">(</span><em>moving</em>, <em>static</em>, <em>static_affine</em>, <em>moving_affine</em>, <em>reg</em>, <em>starting_affine</em>, <em>params0=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#rigid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.rigid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="streamline-registration">
+<h2>streamline_registration<a class="headerlink" href="#streamline-registration" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.streamline_registration">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">streamline_registration</code><span class="sig-paren">(</span><em>moving</em>, <em>static</em>, <em>n_points=100</em>, <em>native_resampled=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#streamline_registration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.streamline_registration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register two collections of streamlines (&#8216;bundles&#8217;) to each other</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>moving, static</strong> : lists of 3 by n, or str</p>
+<blockquote>
+<div><p>The two bundles to be registered. Given either as lists of arrays with
+3D coordinates, or strings containing full paths to these files.</p>
+</div></blockquote>
+<p><strong>n_points</strong> : int, optional</p>
+<blockquote>
+<div><p>How many points to resample to. Default: 100.</p>
+</div></blockquote>
+<p><strong>native_resampled</strong> : bool, optional</p>
+<blockquote>
+<div><p>Whether to return the moving bundle in the original space, but
+resampled in the static space to n_points.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>aligned</strong> : list</p>
+<blockquote>
+<div><p>Streamlines from the moving group, moved to be closely matched to
+the static group.</p>
+</div></blockquote>
+<p><strong>matrix</strong> : array (4, 4)</p>
+<blockquote class="last">
+<div><p>The affine transformation that takes us from &#8216;moving&#8217; to &#8216;static&#8217;</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="syn-register-dwi">
+<h2>syn_register_dwi<a class="headerlink" href="#syn-register-dwi" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.syn_register_dwi">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">syn_register_dwi</code><span class="sig-paren">(</span><em>dwi</em>, <em>gtab</em>, <em>template=None</em>, <em>**syn_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#syn_register_dwi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.syn_register_dwi" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dwi</strong> : nifti image or str</p>
+<blockquote>
+<div><p>Image containing DWI data, or full path to a nifti file with DWI.</p>
+</div></blockquote>
+<p><strong>gtab</strong> : GradientTable or list of strings</p>
+<blockquote>
+<div><p>The gradients associated with the DWI data, or a string with [fbcal, ]</p>
+</div></blockquote>
+<p><strong>template</strong> : nifti image or str, optional</p>
+<p><strong>syn_kwargs</strong> : key-word arguments for <a class="reference internal" href="#AFQ.tests.test_registration.syn_registration" title="AFQ.tests.test_registration.syn_registration"><code class="xref py py-func docutils literal"><span class="pre">syn_registration()</span></code></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">DiffeomorphicMap object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="syn-registration">
+<h2>syn_registration<a class="headerlink" href="#syn-registration" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.syn_registration">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">syn_registration</code><span class="sig-paren">(</span><em>moving, static, moving_affine=None, static_affine=None, step_length=0.25, metric='CC', dim=3, level_iters=[10, 10, 5], sigma_diff=2.0, prealign=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#syn_registration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.syn_registration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a source image (moving) to a target image (static).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>moving</strong> : ndarray</p>
+<blockquote>
+<div><p>The source image data to be registered</p>
+</div></blockquote>
+<p><strong>moving_affine</strong> : array, shape (4,4)</p>
+<blockquote>
+<div><p>The affine matrix associated with the moving (source) data.</p>
+</div></blockquote>
+<p><strong>static</strong> : ndarray</p>
+<blockquote>
+<div><p>The target image data for registration</p>
+</div></blockquote>
+<p><strong>static_affine</strong> : array, shape (4,4)</p>
+<blockquote>
+<div><p>The affine matrix associated with the static (target) data</p>
+</div></blockquote>
+<p><strong>metric</strong> : string, optional</p>
+<blockquote>
+<div><p>The metric to be optimized. One of <cite>CC</cite>, <cite>EM</cite>, <cite>SSD</cite>,
+Default: CCMetric.</p>
+</div></blockquote>
+<p><strong>dim: int (either 2 or 3), optional</strong></p>
+<blockquote>
+<div><p>The dimensions of the image domain. Default: 3</p>
+</div></blockquote>
+<p><strong>level_iters</strong> : list of int, optional</p>
+<blockquote>
+<div><p>the number of iterations at each level of the Gaussian Pyramid (the
+length of the list defines the number of pyramid levels to be
+used).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>warped_moving</strong> : ndarray</p>
+<blockquote>
+<div><p>The data in <cite>moving</cite>, warped towards the <cite>static</cite> data.</p>
+</div></blockquote>
+<p><strong>forward</strong> : ndarray (..., 3)</p>
+<blockquote>
+<div><p>The vector field describing the forward warping from the source to the
+target.</p>
+</div></blockquote>
+<p><strong>backward</strong> : ndarray (..., 3)</p>
+<blockquote class="last">
+<div><p>The vector field describing the backward warping from the target to the
+source.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="test-register-dwi">
+<h2>test_register_dwi<a class="headerlink" href="#test-register-dwi" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.test_register_dwi">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">test_register_dwi</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_registration.html#test_register_dwi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.test_register_dwi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="test-register-series">
+<h2>test_register_series<a class="headerlink" href="#test-register-series" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.test_register_series">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">test_register_series</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_registration.html#test_register_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.test_register_series" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="test-streamline-registration">
+<h2>test_streamline_registration<a class="headerlink" href="#test-streamline-registration" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.test_streamline_registration">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">test_streamline_registration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_registration.html#test_streamline_registration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.test_streamline_registration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="test-syn-register-dwi">
+<h2>test_syn_register_dwi<a class="headerlink" href="#test-syn-register-dwi" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.test_syn_register_dwi">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">test_syn_register_dwi</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_registration.html#test_syn_register_dwi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.test_syn_register_dwi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="test-syn-registration">
+<h2>test_syn_registration<a class="headerlink" href="#test-syn-registration" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.test_syn_registration">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">test_syn_registration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_registration.html#test_syn_registration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.test_syn_registration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="translation">
+<h2>translation<a class="headerlink" href="#translation" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.translation">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">translation</code><span class="sig-paren">(</span><em>moving</em>, <em>static</em>, <em>static_affine</em>, <em>moving_affine</em>, <em>reg</em>, <em>starting_affine</em>, <em>params0=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#translation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.translation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="write-mapping">
+<h2>write_mapping<a class="headerlink" href="#write-mapping" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.write_mapping">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">write_mapping</code><span class="sig-paren">(</span><em>mapping</em>, <em>fname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#write_mapping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.write_mapping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write out a syn registration mapping to file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>mapping</strong> : a DiffeomorphicMap object derived from <a class="reference internal" href="#AFQ.tests.test_registration.syn_registration" title="AFQ.tests.test_registration.syn_registration"><code class="xref py py-func docutils literal"><span class="pre">syn_registration()</span></code></a></p>
+<p><strong>fname</strong> : str</p>
+<blockquote class="last">
+<div><p>Full path to the nifti file storing the mapping</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="write-trk">
+<h2>write_trk<a class="headerlink" href="#write-trk" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_registration.write_trk">
+<code class="descclassname">AFQ.tests.test_registration.</code><code class="descname">write_trk</code><span class="sig-paren">(</span><em>fname</em>, <em>streamlines</em>, <em>affine=None</em>, <em>shape=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/utils/streamlines.html#write_trk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_registration.write_trk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write out a .trk file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>fname</strong> : str</p>
+<blockquote>
+<div><p>Full path to save the file into</p>
+</div></blockquote>
+<p><strong>streamlines</strong> : list</p>
+<blockquote>
+<div><p>A list of arrays of 3D coordinates</p>
+</div></blockquote>
+<p><strong>affine</strong> : array (4,4), optional.</p>
+<blockquote>
+<div><p>An affine transformation associated with the streamlines. Defaults to
+identity.</p>
+</div></blockquote>
+<p><strong>shape</strong> : 3-element tuple, optional</p>
+<blockquote class="last">
+<div><p>Spatial dimensions of an image associated with the streamlines.
+Defaults to not be set in the file header.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="scriptrunner">
+<h2><a class="reference internal" href="#AFQ.tests.test_scripts.ScriptRunner" title="AFQ.tests.test_scripts.ScriptRunner"><code class="xref py py-class docutils literal"><span class="pre">ScriptRunner</span></code></a><a class="headerlink" href="#scriptrunner" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.tests.test_scripts.ScriptRunner">
+<em class="property">class </em><code class="descclassname">AFQ.tests.test_scripts.</code><code class="descname">ScriptRunner</code><span class="sig-paren">(</span><em>script_sdir='scripts'</em>, <em>module_sdir='AFQ.utils'</em>, <em>debug_print_var=None</em>, <em>output_processor=&lt;function ScriptRunner.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/utils/testing.html#ScriptRunner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_scripts.ScriptRunner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Class to run scripts and return output</p>
+<p>Finds local scripts and local modules if running in the development
+directory, otherwise finds system scripts and modules.</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tests.test_scripts.ScriptRunner.run_command" title="AFQ.tests.test_scripts.ScriptRunner.run_command"><code class="xref py py-obj docutils literal"><span class="pre">run_command</span></code></a>(cmd[,&nbsp;check_code])</td>
+<td>Run command sequence <cite>cmd</cite> returning exit code, stdout, stderr</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.tests.test_scripts.ScriptRunner.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>script_sdir='scripts'</em>, <em>module_sdir='AFQ.utils'</em>, <em>debug_print_var=None</em>, <em>output_processor=&lt;function ScriptRunner.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/utils/testing.html#ScriptRunner.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_scripts.ScriptRunner.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Init ScriptRunner instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>script_sdir</strong> : str, optional</p>
+<blockquote>
+<div><p>Name of subdirectory in top-level directory (directory containing
+setup.py), to find scripts in development tree.  Typically
+&#8216;scripts&#8217;, but might be &#8216;bin&#8217;.</p>
+</div></blockquote>
+<p><strong>module_sdir</strong> : str, optional</p>
+<blockquote>
+<div><p>Name of subdirectory in top-level directory (directory containing
+setup.py), to find main package directory.</p>
+</div></blockquote>
+<p><strong>debug_print_vsr</strong> : str, optional</p>
+<blockquote>
+<div><p>Name of environment variable that indicates whether to do debug
+printing or no.</p>
+</div></blockquote>
+<p><strong>output_processor</strong> : callable</p>
+<blockquote class="last">
+<div><p>Callable to run on the stdout, stderr outputs before returning
+them.  Use this to convert bytes to unicode, strip whitespace, etc.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tests.test_scripts.ScriptRunner.run_command">
+<code class="descname">run_command</code><span class="sig-paren">(</span><em>cmd</em>, <em>check_code=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/utils/testing.html#ScriptRunner.run_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_scripts.ScriptRunner.run_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run command sequence <cite>cmd</cite> returning exit code, stdout, stderr</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cmd</strong> : str or sequence</p>
+<blockquote>
+<div><p>string with command name or sequence of strings defining command</p>
+</div></blockquote>
+<p><strong>check_code</strong> : {True, False}, optional</p>
+<blockquote>
+<div><p>If True, raise error for non-zero return code</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>returncode</strong> : int</p>
+<blockquote>
+<div><p>return code from execution of <cite>cmd</cite></p>
+</div></blockquote>
+<p><strong>stdout</strong> : bytes (python 3) or str (python 2)</p>
+<blockquote>
+<div><p>stdout from <cite>cmd</cite></p>
+</div></blockquote>
+<p><strong>stderr</strong> : bytes (python 3) or str (python 2)</p>
+<blockquote class="last">
+<div><p>stderr from <cite>cmd</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="assert-image-shape-affine">
+<h2>assert_image_shape_affine<a class="headerlink" href="#assert-image-shape-affine" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_scripts.assert_image_shape_affine">
+<code class="descclassname">AFQ.tests.test_scripts.</code><code class="descname">assert_image_shape_affine</code><span class="sig-paren">(</span><em>filename</em>, <em>shape</em>, <em>affine</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/utils/testing.html#assert_image_shape_affine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_scripts.assert_image_shape_affine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id1">
+<h2>make_dki_data<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_scripts.make_dki_data">
+<code class="descclassname">AFQ.tests.test_scripts.</code><code class="descname">make_dki_data</code><span class="sig-paren">(</span><em>out_fbval</em>, <em>out_fbvec</em>, <em>out_fdata</em>, <em>out_shape=(5</em>, <em>6</em>, <em>7)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/utils/testing.html#make_dki_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_scripts.make_dki_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a synthetic data-set with a 2-shell acquisition</p>
+<dl class="docutils">
+<dt>out_fbval, out_fbvec, out_fdata</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">str</span><dd>Full paths to generated data and bval/bvec files</dd>
+<dt>out_shape</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span><dd>The 3D shape of the output volum</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h2>make_dti_data<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_scripts.make_dti_data">
+<code class="descclassname">AFQ.tests.test_scripts.</code><code class="descname">make_dti_data</code><span class="sig-paren">(</span><em>out_fbval</em>, <em>out_fbvec</em>, <em>out_fdata</em>, <em>out_shape=(5</em>, <em>6</em>, <em>7)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/utils/testing.html#make_dti_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_scripts.make_dti_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a synthetic data-set with a single shell acquisition</p>
+<dl class="docutils">
+<dt>out_fbval, out_fbvec, out_fdata</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">str</span><dd>Full paths to generated data and bval/bvec files</dd>
+<dt>out_shape</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span><dd>The 3D shape of the output volum</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h2>test_fit_dki<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_scripts.test_fit_dki">
+<code class="descclassname">AFQ.tests.test_scripts.</code><code class="descname">test_fit_dki</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_scripts.html#test_fit_dki"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_scripts.test_fit_dki" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id4">
+<h2>test_fit_dti<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_scripts.test_fit_dti">
+<code class="descclassname">AFQ.tests.test_scripts.</code><code class="descname">test_fit_dti</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_scripts.html#test_fit_dti"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_scripts.test_fit_dti" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id5">
+<h2>test_predict_dki<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_scripts.test_predict_dki">
+<code class="descclassname">AFQ.tests.test_scripts.</code><code class="descname">test_predict_dki</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_scripts.html#test_predict_dki"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_scripts.test_predict_dki" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id6">
+<h2>test_predict_dti<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_scripts.test_predict_dti">
+<code class="descclassname">AFQ.tests.test_scripts.</code><code class="descname">test_predict_dti</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_scripts.html#test_predict_dti"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_scripts.test_predict_dti" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="test-segment">
+<h2>test_segment<a class="headerlink" href="#test-segment" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_segmentation.test_segment">
+<code class="descclassname">AFQ.tests.test_segmentation.</code><code class="descname">test_segment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_segmentation.html#test_segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_segmentation.test_segment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="fit-csd">
+<h2>fit_csd<a class="headerlink" href="#fit-csd" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_tractography.fit_csd">
+<code class="descclassname">AFQ.tests.test_tractography.</code><code class="descname">fit_csd</code><span class="sig-paren">(</span><em>data_files</em>, <em>bval_files</em>, <em>bvec_files</em>, <em>mask=None</em>, <em>response=None</em>, <em>sh_order=8</em>, <em>lambda_=1</em>, <em>tau=0.1</em>, <em>out_dir=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/csd.html#fit_csd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_tractography.fit_csd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the CSD model and save file with SH coefficients.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data_files</strong> : str or list</p>
+<blockquote>
+<div><p>Files containing DWI data. If this is a str, that&#8217;s the full path to a
+single file. If it&#8217;s a list, each entry is a full path.</p>
+</div></blockquote>
+<p><strong>bval_files</strong> : str or list</p>
+<blockquote>
+<div><p>Equivalent to <cite>data_files</cite>.</p>
+</div></blockquote>
+<p><strong>bvec_files</strong> : str or list</p>
+<blockquote>
+<div><p>Equivalent to <cite>data_files</cite>.</p>
+</div></blockquote>
+<p><strong>mask</strong> : ndarray, optional</p>
+<blockquote>
+<div><p>Binary mask, set to True or 1 in voxels to be processed.
+Default: Process all voxels.</p>
+</div></blockquote>
+<p><strong>out_dir</strong> : str, optional</p>
+<blockquote>
+<div><p>A full path to a directory to store the maps that get computed.
+Default: file with coefficients gets stored in the same directory as
+the first DWI file in <cite>data_files</cite>.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>fname</strong> : the full path to the file containing the SH coefficients.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="fit-dti">
+<h2>fit_dti<a class="headerlink" href="#fit-dti" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_tractography.fit_dti">
+<code class="descclassname">AFQ.tests.test_tractography.</code><code class="descname">fit_dti</code><span class="sig-paren">(</span><em>data_files</em>, <em>bval_files</em>, <em>bvec_files</em>, <em>mask=None</em>, <em>out_dir=None</em>, <em>file_prefix=None</em>, <em>b0_threshold=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/dti.html#fit_dti"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_tractography.fit_dti" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the DTI model using default settings, save files with derived maps</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data_files</strong> : str or list</p>
+<blockquote>
+<div><p>Files containing DWI data. If this is a str, that&#8217;s the full path to a
+single file. If it&#8217;s a list, each entry is a full path.</p>
+</div></blockquote>
+<p><strong>bval_files</strong> : str or list</p>
+<blockquote>
+<div><p>Equivalent to <cite>data_files</cite>.</p>
+</div></blockquote>
+<p><strong>bvec_files</strong> : str or list</p>
+<blockquote>
+<div><p>Equivalent to <cite>data_files</cite>.</p>
+</div></blockquote>
+<p><strong>mask</strong> : ndarray, optional</p>
+<blockquote>
+<div><p>Binary mask, set to True or 1 in voxels to be processed.
+Default: Process all voxels.</p>
+</div></blockquote>
+<p><strong>out_dir</strong> : str, optional</p>
+<blockquote>
+<div><p>A full path to a directory to store the maps that get computed.
+Default: maps get stored in the same directory as the last DWI file
+in <cite>data_files</cite>.</p>
+</div></blockquote>
+<p><strong>b0_threshold</strong> : float</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>file_paths</strong> : a dict with the derived maps that were computed and full-paths</p>
+<p class="last">to the files containing these maps.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="make-tracking-data">
+<h2>make_tracking_data<a class="headerlink" href="#make-tracking-data" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_tractography.make_tracking_data">
+<code class="descclassname">AFQ.tests.test_tractography.</code><code class="descname">make_tracking_data</code><span class="sig-paren">(</span><em>out_fbval</em>, <em>out_fbvec</em>, <em>out_fdata</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/utils/testing.html#make_tracking_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_tractography.make_tracking_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="test-csd-tracking">
+<h2>test_csd_tracking<a class="headerlink" href="#test-csd-tracking" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_tractography.test_csd_tracking">
+<code class="descclassname">AFQ.tests.test_tractography.</code><code class="descname">test_csd_tracking</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_tractography.html#test_csd_tracking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_tractography.test_csd_tracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="test-dti-tracking">
+<h2>test_dti_tracking<a class="headerlink" href="#test-dti-tracking" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_tractography.test_dti_tracking">
+<code class="descclassname">AFQ.tests.test_tractography.</code><code class="descname">test_dti_tracking</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tests/test_tractography.html#test_dti_tracking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_tractography.test_dti_tracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="track">
+<h2>track<a class="headerlink" href="#track" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tests.test_tractography.track">
+<code class="descclassname">AFQ.tests.test_tractography.</code><code class="descname">track</code><span class="sig-paren">(</span><em>params_file</em>, <em>directions='det'</em>, <em>max_angle=30.0</em>, <em>sphere=None</em>, <em>seed_mask=None</em>, <em>seeds=1</em>, <em>stop_mask=None</em>, <em>stop_threshold=0</em>, <em>step_size=0.5</em>, <em>min_length=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tractography.html#track"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tests.test_tractography.track" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tractography</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>params_file</strong> : str, nibabel img.</p>
+<blockquote>
+<div><p>Full path to a nifti file containing CSD spherical harmonic
+coefficients, or nibabel img with model params.</p>
+</div></blockquote>
+<p><strong>directions</strong> : str</p>
+<blockquote>
+<div><p>How tracking directions are determined.
+One of: {&#8220;deterministic&#8221; | &#8220;probablistic&#8221;}</p>
+</div></blockquote>
+<p><strong>max_angle</strong> : float, optional.</p>
+<blockquote>
+<div><p>The maximum turning angle in each step. Default: 30</p>
+</div></blockquote>
+<p><strong>sphere</strong> : Sphere object, optional.</p>
+<blockquote>
+<div><p>The discretization of direction getting. default:
+dipy.data.default_sphere.</p>
+</div></blockquote>
+<p><strong>seed_mask</strong> : array, optional.</p>
+<blockquote>
+<div><p>Binary mask describing the ROI within which we seed for tracking.
+Default to the entire volume.</p>
+</div></blockquote>
+<p><strong>seed</strong> : int or 2D array, optional.</p>
+<blockquote>
+<div><p>The seeding density: if this is an int, it is is how many seeds in each
+voxel on each dimension (for example, 2 =&gt; [2, 2, 2]). If this is a 2D
+array, these are the coordinates of the seeds.</p>
+</div></blockquote>
+<p><strong>stop_mask</strong> : array, optional.</p>
+<blockquote>
+<div><p>A floating point value that determines a stopping criterion (e.g. FA).
+Default to no stopping (all ones).</p>
+</div></blockquote>
+<p><strong>stop_threshold</strong> : float, optional.</p>
+<blockquote>
+<div><p>A value of the stop_mask below which tracking is terminated. Default to
+0 (this means that if no stop_mask is passed, we will stop only at
+the edge of the image)</p>
+</div></blockquote>
+<p><strong>step_size</strong> : float, optional.</p>
+<blockquote>
+<div><p>The size (in mm) of a step of tractography. Default: 0.5</p>
+</div></blockquote>
+<p><strong>min_length: int, optional</strong></p>
+<blockquote>
+<div><p>The miminal length (no. of nodes) in a streamline. Default: 10</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of streamlines ()</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

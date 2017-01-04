@@ -1,0 +1,44 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`dki`
+==========
+.. automodule:: AFQ.dki
+
+.. currentmodule:: AFQ.dki
+.. autosummary::
+
+   LooseVersion
+   dki_prediction
+   fit_dki
+   predict
+
+
+.. currentmodule:: AFQ.dki
+
+
+:class:`LooseVersion`
+~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: LooseVersion
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+dki_prediction
+~~~~~~~~~~~~~~
+
+.. autofunction:: dki_prediction
+
+fit_dki
+~~~~~~~
+
+.. autofunction:: fit_dki
+
+predict
+~~~~~~~
+
+.. autofunction:: predict
+

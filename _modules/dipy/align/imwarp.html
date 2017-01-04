@@ -1,0 +1,1648 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dipy.align.imwarp &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>dipy.align.imwarp</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for dipy.align.imwarp</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;  Classes and functions for Symmetric Diffeomorphic Registration &quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">from</span> <span class="nn">dipy.utils.six</span> <span class="k">import</span> <span class="n">with_metaclass</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="nn">npl</span>
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">import</span> <span class="nn">nibabel</span> <span class="k">as</span> <span class="nn">nib</span>
+<span class="kn">from</span> <span class="nn">dipy.align</span> <span class="k">import</span> <span class="n">vector_fields</span> <span class="k">as</span> <span class="n">vfu</span>
+<span class="kn">from</span> <span class="nn">dipy.align</span> <span class="k">import</span> <span class="n">floating</span>
+<span class="kn">from</span> <span class="nn">dipy.align</span> <span class="k">import</span> <span class="n">VerbosityLevels</span>
+<span class="kn">from</span> <span class="nn">dipy.align</span> <span class="k">import</span> <span class="n">Bunch</span>
+<span class="kn">from</span> <span class="nn">dipy.align.scalespace</span> <span class="k">import</span> <span class="n">ScaleSpace</span>
+
+<span class="n">RegistrationStages</span> <span class="o">=</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">INIT_START</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                           <span class="n">INIT_END</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                           <span class="n">OPT_START</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                           <span class="n">OPT_END</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                           <span class="n">SCALE_START</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                           <span class="n">SCALE_END</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                           <span class="n">ITER_START</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                           <span class="n">ITER_END</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="sd">r&quot;&quot;&quot;Registration Stages</span>
+
+<span class="sd">This enum defines the different stages which the Volumetric Registration</span>
+<span class="sd">may be in. The value of the stage is passed as a parameter to the call-back</span>
+<span class="sd">function so that it can react accordingly.</span>
+
+<span class="sd">INIT_START: optimizer initialization starts</span>
+<span class="sd">INIT_END: optimizer initialization ends</span>
+<span class="sd">OPT_START: optimization starts</span>
+<span class="sd">OPT_END: optimization ends</span>
+<span class="sd">SCALE_START: optimization at a new scale space resolution starts</span>
+<span class="sd">SCALE_END: optimization at the current scale space resolution ends</span>
+<span class="sd">ITER_START: a new iteration starts</span>
+<span class="sd">ITER_END: the current iteration ends</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">mult_aff</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Returns the matrix product A.dot(B) considering None as the identity</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A : array, shape (n,k)</span>
+<span class="sd">    B : array, shape (k,m)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    The matrix product A.dot(B). If any of the input matrices is None, it is</span>
+<span class="sd">    treated as the identity matrix. If both matrices are None, None is returned</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">A</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">B</span>
+    <span class="k">elif</span> <span class="n">B</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">A</span>
+    <span class="k">return</span> <span class="n">A</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_direction_and_spacings</span><span class="p">(</span><span class="n">affine</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Extracts the rotational and spacing components from a matrix</span>
+
+<span class="sd">    Extracts the rotational and spacing (voxel dimensions) components from a</span>
+<span class="sd">    matrix. An image gradient represents the local variation of the image&#39;s</span>
+<span class="sd">    gray values per voxel. Since we are iterating on the physical space, we</span>
+<span class="sd">    need to compute the gradients as variation per millimeter, so we need to</span>
+<span class="sd">    divide each gradient&#39;s component by the voxel size along the corresponding</span>
+<span class="sd">    axis, that&#39;s what the spacings are used for. Since the image&#39;s gradients</span>
+<span class="sd">    are oriented along the grid axes, we also need to re-orient the gradients</span>
+<span class="sd">    to be given in physical space coordinates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    affine : array, shape (k, k), k = 3, 4</span>
+<span class="sd">        the matrix transforming grid coordinates to physical space.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    direction : array, shape (k-1, k-1)</span>
+<span class="sd">        the rotational component of the input matrix</span>
+<span class="sd">    spacings : array, shape (k-1,)</span>
+<span class="sd">        the scaling component (voxel size) of the matrix</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">affine</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="n">affine</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
+    <span class="c"># Temporary hack: get the zooms by building a nifti image</span>
+    <span class="n">affine4x4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">empty_volume</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">affine4x4</span><span class="p">[:</span><span class="n">dim</span><span class="p">,</span> <span class="p">:</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">affine</span><span class="p">[:</span><span class="n">dim</span><span class="p">,</span> <span class="p">:</span><span class="n">dim</span><span class="p">]</span>
+    <span class="n">affine4x4</span><span class="p">[:</span><span class="n">dim</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">affine</span><span class="p">[:</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">nib_nifti</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">Nifti1Image</span><span class="p">(</span><span class="n">empty_volume</span><span class="p">,</span> <span class="n">affine4x4</span><span class="p">)</span>
+    <span class="n">scalings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">nib_nifti</span><span class="o">.</span><span class="n">get_header</span><span class="p">()</span><span class="o">.</span><span class="n">get_zooms</span><span class="p">())</span>
+    <span class="n">scalings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">scalings</span><span class="p">[:</span><span class="n">dim</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">affine</span><span class="p">[:</span><span class="n">dim</span><span class="p">,</span> <span class="p">:</span><span class="n">dim</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">A</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">scalings</span><span class="p">)),</span> <span class="n">scalings</span>
+
+
+<div class="viewcode-block" id="DiffeomorphicMap"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.registration.DiffeomorphicMap">[docs]</a><span class="k">class</span> <span class="nc">DiffeomorphicMap</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="DiffeomorphicMap.__init__"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.registration.DiffeomorphicMap.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">dim</span><span class="p">,</span>
+                 <span class="n">disp_shape</span><span class="p">,</span>
+                 <span class="n">disp_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">domain_shape</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">domain_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">codomain_shape</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">codomain_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">prealign</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot; DiffeomorphicMap</span>
+
+<span class="sd">        Implements a diffeomorphic transformation on the physical space. The</span>
+<span class="sd">        deformation fields encoding the direct and inverse transformations</span>
+<span class="sd">        share the same domain discretization (both the discretization grid</span>
+<span class="sd">        shape and voxel-to-space matrix). The input coordinates (physical</span>
+<span class="sd">        coordinates) are first aligned using prealign, and then displaced</span>
+<span class="sd">        using the corresponding vector field interpolated at the aligned</span>
+<span class="sd">        coordinates.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dim : int, 2 or 3</span>
+<span class="sd">            the transformation&#39;s dimension</span>
+<span class="sd">        disp_shape : array, shape (dim,)</span>
+<span class="sd">            the number of slices (if 3D), rows and columns of the deformation</span>
+<span class="sd">            field&#39;s discretization</span>
+<span class="sd">        disp_grid2world : the voxel-to-space transform between the def. fields</span>
+<span class="sd">            grid and space</span>
+<span class="sd">        domain_shape : array, shape (dim,)</span>
+<span class="sd">            the number of slices (if 3D), rows and columns of the default</span>
+<span class="sd">            discretizatio of this map&#39;s domain</span>
+<span class="sd">        domain_grid2world : array, shape (dim+1, dim+1)</span>
+<span class="sd">            the default voxel-to-space transformation between this map&#39;s</span>
+<span class="sd">            discretization and physical space</span>
+<span class="sd">        codomain_shape : array, shape (dim,)</span>
+<span class="sd">            the number of slices (if 3D), rows and columns of the images that</span>
+<span class="sd">            are &#39;normally&#39; warped using this transformation in the forward</span>
+<span class="sd">            direction (this will provide default transformation parameters to</span>
+<span class="sd">            warp images under this transformation). By default, we assume that</span>
+<span class="sd">            the inverse transformation is &#39;normally&#39; used to warp images with</span>
+<span class="sd">            the same discretization and voxel-to-space transformation as the</span>
+<span class="sd">            deformation field grid.</span>
+<span class="sd">        codomain_grid2world : array, shape (dim+1, dim+1)</span>
+<span class="sd">            the voxel-to-space transformation of images that are &#39;normally&#39;</span>
+<span class="sd">            warped using this transformation (in the forward direction).</span>
+<span class="sd">        prealign : array, shape (dim+1, dim+1)</span>
+<span class="sd">            the linear transformation to be applied to align input images to</span>
+<span class="sd">            the reference space before warping under the deformation field.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">disp_shape</span> <span class="ow">is</span> <span class="k">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Invalid displacement field discretization&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">disp_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">disp_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+        <span class="c"># If the discretization affine is None, we assume it&#39;s the identity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disp_grid2world</span> <span class="o">=</span> <span class="n">disp_grid2world</span>
+        <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disp_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">disp_world2grid</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">disp_world2grid</span> <span class="o">=</span> <span class="n">npl</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disp_grid2world</span><span class="p">)</span>
+
+        <span class="c"># If domain_shape isn&#39;t provided, we use the map&#39;s discretization shape</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">domain_shape</span> <span class="ow">is</span> <span class="k">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">domain_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">disp_shape</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">domain_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">domain_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">domain_grid2world</span> <span class="o">=</span> <span class="n">domain_grid2world</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">domain_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">domain_world2grid</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">domain_world2grid</span> <span class="o">=</span> <span class="n">npl</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">domain_grid2world</span><span class="p">)</span>
+
+        <span class="c"># If codomain shape was not provided, we assume it is an endomorphism:</span>
+        <span class="c"># use the same domain_shape and codomain_grid2world as the field domain</span>
+        <span class="k">if</span> <span class="n">codomain_shape</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">codomain_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain_shape</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">codomain_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">codomain_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">codomain_grid2world</span> <span class="o">=</span> <span class="n">codomain_grid2world</span>
+        <span class="k">if</span> <span class="n">codomain_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">codomain_world2grid</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">codomain_world2grid</span> <span class="o">=</span> <span class="n">npl</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">codomain_grid2world</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">prealign</span> <span class="o">=</span> <span class="n">prealign</span>
+        <span class="k">if</span> <span class="n">prealign</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prealign_inv</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prealign_inv</span> <span class="o">=</span> <span class="n">npl</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">prealign</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_inverse</span> <span class="o">=</span> <span class="k">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backward</span> <span class="o">=</span> <span class="k">None</span></div>
+
+<div class="viewcode-block" id="DiffeomorphicMap.interpret_matrix"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.registration.DiffeomorphicMap.interpret_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">interpret_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Try to interpret `obj` as a matrix</span>
+
+<span class="sd">        Some operations are performed faster if we know in advance if a matrix</span>
+<span class="sd">        is the identity (so we can skip the actual matrix-vector</span>
+<span class="sd">        multiplication). This function returns None if the given object</span>
+<span class="sd">        is None or the &#39;identity&#39; string. It returns the same object if it is</span>
+<span class="sd">        a numpy array. It raises an exception otherwise.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj : object</span>
+<span class="sd">            any object</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj : object</span>
+<span class="sd">            the same object given as argument if `obj` is None or a numpy</span>
+<span class="sd">            array. None if `obj` is the &#39;identity&#39; string.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">obj</span> <span class="ow">is</span> <span class="k">None</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">obj</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">obj</span> <span class="o">==</span> <span class="s">&#39;identity&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="k">None</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Invalid matrix&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DiffeomorphicMap.get_forward_field"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.registration.DiffeomorphicMap.get_forward_field">[docs]</a>    <span class="k">def</span> <span class="nf">get_forward_field</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Deformation field to transform an image in the forward direction</span>
+
+<span class="sd">        Returns the deformation field that must be used to warp an image under</span>
+<span class="sd">        this transformation in the forward direction (note the &#39;is_inverse&#39;</span>
+<span class="sd">        flag).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_inverse</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backward</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span></div>
+
+<div class="viewcode-block" id="DiffeomorphicMap.get_backward_field"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.registration.DiffeomorphicMap.get_backward_field">[docs]</a>    <span class="k">def</span> <span class="nf">get_backward_field</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Deformation field to transform an image in the backward direction</span>
+
+<span class="sd">        Returns the deformation field that must be used to warp an image under</span>
+<span class="sd">        this transformation in the backward direction (note the &#39;is_inverse&#39;</span>
+<span class="sd">        flag).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_inverse</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backward</span></div>
+
+<div class="viewcode-block" id="DiffeomorphicMap.allocate"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.registration.DiffeomorphicMap.allocate">[docs]</a>    <span class="k">def</span> <span class="nf">allocate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Creates a zero displacement field</span>
+
+<span class="sd">        Creates a zero displacement field (the identity transformation).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disp_shape</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,),</span>
+                                <span class="n">dtype</span><span class="o">=</span><span class="n">floating</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backward</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disp_shape</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,),</span>
+                                 <span class="n">dtype</span><span class="o">=</span><span class="n">floating</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_warping_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interpolation</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Appropriate warping function for the given interpolation type</span>
+
+<span class="sd">        Returns the right warping function from vector_fields that must be</span>
+<span class="sd">        called for the specified data dimension and interpolation type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">interpolation</span> <span class="o">==</span> <span class="s">&#39;linear&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">vfu</span><span class="o">.</span><span class="n">warp_2d</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">vfu</span><span class="o">.</span><span class="n">warp_2d_nn</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">interpolation</span> <span class="o">==</span> <span class="s">&#39;linear&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">vfu</span><span class="o">.</span><span class="n">warp_3d</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">vfu</span><span class="o">.</span><span class="n">warp_3d_nn</span>
+
+    <span class="k">def</span> <span class="nf">_warp_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">&#39;linear&#39;</span><span class="p">,</span>
+                      <span class="n">image_world2grid</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">out_shape</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                      <span class="n">out_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Warps an image in the forward direction</span>
+
+<span class="sd">        Deforms the input image under this diffeomorphic map in the forward</span>
+<span class="sd">        direction. Since the mapping is defined in the physical space, the user</span>
+<span class="sd">        must specify the sampling grid shape and its space-to-voxel mapping.</span>
+<span class="sd">        By default, the transformation will use the discretization information</span>
+<span class="sd">        given at initialization.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        image : array, shape (s, r, c) if dim = 3 or (r, c) if dim = 2</span>
+<span class="sd">            the image to be warped under this transformation in the forward</span>
+<span class="sd">            direction</span>
+<span class="sd">        interpolation : string, either &#39;linear&#39; or &#39;nearest&#39;</span>
+<span class="sd">            the type of interpolation to be used for warping, either &#39;linear&#39;</span>
+<span class="sd">            (for k-linear interpolation) or &#39;nearest&#39; for nearest neighbor</span>
+<span class="sd">        image_world2grid : array, shape (dim+1, dim+1)</span>
+<span class="sd">            the transformation bringing world (space) coordinates to voxel</span>
+<span class="sd">            coordinates of the image given as input</span>
+<span class="sd">        out_shape : array, shape (dim,)</span>
+<span class="sd">            the number of slices, rows and columns of the desired warped image</span>
+<span class="sd">        out_grid2world : the transformation bringing voxel coordinates of the</span>
+<span class="sd">            warped image to physical space</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        warped : array, shape = out_shape or self.codomain_shape if None</span>
+<span class="sd">            the warped image under this transformation in the forward direction</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+
+<span class="sd">        A diffeomorphic map must be thought as a mapping between points</span>
+<span class="sd">        in space. Warping an image J towards an image I means transforming</span>
+<span class="sd">        each voxel with (discrete) coordinates i in I to (floating-point) voxel</span>
+<span class="sd">        coordinates j in J. The transformation we consider &#39;forward&#39; is</span>
+<span class="sd">        precisely mapping coordinates i from the input image to coordinates j</span>
+<span class="sd">        from reference image, which has the effect of warping an image with</span>
+<span class="sd">        reference discretization (typically, the &quot;static image&quot;) &quot;towards&quot; an</span>
+<span class="sd">        image with input discretization (typically, the &quot;moving image&quot;). More</span>
+<span class="sd">        precisely, the warped image is produced by the following interpolation:</span>
+
+<span class="sd">        warped[i] = image[W * forward[Dinv * P * S * i] + W * P * S * i )]</span>
+
+<span class="sd">        where i denotes the coordinates of a voxel in the input grid, W is</span>
+<span class="sd">        the world-to-grid transformation of the image given as input, Dinv</span>
+<span class="sd">        is the world-to-grid transformation of the deformation field</span>
+<span class="sd">        discretization, P is the pre-aligning matrix (transforming input</span>
+<span class="sd">        points to reference points), S is the voxel-to-space transformation of</span>
+<span class="sd">        the sampling grid (see comment below) and forward is the forward</span>
+<span class="sd">        deformation field.</span>
+
+<span class="sd">        If we want to warp an image, we also must specify on what grid we</span>
+<span class="sd">        want to sample the resulting warped image (the images are considered as</span>
+<span class="sd">        points in space and its representation on a grid depends on its</span>
+<span class="sd">        grid-to-space transform telling us for each grid voxel what point in</span>
+<span class="sd">        space we need to bring via interpolation). So, S is the matrix that</span>
+<span class="sd">        converts the sampling grid (whose shape is given as parameter</span>
+<span class="sd">        &#39;out_shape&#39; ) to space coordinates.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># if no world-to-image transform is provided, we use the codomain info</span>
+        <span class="k">if</span> <span class="n">image_world2grid</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">image_world2grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codomain_world2grid</span>
+        <span class="c"># if no sampling info is provided, we use the domain info</span>
+        <span class="k">if</span> <span class="n">out_shape</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain_shape</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Unable to infer sampling info. &#39;</span>
+                                 <span class="s">&#39;Provide a valid out_shape.&#39;</span><span class="p">)</span>
+            <span class="n">out_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain_shape</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">out_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">out_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">out_grid2world</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain_grid2world</span>
+
+        <span class="n">W</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpret_matrix</span><span class="p">(</span><span class="n">image_world2grid</span><span class="p">)</span>
+        <span class="n">Dinv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">disp_world2grid</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prealign</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpret_matrix</span><span class="p">(</span><span class="n">out_grid2world</span><span class="p">)</span>
+
+        <span class="c"># this is the matrix which we need to multiply the voxel coordinates</span>
+        <span class="c"># to interpolate on the forward displacement field (&quot;in&quot;side the</span>
+        <span class="c"># &#39;forward&#39; brackets in the expression above)</span>
+        <span class="n">affine_idx_in</span> <span class="o">=</span> <span class="n">mult_aff</span><span class="p">(</span><span class="n">Dinv</span><span class="p">,</span> <span class="n">mult_aff</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">S</span><span class="p">))</span>
+
+        <span class="c"># this is the matrix which we need to multiply the voxel coordinates</span>
+        <span class="c"># to add to the displacement (&quot;out&quot;side the &#39;forward&#39; brackets in the</span>
+        <span class="c"># expression above)</span>
+        <span class="n">affine_idx_out</span> <span class="o">=</span> <span class="n">mult_aff</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">mult_aff</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">S</span><span class="p">))</span>
+
+        <span class="c"># this is the matrix which we need to multiply the displacement vector</span>
+        <span class="c"># prior to adding to the transformed input point</span>
+        <span class="n">affine_disp</span> <span class="o">=</span> <span class="n">W</span>
+
+        <span class="c"># Convert the data to required types to use the cythonized functions</span>
+        <span class="k">if</span> <span class="n">interpolation</span> <span class="o">==</span> <span class="s">&#39;nearest&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s">&#39;float64&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">floating</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">:</span>
+                <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">floating</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">image</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s">&#39;int64&#39;</span><span class="p">):</span>
+                <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">floating</span><span class="p">)</span>
+
+        <span class="n">warp_f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_warping_function</span><span class="p">(</span><span class="n">interpolation</span><span class="p">)</span>
+
+        <span class="n">warped</span> <span class="o">=</span> <span class="n">warp_f</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span> <span class="n">affine_idx_in</span><span class="p">,</span> <span class="n">affine_idx_out</span><span class="p">,</span>
+                        <span class="n">affine_disp</span><span class="p">,</span> <span class="n">out_shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">warped</span>
+
+    <span class="k">def</span> <span class="nf">_warp_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">&#39;linear&#39;</span><span class="p">,</span>
+                       <span class="n">image_world2grid</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">out_shape</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                       <span class="n">out_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Warps an image in the backward direction</span>
+
+<span class="sd">        Deforms the input image under this diffeomorphic map in the backward</span>
+<span class="sd">        direction. Since the mapping is defined in the physical space, the user</span>
+<span class="sd">        must specify the sampling grid shape and its space-to-voxel mapping.</span>
+<span class="sd">        By default, the transformation will use the discretization information</span>
+<span class="sd">        given at initialization.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        image : array, shape (s, r, c) if dim = 3 or (r, c) if dim = 2</span>
+<span class="sd">            the image to be warped under this transformation in the backward</span>
+<span class="sd">            direction</span>
+<span class="sd">        interpolation : string, either &#39;linear&#39; or &#39;nearest&#39;</span>
+<span class="sd">            the type of interpolation to be used for warping, either &#39;linear&#39;</span>
+<span class="sd">            (for k-linear interpolation) or &#39;nearest&#39; for nearest neighbor</span>
+<span class="sd">        image_world2grid : array, shape (dim+1, dim+1)</span>
+<span class="sd">            the transformation bringing world (space) coordinates to voxel</span>
+<span class="sd">            coordinates of the image given as input</span>
+<span class="sd">        out_shape : array, shape (dim,)</span>
+<span class="sd">            the number of slices, rows and columns of the desired warped image</span>
+<span class="sd">        out_grid2world : the transformation bringing voxel coordinates of the</span>
+<span class="sd">            warped image to physical space</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        warped : array, shape = out_shape or self.domain_shape if None</span>
+<span class="sd">            the warped image under this transformation in the backward</span>
+<span class="sd">            direction</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+
+<span class="sd">        A diffeomorphic map must be thought as a mapping between points</span>
+<span class="sd">        in space. Warping an image J towards an image I means transforming</span>
+<span class="sd">        each voxel with (discrete) coordinates i in I to (floating-point) voxel</span>
+<span class="sd">        coordinates j in J. The transformation we consider &#39;backward&#39; is</span>
+<span class="sd">        precisely mapping coordinates i from the reference grid to coordinates</span>
+<span class="sd">        j from the input image (that&#39;s why it&#39;s &quot;backward&quot;), which has the</span>
+<span class="sd">        effect of warping the input image (moving) &quot;towards&quot; the reference.</span>
+<span class="sd">        More precisely, the warped image is produced by the following</span>
+<span class="sd">        interpolation:</span>
+
+<span class="sd">        warped[i]=image[W * Pinv * backward[Dinv * S * i] + W * Pinv * S * i )]</span>
+
+<span class="sd">        where i denotes the coordinates of a voxel in the input grid, W is</span>
+<span class="sd">        the world-to-grid transformation of the image given as input, Dinv</span>
+<span class="sd">        is the world-to-grid transformation of the deformation field</span>
+<span class="sd">        discretization, Pinv is the pre-aligning matrix&#39;s inverse (transforming</span>
+<span class="sd">        reference points to input points), S is the grid-to-space</span>
+<span class="sd">        transformation of the sampling grid (see comment below) and backward is</span>
+<span class="sd">        the backward deformation field.</span>
+
+<span class="sd">        If we want to warp an image, we also must specify on what grid we</span>
+<span class="sd">        want to sample the resulting warped image (the images are considered as</span>
+<span class="sd">        points in space and its representation on a grid depends on its</span>
+<span class="sd">        grid-to-space transform telling us for each grid voxel what point in</span>
+<span class="sd">        space we need to bring via interpolation). So, S is the matrix that</span>
+<span class="sd">        converts the sampling grid (whose shape is given as parameter</span>
+<span class="sd">        &#39;out_shape&#39; ) to space coordinates.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># if no world-to-image transform is provided, we use the domain info</span>
+        <span class="k">if</span> <span class="n">image_world2grid</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">image_world2grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain_world2grid</span>
+
+        <span class="c"># if no sampling info is provided, we use the codomain info</span>
+        <span class="k">if</span> <span class="n">out_shape</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">codomain_shape</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Unknown sampling info. Provide a valid out_shape.&#39;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">out_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codomain_shape</span>
+        <span class="k">if</span> <span class="n">out_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">out_grid2world</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codomain_grid2world</span>
+
+        <span class="n">W</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpret_matrix</span><span class="p">(</span><span class="n">image_world2grid</span><span class="p">)</span>
+        <span class="n">Dinv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">disp_world2grid</span>
+        <span class="n">Pinv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prealign_inv</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpret_matrix</span><span class="p">(</span><span class="n">out_grid2world</span><span class="p">)</span>
+
+        <span class="c"># this is the matrix which we need to multiply the voxel coordinates</span>
+        <span class="c"># to interpolate on the backward displacement field (&quot;in&quot;side the</span>
+        <span class="c"># &#39;backward&#39; brackets in the expression above)</span>
+        <span class="n">affine_idx_in</span> <span class="o">=</span> <span class="n">mult_aff</span><span class="p">(</span><span class="n">Dinv</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
+
+        <span class="c"># this is the matrix which we need to multiply the voxel coordinates</span>
+        <span class="c"># to add to the displacement (&quot;out&quot;side the &#39;backward&#39; brackets in the</span>
+        <span class="c"># expression above)</span>
+        <span class="n">affine_idx_out</span> <span class="o">=</span> <span class="n">mult_aff</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">mult_aff</span><span class="p">(</span><span class="n">Pinv</span><span class="p">,</span> <span class="n">S</span><span class="p">))</span>
+
+        <span class="c"># this is the matrix which we need to multiply the displacement vector</span>
+        <span class="c"># prior to adding to the transformed input point</span>
+        <span class="n">affine_disp</span> <span class="o">=</span> <span class="n">mult_aff</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">Pinv</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">interpolation</span> <span class="o">==</span> <span class="s">&#39;nearest&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s">&#39;float64&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">floating</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">:</span>
+                <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">floating</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">image</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s">&#39;int64&#39;</span><span class="p">):</span>
+                <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">floating</span><span class="p">)</span>
+
+        <span class="n">warp_f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_warping_function</span><span class="p">(</span><span class="n">interpolation</span><span class="p">)</span>
+
+        <span class="n">warped</span> <span class="o">=</span> <span class="n">warp_f</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">backward</span><span class="p">,</span> <span class="n">affine_idx_in</span><span class="p">,</span> <span class="n">affine_idx_out</span><span class="p">,</span>
+                        <span class="n">affine_disp</span><span class="p">,</span> <span class="n">out_shape</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">warped</span>
+
+<div class="viewcode-block" id="DiffeomorphicMap.transform"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.registration.DiffeomorphicMap.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">&#39;linear&#39;</span><span class="p">,</span> <span class="n">image_world2grid</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                  <span class="n">out_shape</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">out_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Warps an image in the forward direction</span>
+
+<span class="sd">        Transforms the input image under this transformation in the forward</span>
+<span class="sd">        direction. It uses the &quot;is_inverse&quot; flag to switch between &quot;forward&quot;</span>
+<span class="sd">        and &quot;backward&quot; (if is_inverse is False, then transform(...) warps the</span>
+<span class="sd">        image forwards, else it warps the image backwards).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        image : array, shape (s, r, c) if dim = 3 or (r, c) if dim = 2</span>
+<span class="sd">            the image to be warped under this transformation in the forward</span>
+<span class="sd">            direction</span>
+<span class="sd">        interpolation : string, either &#39;linear&#39; or &#39;nearest&#39;</span>
+<span class="sd">            the type of interpolation to be used for warping, either &#39;linear&#39;</span>
+<span class="sd">            (for k-linear interpolation) or &#39;nearest&#39; for nearest neighbor</span>
+<span class="sd">        image_world2grid : array, shape (dim+1, dim+1)</span>
+<span class="sd">            the transformation bringing world (space) coordinates to voxel</span>
+<span class="sd">            coordinates of the image given as input</span>
+<span class="sd">        out_shape : array, shape (dim,)</span>
+<span class="sd">            the number of slices, rows and columns of the desired warped image</span>
+<span class="sd">        out_grid2world : the transformation bringing voxel coordinates of the</span>
+<span class="sd">            warped image to physical space</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        warped : array, shape = out_shape or self.codomain_shape if None</span>
+<span class="sd">            the warped image under this transformation in the forward direction</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        See _warp_forward and _warp_backward documentation for further</span>
+<span class="sd">        information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">out_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">out_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">out_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_inverse</span><span class="p">:</span>
+            <span class="n">warped</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_warp_backward</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">interpolation</span><span class="p">,</span>
+                                         <span class="n">image_world2grid</span><span class="p">,</span> <span class="n">out_shape</span><span class="p">,</span>
+                                         <span class="n">out_grid2world</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warped</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_warp_forward</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">interpolation</span><span class="p">,</span> <span class="n">image_world2grid</span><span class="p">,</span>
+                                        <span class="n">out_shape</span><span class="p">,</span> <span class="n">out_grid2world</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">warped</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DiffeomorphicMap.transform_inverse"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.registration.DiffeomorphicMap.transform_inverse">[docs]</a>    <span class="k">def</span> <span class="nf">transform_inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">&#39;linear&#39;</span><span class="p">,</span>
+                          <span class="n">image_world2grid</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">out_shape</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                          <span class="n">out_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Warps an image in the backward direction</span>
+
+<span class="sd">        Transforms the input image under this transformation in the backward</span>
+<span class="sd">        direction. It uses the &quot;is_inverse&quot; flag to switch between &quot;forward&quot;</span>
+<span class="sd">        and &quot;backward&quot; (if is_inverse is False, then transform_inverse(...)</span>
+<span class="sd">        warps the image backwards, else it warps the image forwards)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        image : array, shape (s, r, c) if dim = 3 or (r, c) if dim = 2</span>
+<span class="sd">            the image to be warped under this transformation in the forward</span>
+<span class="sd">            direction</span>
+<span class="sd">        interpolation : string, either &#39;linear&#39; or &#39;nearest&#39;</span>
+<span class="sd">            the type of interpolation to be used for warping, either &#39;linear&#39;</span>
+<span class="sd">            (for k-linear interpolation) or &#39;nearest&#39; for nearest neighbor</span>
+<span class="sd">        image_world2grid : array, shape (dim+1, dim+1)</span>
+<span class="sd">            the transformation bringing world (space) coordinates to voxel</span>
+<span class="sd">            coordinates of the image given as input</span>
+<span class="sd">        out_shape : array, shape (dim,)</span>
+<span class="sd">            the number of slices, rows and columns of the desired warped image</span>
+<span class="sd">        out_grid2world : the transformation bringing voxel coordinates of the</span>
+<span class="sd">            warped image to physical space</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        warped : array, shape = out_shape or self.codomain_shape if None</span>
+<span class="sd">            warped image under this transformation in the backward direction</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        See _warp_forward and _warp_backward documentation for further</span>
+<span class="sd">        information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_inverse</span><span class="p">:</span>
+            <span class="n">warped</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_warp_forward</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">interpolation</span><span class="p">,</span> <span class="n">image_world2grid</span><span class="p">,</span>
+                                        <span class="n">out_shape</span><span class="p">,</span> <span class="n">out_grid2world</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warped</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_warp_backward</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">interpolation</span><span class="p">,</span>
+                                         <span class="n">image_world2grid</span><span class="p">,</span> <span class="n">out_shape</span><span class="p">,</span>
+                                         <span class="n">out_grid2world</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">warped</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DiffeomorphicMap.inverse"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.registration.DiffeomorphicMap.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Inverse of this DiffeomorphicMap instance</span>
+
+<span class="sd">        Returns a diffeomorphic map object representing the inverse of this</span>
+<span class="sd">        transformation. The internal arrays are not copied but just referenced.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        inv : DiffeomorphicMap object</span>
+<span class="sd">            the inverse of this diffeomorphic map.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inv</span> <span class="o">=</span> <span class="n">DiffeomorphicMap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">disp_shape</span><span class="p">,</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">disp_grid2world</span><span class="p">,</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">domain_shape</span><span class="p">,</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">domain_grid2world</span><span class="p">,</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">codomain_shape</span><span class="p">,</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">codomain_grid2world</span><span class="p">,</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">prealign</span><span class="p">)</span>
+        <span class="n">inv</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span>
+        <span class="n">inv</span><span class="o">.</span><span class="n">backward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backward</span>
+        <span class="n">inv</span><span class="o">.</span><span class="n">is_inverse</span> <span class="o">=</span> <span class="k">True</span>
+        <span class="k">return</span> <span class="n">inv</span></div>
+
+<div class="viewcode-block" id="DiffeomorphicMap.expand_fields"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.registration.DiffeomorphicMap.expand_fields">[docs]</a>    <span class="k">def</span> <span class="nf">expand_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expand_factors</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Expands the displacement fields from current shape to new_shape</span>
+
+<span class="sd">        Up-samples the discretization of the displacement fields to be of</span>
+<span class="sd">        new_shape shape.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        expand_factors : array, shape (dim,)</span>
+<span class="sd">            the factors scaling current spacings (voxel sizes) to spacings in</span>
+<span class="sd">            the expanded discretization.</span>
+<span class="sd">        new_shape : array, shape (dim,)</span>
+<span class="sd">            the shape of the arrays holding the up-sampled discretization</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">expand_f</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">resample_displacement_field_2d</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">expand_f</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">resample_displacement_field_3d</span>
+
+        <span class="n">expanded_forward</span> <span class="o">=</span> <span class="n">expand_f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span> <span class="n">expand_factors</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span>
+        <span class="n">expanded_backward</span> <span class="o">=</span> <span class="n">expand_f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backward</span><span class="p">,</span> <span class="n">expand_factors</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span>
+
+        <span class="n">expand_factors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">expand_factors</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">expanded_grid2world</span> <span class="o">=</span> <span class="n">mult_aff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disp_grid2world</span><span class="p">,</span>
+                                       <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">expand_factors</span><span class="p">))</span>
+        <span class="n">expanded_world2grid</span> <span class="o">=</span> <span class="n">npl</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">expanded_grid2world</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="n">expanded_forward</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backward</span> <span class="o">=</span> <span class="n">expanded_backward</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disp_shape</span> <span class="o">=</span> <span class="n">new_shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disp_grid2world</span> <span class="o">=</span> <span class="n">expanded_grid2world</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disp_world2grid</span> <span class="o">=</span> <span class="n">expanded_world2grid</span></div>
+
+<div class="viewcode-block" id="DiffeomorphicMap.compute_inversion_error"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.registration.DiffeomorphicMap.compute_inversion_error">[docs]</a>    <span class="k">def</span> <span class="nf">compute_inversion_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Inversion error of the displacement fields</span>
+
+<span class="sd">        Estimates the inversion error of the displacement fields by computing</span>
+<span class="sd">        statistics of the residual vectors obtained after composing the forward</span>
+<span class="sd">        and backward displacement fields.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        residual : array, shape (R, C) or (S, R, C)</span>
+<span class="sd">            the displacement field resulting from composing the forward and</span>
+<span class="sd">            backward displacement fields of this transformation (the residual</span>
+<span class="sd">            should be zero for a perfect diffeomorphism)</span>
+<span class="sd">        stats : array, shape (3,)</span>
+<span class="sd">            statistics from the norms of the vectors of the residual</span>
+<span class="sd">            displacement field: maximum, mean and standard deviation</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Since the forward and backward displacement fields have the same</span>
+<span class="sd">        discretization, the final composition is given by</span>
+
+<span class="sd">        comp[i] = forward[ i + Dinv * backward[i]]</span>
+
+<span class="sd">        where Dinv is the space-to-grid transformation of the displacement</span>
+<span class="sd">        fields</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Dinv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">disp_world2grid</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">compose_f</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">compose_vector_fields_2d</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">compose_f</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">compose_vector_fields_3d</span>
+
+        <span class="n">residual</span><span class="p">,</span> <span class="n">stats</span> <span class="o">=</span> <span class="n">compose_f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backward</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span>
+                                    <span class="k">None</span><span class="p">,</span> <span class="n">Dinv</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="k">None</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">residual</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DiffeomorphicMap.shallow_copy"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.registration.DiffeomorphicMap.shallow_copy">[docs]</a>    <span class="k">def</span> <span class="nf">shallow_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Shallow copy of this DiffeomorphicMap instance</span>
+
+<span class="sd">        Creates a shallow copy of this diffeomorphic map (the arrays are not</span>
+<span class="sd">        copied but just referenced)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_map : DiffeomorphicMap object</span>
+<span class="sd">            the shallow copy of this diffeomorphic map</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_map</span> <span class="o">=</span> <span class="n">DiffeomorphicMap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">disp_shape</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">disp_grid2world</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">domain_shape</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">domain_grid2world</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">codomain_shape</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">codomain_grid2world</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">prealign</span><span class="p">)</span>
+        <span class="n">new_map</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span>
+        <span class="n">new_map</span><span class="o">.</span><span class="n">backward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backward</span>
+        <span class="n">new_map</span><span class="o">.</span><span class="n">is_inverse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_inverse</span>
+        <span class="k">return</span> <span class="n">new_map</span></div>
+
+<div class="viewcode-block" id="DiffeomorphicMap.warp_endomorphism"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.registration.DiffeomorphicMap.warp_endomorphism">[docs]</a>    <span class="k">def</span> <span class="nf">warp_endomorphism</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Composition of this DiffeomorphicMap with a given endomorphism</span>
+
+<span class="sd">        Creates a new DiffeomorphicMap C with the same properties as self and</span>
+<span class="sd">        composes its displacement fields with phi&#39;s corresponding fields.</span>
+<span class="sd">        The resulting diffeomorphism is of the form C(x) = phi(self(x)) with</span>
+<span class="sd">        inverse C^{-1}(y) = self^{-1}(phi^{-1}(y)). We assume that phi is an</span>
+<span class="sd">        endomorphism with the same discretization and domain affine as self</span>
+<span class="sd">        to ensure that the composition inherits self&#39;s properties (we also</span>
+<span class="sd">        assume that the pre-aligning matrix of phi is None or identity).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        phi : DiffeomorphicMap object</span>
+<span class="sd">            the endomorphism to be warped by this diffeomorphic map</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        composition : the composition of this diffeomorphic map with the</span>
+<span class="sd">            endomorphism given as input</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The problem with our current representation of a DiffeomorphicMap is</span>
+<span class="sd">        that the set of Diffeomorphism that can be represented this way (a</span>
+<span class="sd">        pre-aligning matrix followed by a non-linear endomorphism given as a</span>
+<span class="sd">        displacement field) is not closed under the composition operation.</span>
+
+<span class="sd">        Supporting a general DiffeomorphicMap class, closed under composition,</span>
+<span class="sd">        may be extremely costly computationally, and the kind of</span>
+<span class="sd">        transformations we actually need for Avants&#39; mid-point algorithm (SyN)</span>
+<span class="sd">        are much simpler.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Compose the forward deformation fields</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_forward_field</span><span class="p">()</span>
+        <span class="n">d2</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">get_forward_field</span><span class="p">()</span>
+        <span class="n">d1_inv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_backward_field</span><span class="p">()</span>
+        <span class="n">d2_inv</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">get_backward_field</span><span class="p">()</span>
+
+        <span class="n">premult_disp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">disp_world2grid</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">compose_f</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">compose_vector_fields_2d</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">compose_f</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">compose_vector_fields_3d</span>
+
+        <span class="n">forward</span><span class="p">,</span> <span class="n">stats</span> <span class="o">=</span> <span class="n">compose_f</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="k">None</span><span class="p">,</span> <span class="n">premult_disp</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="k">None</span><span class="p">)</span>
+        <span class="n">backward</span><span class="p">,</span> <span class="n">stats</span><span class="p">,</span> <span class="o">=</span> <span class="n">compose_f</span><span class="p">(</span><span class="n">d2_inv</span><span class="p">,</span> <span class="n">d1_inv</span><span class="p">,</span> <span class="k">None</span><span class="p">,</span> <span class="n">premult_disp</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span>
+                                     <span class="k">None</span><span class="p">)</span>
+
+        <span class="n">composition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shallow_copy</span><span class="p">()</span>
+        <span class="n">composition</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="n">forward</span>
+        <span class="n">composition</span><span class="o">.</span><span class="n">backward</span> <span class="o">=</span> <span class="n">backward</span>
+        <span class="k">return</span> <span class="n">composition</span></div>
+
+<div class="viewcode-block" id="DiffeomorphicMap.get_simplified_transform"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.registration.DiffeomorphicMap.get_simplified_transform">[docs]</a>    <span class="k">def</span> <span class="nf">get_simplified_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot; Constructs a simplified version of this Diffeomorhic Map</span>
+
+<span class="sd">        The simplified version incorporates the pre-align transform, as well as</span>
+<span class="sd">        the domain and codomain affine transforms into the displacement field.</span>
+<span class="sd">        The resulting transformation may be regarded as operating on the</span>
+<span class="sd">        image spaces given by the domain and codomain discretization. As a</span>
+<span class="sd">        result, self.prealign, self.disp_grid2world, self.domain_grid2world and</span>
+<span class="sd">        self.codomain affine will be None (denoting Identity) in the resulting</span>
+<span class="sd">        diffeomorphic map.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">simplify_f</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">simplify_warp_function_2d</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">simplify_f</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">simplify_warp_function_3d</span>
+        <span class="c"># Simplify the forward transform</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain_grid2world</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prealign</span>
+        <span class="n">Rinv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">disp_world2grid</span>
+        <span class="n">Cinv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codomain_world2grid</span>
+
+        <span class="c"># this is the matrix which we need to multiply the voxel coordinates</span>
+        <span class="c"># to interpolate on the forward displacement field (&quot;in&quot;side the</span>
+        <span class="c"># &#39;forward&#39; brackets in the expression above)</span>
+        <span class="n">affine_idx_in</span> <span class="o">=</span> <span class="n">mult_aff</span><span class="p">(</span><span class="n">Rinv</span><span class="p">,</span> <span class="n">mult_aff</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span>
+
+        <span class="c"># this is the matrix which we need to multiply the voxel coordinates</span>
+        <span class="c"># to add to the displacement (&quot;out&quot;side the &#39;forward&#39; brackets in the</span>
+        <span class="c"># expression above)</span>
+        <span class="n">affine_idx_out</span> <span class="o">=</span> <span class="n">mult_aff</span><span class="p">(</span><span class="n">Cinv</span><span class="p">,</span> <span class="n">mult_aff</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span>
+
+        <span class="c"># this is the matrix which we need to multiply the displacement vector</span>
+        <span class="c"># prior to adding to the transformed input point</span>
+        <span class="n">affine_disp</span> <span class="o">=</span> <span class="n">Cinv</span>
+
+        <span class="n">new_forward</span> <span class="o">=</span> <span class="n">simplify_f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span> <span class="n">affine_idx_in</span><span class="p">,</span>
+                                 <span class="n">affine_idx_out</span><span class="p">,</span> <span class="n">affine_disp</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">domain_shape</span><span class="p">)</span>
+
+        <span class="c"># Simplify the backward transform</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codomain_world2grid</span>
+        <span class="n">Pinv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prealign_inv</span>
+        <span class="n">Dinv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain_world2grid</span>
+
+        <span class="n">affine_idx_in</span> <span class="o">=</span> <span class="n">mult_aff</span><span class="p">(</span><span class="n">Rinv</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+        <span class="n">affine_idx_out</span> <span class="o">=</span> <span class="n">mult_aff</span><span class="p">(</span><span class="n">Dinv</span><span class="p">,</span> <span class="n">mult_aff</span><span class="p">(</span><span class="n">Pinv</span><span class="p">,</span> <span class="n">C</span><span class="p">))</span>
+        <span class="n">affine_disp</span> <span class="o">=</span> <span class="n">mult_aff</span><span class="p">(</span><span class="n">Dinv</span><span class="p">,</span> <span class="n">Pinv</span><span class="p">)</span>
+        <span class="n">new_backward</span> <span class="o">=</span> <span class="n">simplify_f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backward</span><span class="p">,</span> <span class="n">affine_idx_in</span><span class="p">,</span>
+                                  <span class="n">affine_idx_out</span><span class="p">,</span> <span class="n">affine_disp</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">codomain_shape</span><span class="p">)</span>
+        <span class="n">simplified</span> <span class="o">=</span> <span class="n">DiffeomorphicMap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">disp_shape</span><span class="p">,</span>
+                                      <span class="k">None</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">domain_shape</span><span class="p">,</span>
+                                      <span class="k">None</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">codomain_shape</span><span class="p">,</span>
+                                      <span class="k">None</span><span class="p">,</span>
+                                      <span class="k">None</span><span class="p">)</span>
+        <span class="n">simplified</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="n">new_forward</span>
+        <span class="n">simplified</span><span class="o">.</span><span class="n">backward</span> <span class="o">=</span> <span class="n">new_backward</span>
+        <span class="k">return</span> <span class="n">simplified</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">DiffeomorphicRegistration</span><span class="p">(</span><span class="n">with_metaclass</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">,</span> <span class="nb">object</span><span class="p">)):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot; Diffeomorphic Registration</span>
+
+<span class="sd">        This abstract class defines the interface to be implemented by any</span>
+<span class="sd">        optimization algorithm for diffeomorphic registration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        metric : SimilarityMetric object</span>
+<span class="sd">            the object measuring the similarity of the two images. The</span>
+<span class="sd">            registration algorithm will minimize (or maximize) the provided</span>
+<span class="sd">            similarity.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">metric</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;The metric cannot be None&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric</span> <span class="o">=</span> <span class="n">metric</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">dim</span>
+
+    <span class="k">def</span> <span class="nf">set_level_iters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level_iters</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Sets the number of iterations at each pyramid level</span>
+
+<span class="sd">        Establishes the maximum number of iterations to be performed at each</span>
+<span class="sd">        level of the Gaussian pyramid, similar to ANTS.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        level_iters : list</span>
+<span class="sd">            the number of iterations at each level of the Gaussian pyramid.</span>
+<span class="sd">            level_iters[0] corresponds to the finest level, level_iters[n-1]</span>
+<span class="sd">            the coarsest, where n is the length of the list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">level_iters</span><span class="p">)</span> <span class="k">if</span> <span class="n">level_iters</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level_iters</span> <span class="o">=</span> <span class="n">level_iters</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Starts the metric optimization</span>
+
+<span class="sd">        This is the main function each specialized class derived from this must</span>
+<span class="sd">        implement. Upon completion, the deformation field must be available</span>
+<span class="sd">        from the forward transformation model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;</span>
+<span class="sd">        Returns the resulting diffeomorphic map after optimization</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="SymmetricDiffeomorphicRegistration"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.SymmetricDiffeomorphicRegistration">[docs]</a><span class="k">class</span> <span class="nc">SymmetricDiffeomorphicRegistration</span><span class="p">(</span><span class="n">DiffeomorphicRegistration</span><span class="p">):</span>
+<div class="viewcode-block" id="SymmetricDiffeomorphicRegistration.__init__"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.SymmetricDiffeomorphicRegistration.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">metric</span><span class="p">,</span>
+                 <span class="n">level_iters</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">step_length</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
+                 <span class="n">ss_sigma_factor</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+                 <span class="n">opt_tol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span>
+                 <span class="n">inv_iter</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+                 <span class="n">inv_tol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span>
+                 <span class="n">callback</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot; Symmetric Diffeomorphic Registration (SyN) Algorithm</span>
+
+<span class="sd">        Performs the multi-resolution optimization algorithm for non-linear</span>
+<span class="sd">        registration using a given similarity metric.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        metric : SimilarityMetric object</span>
+<span class="sd">            the metric to be optimized</span>
+<span class="sd">        level_iters : list of int</span>
+<span class="sd">            the number of iterations at each level of the Gaussian Pyramid (the</span>
+<span class="sd">            length of the list defines the number of pyramid levels to be</span>
+<span class="sd">            used)</span>
+<span class="sd">        opt_tol : float</span>
+<span class="sd">            the optimization will stop when the estimated derivative of the</span>
+<span class="sd">            energy profile w.r.t. time falls below this threshold</span>
+<span class="sd">        inv_iter : int</span>
+<span class="sd">            the number of iterations to be performed by the displacement field</span>
+<span class="sd">            inversion algorithm</span>
+<span class="sd">        step_length : float</span>
+<span class="sd">            the length of the maximum displacement vector of the update</span>
+<span class="sd">            displacement field at each iteration</span>
+<span class="sd">        ss_sigma_factor : float</span>
+<span class="sd">            parameter of the scale-space smoothing kernel. For example, the</span>
+<span class="sd">            std. dev. of the kernel will be factor*(2^i) in the isotropic case</span>
+<span class="sd">            where i = 0, 1, ..., n_scales is the scale</span>
+<span class="sd">        inv_tol : float</span>
+<span class="sd">            the displacement field inversion algorithm will stop iterating</span>
+<span class="sd">            when the inversion error falls below this threshold</span>
+<span class="sd">        callback : function(SymmetricDiffeomorphicRegistration)</span>
+<span class="sd">            a function receiving a SymmetricDiffeomorphicRegistration object</span>
+<span class="sd">            to be called after each iteration (this optimizer will call this</span>
+<span class="sd">            function passing self as parameter)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SymmetricDiffeomorphicRegistration</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">level_iters</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">level_iters</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">25</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">level_iters</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;The iterations list cannot be empty&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_level_iters</span><span class="p">(</span><span class="n">level_iters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step_length</span> <span class="o">=</span> <span class="n">step_length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ss_sigma_factor</span> <span class="o">=</span> <span class="n">ss_sigma_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opt_tol</span> <span class="o">=</span> <span class="n">opt_tol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inv_tol</span> <span class="o">=</span> <span class="n">inv_tol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inv_iter</span> <span class="o">=</span> <span class="n">inv_iter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy_window</span> <span class="o">=</span> <span class="mi">12</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">full_energy_profile</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">=</span> <span class="n">VerbosityLevels</span><span class="o">.</span><span class="n">STATUS</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_ss</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_direction</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_direction</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask0</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">mask0</span></div>
+
+<div class="viewcode-block" id="SymmetricDiffeomorphicRegistration.update"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.SymmetricDiffeomorphicRegistration.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_displacement</span><span class="p">,</span> <span class="n">new_displacement</span><span class="p">,</span>
+               <span class="n">disp_world2grid</span><span class="p">,</span> <span class="n">time_scaling</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Composition of the current displacement field with the given field</span>
+
+<span class="sd">        Interpolates new displacement at the locations defined by</span>
+<span class="sd">        current_displacement. Equivalently, computes the composition C of the</span>
+<span class="sd">        given displacement fields as C(x) = B(A(x)), where A is</span>
+<span class="sd">        current_displacement and B is new_displacement. This function is</span>
+<span class="sd">        intended to be used with deformation fields of the same sampling</span>
+<span class="sd">        (e.g. to be called by a registration algorithm).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        current_displacement : array, shape (R&#39;, C&#39;, 2) or (S&#39;, R&#39;, C&#39;, 3)</span>
+<span class="sd">            the displacement field defining where to interpolate</span>
+<span class="sd">            new_displacement</span>
+<span class="sd">        new_displacement : array, shape (R, C, 2) or (S, R, C, 3)</span>
+<span class="sd">            the displacement field to be warped by current_displacement</span>
+<span class="sd">        disp_world2grid : array, shape (dim+1, dim+1)</span>
+<span class="sd">            the space-to-grid transform associated with the displacements&#39;</span>
+<span class="sd">            grid (we assume that both displacements are discretized over the</span>
+<span class="sd">            same grid)</span>
+<span class="sd">        time_scaling : float</span>
+<span class="sd">            scaling factor applied to d2. The effect may be interpreted as</span>
+<span class="sd">            moving d1 displacements along a factor (`time_scaling`) of d2.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        updated : array, shape (the same as new_displacement)</span>
+<span class="sd">            the warped displacement field</span>
+<span class="sd">        mean_norm : the mean norm of all vectors in current_displacement</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sq_field</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">current_displacement</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">mean_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sq_field</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="c"># We assume that both displacement fields have the same</span>
+        <span class="c"># grid2world transform, which implies premult_index=Identity</span>
+        <span class="c"># and premult_disp is the world2grid transform associated with</span>
+        <span class="c"># the displacements&#39; grid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">current_displacement</span><span class="p">,</span> <span class="n">new_displacement</span><span class="p">,</span> <span class="k">None</span><span class="p">,</span>
+                     <span class="n">disp_world2grid</span><span class="p">,</span> <span class="n">time_scaling</span><span class="p">,</span> <span class="n">current_displacement</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">current_displacement</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mean_norm</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SymmetricDiffeomorphicRegistration.get_map"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.SymmetricDiffeomorphicRegistration.get_map">[docs]</a>    <span class="k">def</span> <span class="nf">get_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Returns the resulting diffeomorphic map</span>
+<span class="sd">        Returns the DiffeomorphicMap registering the moving image towards</span>
+<span class="sd">        the static image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span></div>
+
+    <span class="k">def</span> <span class="nf">_connect_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Assign the methods to be called according to the image dimension</span>
+
+<span class="sd">        Assigns the appropriate functions to be called for displacement field</span>
+<span class="sd">        inversion, Gaussian pyramid, and affine / dense deformation composition</span>
+<span class="sd">        according to the dimension of the input images e.g. 2D or 3D.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">invert_vector_field</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">invert_vector_field_fixed_point_2d</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compose</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">compose_vector_fields_2d</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">invert_vector_field</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">invert_vector_field_fixed_point_3d</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compose</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">compose_vector_fields_3d</span>
+
+    <span class="k">def</span> <span class="nf">_init_optimizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">moving</span><span class="p">,</span>
+                        <span class="n">static_grid2world</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">,</span> <span class="n">prealign</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Initializes the registration optimizer</span>
+
+<span class="sd">        Initializes the optimizer by computing the scale space of the input</span>
+<span class="sd">        images and allocating the required memory for the transformation models</span>
+<span class="sd">        at the coarsest scale.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        static : array, shape (S, R, C) or (R, C)</span>
+<span class="sd">            the image to be used as reference during optimization. The</span>
+<span class="sd">            displacement fields will have the same discretization as the static</span>
+<span class="sd">            image.</span>
+<span class="sd">        moving : array, shape (S, R, C) or (R, C)</span>
+<span class="sd">            the image to be used as &quot;moving&quot; during optimization. Since the</span>
+<span class="sd">            deformation fields&#39; discretization is the same as the static image,</span>
+<span class="sd">            it is necessary to pre-align the moving image to ensure its domain</span>
+<span class="sd">            lies inside the domain of the deformation fields. This is assumed</span>
+<span class="sd">            to be accomplished by &quot;pre-aligning&quot; the moving image towards the</span>
+<span class="sd">            static using an affine transformation given by the &#39;prealign&#39;</span>
+<span class="sd">            matrix</span>
+<span class="sd">        static_grid2world : array, shape (dim+1, dim+1)</span>
+<span class="sd">            the voxel-to-space transformation associated to the static image</span>
+<span class="sd">        moving_grid2world : array, shape (dim+1, dim+1)</span>
+<span class="sd">            the voxel-to-space transformation associated to the moving image</span>
+<span class="sd">        prealign : array, shape (dim+1, dim+1)</span>
+<span class="sd">            the affine transformation (operating on the physical space)</span>
+<span class="sd">            pre-aligning the moving image towards the static</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connect_functions</span><span class="p">()</span>
+        <span class="c"># Extract information from affine matrices to create the scale space</span>
+        <span class="n">static_direction</span><span class="p">,</span> <span class="n">static_spacing</span> <span class="o">=</span> \
+            <span class="n">get_direction_and_spacings</span><span class="p">(</span><span class="n">static_grid2world</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+        <span class="n">moving_direction</span><span class="p">,</span> <span class="n">moving_spacing</span> <span class="o">=</span> \
+            <span class="n">get_direction_and_spacings</span><span class="p">(</span><span class="n">moving_grid2world</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+
+        <span class="c"># the images&#39; directions don&#39;t change with scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_direction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_direction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_direction</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">static_direction</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_direction</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">moving_direction</span>
+
+        <span class="c"># Build the scale space of the input images</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="n">VerbosityLevels</span><span class="o">.</span><span class="n">DIAGNOSE</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s">&#39;Applying zero mask: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mask0</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="n">VerbosityLevels</span><span class="o">.</span><span class="n">STATUS</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s">&#39;Creating scale space from the moving image. Levels: %d. &#39;</span>
+                  <span class="s">&#39;Sigma factor: %f.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_sigma_factor</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_ss</span> <span class="o">=</span> <span class="n">ScaleSpace</span><span class="p">(</span><span class="n">moving</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">,</span>
+                                    <span class="n">moving_spacing</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_sigma_factor</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">mask0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="n">VerbosityLevels</span><span class="o">.</span><span class="n">STATUS</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s">&#39;Creating scale space from the static image. Levels: %d. &#39;</span>
+                  <span class="s">&#39;Sigma factor: %f.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_sigma_factor</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span> <span class="o">=</span> <span class="n">ScaleSpace</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">,</span>
+                                    <span class="n">static_spacing</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_sigma_factor</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">mask0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="n">VerbosityLevels</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s">&#39;Moving scale space:&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">moving_ss</span><span class="o">.</span><span class="n">print_level</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s">&#39;Static scale space:&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span><span class="o">.</span><span class="n">print_level</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+
+        <span class="c"># Get the properties of the coarsest level from the static image. These</span>
+        <span class="c"># properties will be taken as the reference discretization.</span>
+        <span class="n">disp_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span><span class="o">.</span><span class="n">get_domain_shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">disp_grid2world</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span><span class="o">.</span><span class="n">get_affine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c"># The codomain discretization of both diffeomorphic maps is</span>
+        <span class="c"># precisely the discretization of the static image</span>
+        <span class="n">codomain_shape</span> <span class="o">=</span> <span class="n">static</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">codomain_grid2world</span> <span class="o">=</span> <span class="n">static_grid2world</span>
+
+        <span class="c"># The forward model transforms points from the static image</span>
+        <span class="c"># to points on the reference (which is the static as well). So the</span>
+        <span class="c"># domain properties are taken from the static image. Since its the same</span>
+        <span class="c"># as the reference, we don&#39;t need to pre-align.</span>
+        <span class="n">domain_shape</span> <span class="o">=</span> <span class="n">static</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">domain_grid2world</span> <span class="o">=</span> <span class="n">static_grid2world</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span> <span class="o">=</span> <span class="n">DiffeomorphicMap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
+                                              <span class="n">disp_shape</span><span class="p">,</span>
+                                              <span class="n">disp_grid2world</span><span class="p">,</span>
+                                              <span class="n">domain_shape</span><span class="p">,</span>
+                                              <span class="n">domain_grid2world</span><span class="p">,</span>
+                                              <span class="n">codomain_shape</span><span class="p">,</span>
+                                              <span class="n">codomain_grid2world</span><span class="p">,</span>
+                                              <span class="k">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">allocate</span><span class="p">()</span>
+
+        <span class="c"># The backward model transforms points from the moving image</span>
+        <span class="c"># to points on the reference (which is the static). So the input</span>
+        <span class="c"># properties are taken from the moving image, and we need to pre-align</span>
+        <span class="c"># points on the moving physical space to the reference physical space</span>
+        <span class="c"># by applying the inverse of pre-align. This is done this way to make</span>
+        <span class="c"># it clear for the user: the pre-align matrix is usually obtained by</span>
+        <span class="c"># doing affine registration of the moving image towards the static</span>
+        <span class="c"># image, which results in a matrix transforming points in the static</span>
+        <span class="c"># physical space to points in the moving physical space</span>
+        <span class="n">prealign_inv</span> <span class="o">=</span> <span class="k">None</span> <span class="k">if</span> <span class="n">prealign</span> <span class="ow">is</span> <span class="k">None</span> <span class="k">else</span> <span class="n">npl</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">prealign</span><span class="p">)</span>
+        <span class="n">domain_shape</span> <span class="o">=</span> <span class="n">moving</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">domain_grid2world</span> <span class="o">=</span> <span class="n">moving_grid2world</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_to_ref</span> <span class="o">=</span> <span class="n">DiffeomorphicMap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
+                                              <span class="n">disp_shape</span><span class="p">,</span>
+                                              <span class="n">disp_grid2world</span><span class="p">,</span>
+                                              <span class="n">domain_shape</span><span class="p">,</span>
+                                              <span class="n">domain_grid2world</span><span class="p">,</span>
+                                              <span class="n">codomain_shape</span><span class="p">,</span>
+                                              <span class="n">codomain_grid2world</span><span class="p">,</span>
+                                              <span class="n">prealign_inv</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_to_ref</span><span class="o">.</span><span class="n">allocate</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_end_optimizer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Frees the resources allocated during initialization</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_ss</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span>
+
+    <span class="k">def</span> <span class="nf">_iterate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Performs one symmetric iteration</span>
+
+<span class="sd">        Performs one iteration of the SyN algorithm:</span>
+<span class="sd">            1.Compute forward</span>
+<span class="sd">            2.Compute backward</span>
+<span class="sd">            3.Update forward</span>
+<span class="sd">            4.Update backward</span>
+<span class="sd">            5.Compute inverses</span>
+<span class="sd">            6.Invert the inverses</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        der : float</span>
+<span class="sd">            the derivative of the energy profile, computed by fitting a</span>
+<span class="sd">            quadratic function to the energy values at the latest T iterations,</span>
+<span class="sd">            where T = self.energy_window. If the current iteration is less than</span>
+<span class="sd">            T then np.inf is returned instead.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Acquire current resolution information from scale spaces</span>
+        <span class="n">current_moving</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_ss</span><span class="o">.</span><span class="n">get_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_level</span><span class="p">)</span>
+        <span class="n">current_static</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span><span class="o">.</span><span class="n">get_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_level</span><span class="p">)</span>
+
+        <span class="n">current_disp_shape</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span><span class="o">.</span><span class="n">get_domain_shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_level</span><span class="p">)</span>
+        <span class="n">current_disp_grid2world</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span><span class="o">.</span><span class="n">get_affine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_level</span><span class="p">)</span>
+        <span class="n">current_disp_world2grid</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span><span class="o">.</span><span class="n">get_affine_inv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_level</span><span class="p">)</span>
+        <span class="n">current_disp_spacing</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span><span class="o">.</span><span class="n">get_spacing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_level</span><span class="p">)</span>
+
+        <span class="c"># Warp the input images (smoothed to the current scale) to the common</span>
+        <span class="c"># (reference) space at the current resolution</span>
+        <span class="n">wstatic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">transform_inverse</span><span class="p">(</span><span class="n">current_static</span><span class="p">,</span>
+                                                       <span class="s">&#39;linear&#39;</span><span class="p">,</span>
+                                                       <span class="k">None</span><span class="p">,</span>
+                                                       <span class="n">current_disp_shape</span><span class="p">,</span>
+                                                       <span class="n">current_disp_grid2world</span><span class="p">)</span>
+        <span class="n">wmoving</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_to_ref</span><span class="o">.</span><span class="n">transform_inverse</span><span class="p">(</span><span class="n">current_moving</span><span class="p">,</span>
+                                                       <span class="s">&#39;linear&#39;</span><span class="p">,</span>
+                                                       <span class="k">None</span><span class="p">,</span>
+                                                       <span class="n">current_disp_shape</span><span class="p">,</span>
+                                                       <span class="n">current_disp_grid2world</span><span class="p">)</span>
+        <span class="c"># Pass both images to the metric. Now both images are sampled on the</span>
+        <span class="c"># reference grid (equal to the static image&#39;s grid) and the direction</span>
+        <span class="c"># doesn&#39;t change across scales</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">set_moving_image</span><span class="p">(</span><span class="n">wmoving</span><span class="p">,</span> <span class="n">current_disp_grid2world</span><span class="p">,</span>
+                                     <span class="n">current_disp_spacing</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">static_direction</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">use_moving_image_dynamics</span><span class="p">(</span>
+            <span class="n">current_moving</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_to_ref</span><span class="o">.</span><span class="n">inverse</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">set_static_image</span><span class="p">(</span><span class="n">wstatic</span><span class="p">,</span> <span class="n">current_disp_grid2world</span><span class="p">,</span>
+                                     <span class="n">current_disp_spacing</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">static_direction</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">use_static_image_dynamics</span><span class="p">(</span>
+            <span class="n">current_static</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">inverse</span><span class="p">())</span>
+
+        <span class="c"># Initialize the metric for a new iteration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">initialize_iteration</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">RegistrationStages</span><span class="o">.</span><span class="n">ITER_START</span><span class="p">)</span>
+
+        <span class="c"># Compute the forward step (to be used to update the forward transform)</span>
+        <span class="n">fw_step</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">compute_forward</span><span class="p">())</span>
+
+        <span class="c"># set zero displacements at the boundary</span>
+        <span class="n">fw_step</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">fw_step</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">fw_step</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">fw_step</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="n">fw_step</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">fw_step</span><span class="p">[:,</span> <span class="p">:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c"># Normalize the forward step</span>
+        <span class="n">nrm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">fw_step</span><span class="o">/</span><span class="n">current_disp_spacing</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">nrm</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">fw_step</span> <span class="o">/=</span> <span class="n">nrm</span>
+
+        <span class="c"># Add to current total field</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span> <span class="n">md_forward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span> <span class="n">fw_step</span><span class="p">,</span>
+            <span class="n">current_disp_world2grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_length</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">fw_step</span>
+
+        <span class="c"># Keep track of the forward energy</span>
+        <span class="n">fw_energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">get_energy</span><span class="p">()</span>
+
+        <span class="c"># Compose backward step (to be used to update the backward transform)</span>
+        <span class="n">bw_step</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">compute_backward</span><span class="p">())</span>
+
+        <span class="c"># set zero displacements at the boundary</span>
+        <span class="n">bw_step</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">bw_step</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="n">bw_step</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c"># Normalize the backward step</span>
+        <span class="n">nrm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">bw_step</span><span class="o">/</span><span class="n">current_disp_spacing</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">nrm</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">bw_step</span> <span class="o">/=</span> <span class="n">nrm</span>
+
+        <span class="c"># Add to current total field</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_to_ref</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span> <span class="n">md_backward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">moving_to_ref</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span> <span class="n">bw_step</span><span class="p">,</span>
+            <span class="n">current_disp_world2grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_length</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">bw_step</span>
+
+        <span class="c"># Keep track of the energy</span>
+        <span class="n">bw_energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">get_energy</span><span class="p">()</span>
+        <span class="n">der</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+        <span class="n">n_iter</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_list</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_list</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy_window</span><span class="p">:</span>
+            <span class="n">der</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_energy_derivative</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="n">VerbosityLevels</span><span class="o">.</span><span class="n">DIAGNOSE</span><span class="p">:</span>
+            <span class="n">ch</span> <span class="o">=</span> <span class="s">&#39;-&#39;</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">der</span><span class="p">)</span> <span class="k">else</span> <span class="n">der</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s">&#39;%d:</span><span class="se">\t</span><span class="s">%0.6f</span><span class="se">\t</span><span class="s">%0.6f</span><span class="se">\t</span><span class="s">%0.6f</span><span class="se">\t</span><span class="s">%s&#39;</span> <span class="o">%</span>
+                  <span class="p">(</span><span class="n">n_iter</span><span class="p">,</span> <span class="n">fw_energy</span><span class="p">,</span> <span class="n">bw_energy</span><span class="p">,</span> <span class="n">fw_energy</span> <span class="o">+</span> <span class="n">bw_energy</span><span class="p">,</span> <span class="n">ch</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fw_energy</span> <span class="o">+</span> <span class="n">bw_energy</span><span class="p">)</span>
+
+        <span class="c"># Invert the forward model&#39;s forward field</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">backward</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">invert_vector_field</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span>
+                <span class="n">current_disp_world2grid</span><span class="p">,</span>
+                <span class="n">current_disp_spacing</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inv_iter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv_tol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">backward</span><span class="p">))</span>
+
+        <span class="c"># Invert the backward model&#39;s forward field</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_to_ref</span><span class="o">.</span><span class="n">backward</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">invert_vector_field</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">moving_to_ref</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span>
+                <span class="n">current_disp_world2grid</span><span class="p">,</span>
+                <span class="n">current_disp_spacing</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inv_iter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv_tol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_to_ref</span><span class="o">.</span><span class="n">backward</span><span class="p">))</span>
+
+        <span class="c"># Invert the forward model&#39;s backward field</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">invert_vector_field</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">backward</span><span class="p">,</span>
+                <span class="n">current_disp_world2grid</span><span class="p">,</span>
+                <span class="n">current_disp_spacing</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inv_iter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv_tol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">forward</span><span class="p">))</span>
+
+        <span class="c"># Invert the backward model&#39;s backward field</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_to_ref</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">invert_vector_field</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">moving_to_ref</span><span class="o">.</span><span class="n">backward</span><span class="p">,</span>
+                <span class="n">current_disp_world2grid</span><span class="p">,</span>
+                <span class="n">current_disp_spacing</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inv_iter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv_tol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_to_ref</span><span class="o">.</span><span class="n">forward</span><span class="p">))</span>
+
+        <span class="c"># Free resources no longer needed to compute the forward and backward</span>
+        <span class="c"># steps</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">RegistrationStages</span><span class="o">.</span><span class="n">ITER_END</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">free_iteration</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">der</span>
+
+    <span class="k">def</span> <span class="nf">_approximate_derivative_direct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Derivative of the degree-2 polynomial fit of the given x, y pairs</span>
+
+<span class="sd">        Directly computes the derivative of the least-squares-fit quadratic</span>
+<span class="sd">        function estimated from (x[...],y[...]) pairs.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : array, shape (n,)</span>
+<span class="sd">            increasing array representing the x-coordinates of the points to</span>
+<span class="sd">            be fit</span>
+<span class="sd">        y : array, shape (n,)</span>
+<span class="sd">            array representing the y-coordinates of the points to be fit</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        y0 : float</span>
+<span class="sd">            the estimated derivative at x0 = 0.5*len(x)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">((</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+        <span class="n">XX</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">npl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">XX</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">y0</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">beta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">x0</span><span class="p">)</span> <span class="o">+</span> <span class="n">beta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">y0</span>
+
+    <span class="k">def</span> <span class="nf">_get_energy_derivative</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Approximate derivative of the energy profile</span>
+
+<span class="sd">        Returns the derivative of the estimated energy as a function of &quot;time&quot;</span>
+<span class="sd">        (iterations) at the last iteration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_iter</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_list</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_iter</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy_window</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Not enough data to fit the energy profile&#39;</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_window</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy_list</span><span class="p">[(</span><span class="n">n_iter</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy_window</span><span class="p">):</span><span class="n">n_iter</span><span class="p">]</span>
+        <span class="n">ss</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ss</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">ss</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="o">/</span> <span class="n">ss</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">y</span><span class="p">]</span>
+        <span class="n">der</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_approximate_derivative_direct</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">der</span>
+
+    <span class="k">def</span> <span class="nf">_optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Starts the optimization</span>
+
+<span class="sd">        The main multi-scale symmetric optimization algorithm</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">full_energy_profile</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">RegistrationStages</span><span class="o">.</span><span class="n">OPT_START</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="n">VerbosityLevels</span><span class="o">.</span><span class="n">STATUS</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s">&#39;Optimizing level %d&#39;</span> <span class="o">%</span> <span class="n">level</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_level</span> <span class="o">=</span> <span class="n">level</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">set_levels_below</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">-</span> <span class="n">level</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">set_levels_above</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">expand_factors</span> <span class="o">=</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span><span class="o">.</span><span class="n">get_expand_factors</span><span class="p">(</span><span class="n">level</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span>
+                <span class="n">new_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span><span class="o">.</span><span class="n">get_domain_shape</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">expand_fields</span><span class="p">(</span><span class="n">expand_factors</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">moving_to_ref</span><span class="o">.</span><span class="n">expand_fields</span><span class="p">(</span><span class="n">expand_factors</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">niter</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">energy_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">derivative</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">RegistrationStages</span><span class="o">.</span><span class="n">SCALE_START</span><span class="p">)</span>
+
+            <span class="k">while</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">niter</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_iters</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">level</span><span class="p">])</span> <span class="ow">and</span>
+                   <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opt_tol</span> <span class="o">&lt;</span> <span class="n">derivative</span><span class="p">)):</span>
+                <span class="n">derivative</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterate</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">niter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">full_energy_profile</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_list</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">RegistrationStages</span><span class="o">.</span><span class="n">SCALE_END</span><span class="p">)</span>
+
+        <span class="c"># Reporting mean and std in stats[1] and stats[2]</span>
+        <span class="n">residual</span><span class="p">,</span> <span class="n">stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">compute_inversion_error</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="n">VerbosityLevels</span><span class="o">.</span><span class="n">DIAGNOSE</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s">&#39;Static-Reference Residual error: %0.6f (%0.6f)&#39;</span>
+                  <span class="o">%</span> <span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">stats</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+
+        <span class="n">residual</span><span class="p">,</span> <span class="n">stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_to_ref</span><span class="o">.</span><span class="n">compute_inversion_error</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="n">VerbosityLevels</span><span class="o">.</span><span class="n">DIAGNOSE</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s">&#39;Moving-Reference Residual error :%0.6f (%0.6f)&#39;</span>
+                  <span class="o">%</span> <span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">stats</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+
+        <span class="c"># Compose the two partial transformations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_to_ref</span><span class="o">.</span><span class="n">warp_endomorphism</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">inverse</span><span class="p">())</span><span class="o">.</span><span class="n">inverse</span><span class="p">()</span>
+
+        <span class="c"># Report mean and std for the composed deformation field</span>
+        <span class="n">residual</span><span class="p">,</span> <span class="n">stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">compute_inversion_error</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="n">VerbosityLevels</span><span class="o">.</span><span class="n">DIAGNOSE</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s">&#39;Final residual error: %0.6f (%0.6f)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">stats</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">RegistrationStages</span><span class="o">.</span><span class="n">OPT_END</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SymmetricDiffeomorphicRegistration.optimize"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.SymmetricDiffeomorphicRegistration.optimize">[docs]</a>    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">moving</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">moving_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">prealign</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;</span>
+<span class="sd">        Starts the optimization</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        static : array, shape (S, R, C) or (R, C)</span>
+<span class="sd">            the image to be used as reference during optimization. The</span>
+<span class="sd">            displacement fields will have the same discretization as the static</span>
+<span class="sd">            image.</span>
+<span class="sd">        moving : array, shape (S, R, C) or (R, C)</span>
+<span class="sd">            the image to be used as &quot;moving&quot; during optimization. Since the</span>
+<span class="sd">            deformation fields&#39; discretization is the same as the static image,</span>
+<span class="sd">            it is necessary to pre-align the moving image to ensure its domain</span>
+<span class="sd">            lies inside the domain of the deformation fields. This is assumed</span>
+<span class="sd">            to be accomplished by &quot;pre-aligning&quot; the moving image towards the</span>
+<span class="sd">            static using an affine transformation given by the &#39;prealign&#39;</span>
+<span class="sd">            matrix</span>
+<span class="sd">        static_grid2world : array, shape (dim+1, dim+1)</span>
+<span class="sd">            the voxel-to-space transformation associated to the static image</span>
+<span class="sd">        moving_grid2world : array, shape (dim+1, dim+1)</span>
+<span class="sd">            the voxel-to-space transformation associated to the moving image</span>
+<span class="sd">        prealign : array, shape (dim+1, dim+1)</span>
+<span class="sd">            the affine transformation (operating on the physical space)</span>
+<span class="sd">            pre-aligning the moving image towards the static</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        static_to_ref : DiffeomorphicMap object</span>
+<span class="sd">            the diffeomorphic map that brings the moving image towards the</span>
+<span class="sd">            static one in the forward direction (i.e. by calling</span>
+<span class="sd">            static_to_ref.transform) and the static image towards the</span>
+<span class="sd">            moving one in the backward direction (i.e. by calling</span>
+<span class="sd">            static_to_ref.transform_inverse).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="n">VerbosityLevels</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s">&quot;Pre-align:&quot;</span><span class="p">,</span> <span class="n">prealign</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_optimizer</span><span class="p">(</span><span class="n">static</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">floating</span><span class="p">),</span> <span class="n">moving</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">floating</span><span class="p">),</span>
+                             <span class="n">static_grid2world</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">,</span> <span class="n">prealign</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_optimize</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_optimizer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">forward</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">backward</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span><span class="o">.</span><span class="n">backward</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_to_ref</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

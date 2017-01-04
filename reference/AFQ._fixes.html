@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>_fixes &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li><code class="docutils literal"><span class="pre">_fixes</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/reference/AFQ._fixes.rst.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="module-AFQ._fixes">
+<span id="fixes"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">_fixes</span></code><a class="headerlink" href="#module-AFQ._fixes" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ._fixes.dki_prediction" title="AFQ._fixes.dki_prediction"><code class="xref py py-obj docutils literal"><span class="pre">dki_prediction</span></code></a>(dki_params,&nbsp;gtab[,&nbsp;S0])</td>
+<td>In Dipy versions &lt; 0.12, there is a bug in DKI prediction, that doesn&#8217;t     allow using volumes of S0.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ._fixes.spherical_harmonics" title="AFQ._fixes.spherical_harmonics"><code class="xref py py-obj docutils literal"><span class="pre">spherical_harmonics</span></code></a>(m,&nbsp;n,&nbsp;theta,&nbsp;phi)</td>
+<td>An implementation of spherical harmonics that overcomes conda compilation issues.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="dki-prediction">
+<h2>dki_prediction<a class="headerlink" href="#dki-prediction" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ._fixes.dki_prediction">
+<code class="descclassname">AFQ._fixes.</code><code class="descname">dki_prediction</code><span class="sig-paren">(</span><em>dki_params</em>, <em>gtab</em>, <em>S0=150</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/_fixes.html#dki_prediction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ._fixes.dki_prediction" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>In Dipy versions &lt; 0.12, there is a bug in DKI prediction, that doesn&#8217;t
+allow using volumes of S0. This is temporary fix until the bug is fixed
+upstream. See: <a class="reference external" href="https://github.com/nipy/dipy/pull/1028">https://github.com/nipy/dipy/pull/1028</a></p>
+<p>For now, we provide this as a fix, to monkey-patch into dipy.reconst.dki</p>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dki_params</strong> : ndarray (x, y, z, 27) or (n, 27)</p>
+<blockquote>
+<div><blockquote>
+<div><p>All parameters estimated from the diffusion kurtosis model.
+Parameters are ordered as follows:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Three diffusion tensor&#8217;s eigenvalues</li>
+<li>Three lines of the eigenvector matrix each containing the first,
+second and third coordinates of the eigenvector</li>
+<li>Fifteen elements of the kurtosis tensor</li>
+</ol>
+</div></blockquote>
+</div></blockquote>
+<dl class="docutils">
+<dt>gtab</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">a GradientTable class instance</span><dd><p class="first last">The gradient table for this prediction</p>
+</dd>
+<dt>S0</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">float or ndarray (optional)</span><dd><p class="first last">The non diffusion-weighted signal in every voxel, or across all
+voxels. Default: 150</p>
+</dd>
+</dl>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>S</strong> : (..., N) ndarray</p>
+<blockquote>
+<div><blockquote>
+<div><p>Simulated signal based on the DKI model:</p>
+</div></blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">S=S_{0}e^{-bD+</tt>)</p>
+<p>latex exited with error
+[stdout]
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=latex)
+ restricted \write18 enabled.
+entering extended mode
+(./math.tex
+LaTeX2e &lt;2016/03/31&gt;
+Babel &lt;3.9r&gt; and hyphenation patterns for 83 language(s) loaded.
+(/usr/local/texlive/2016/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2016/texmf-dist/tex/latex/base/size12.clo))
+(/usr/local/texlive/2016/texmf-dist/tex/latex/base/inputenc.sty
+(/usr/local/texlive/2016/texmf-dist/tex/latex/ucs/utf8x.def))
+(/usr/local/texlive/2016/texmf-dist/tex/latex/ucs/ucs.sty
+(/usr/local/texlive/2016/texmf-dist/tex/latex/ucs/data/uni-global.def))
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?&#8217; option.
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amscls/amsthm.sty)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/local/texlive/2016/texmf-dist/tex/latex/anyfontsize/anyfontsize.sty)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/tools/bm.sty)
+No file math.aux.
+(/usr/local/texlive/2016/texmf-dist/tex/latex/ucs/ucsencs.def)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd))
+Runaway argument?
+S=S_{0}e^{-bD+\end {split} \end {equation*} \end {document} 
+! File ended while scanning use of \split.
+&lt;inserted text&gt; 
+                \par 
+&lt;*&gt; math.tex
+            
+! Emergency stop.
+&lt;*&gt; math.tex
+            
+No pages of output.
+Transcript written on math.log.
+</p>
+</div>
+</div></blockquote>
+<p class="last">rac{1}{6}b^{2}D^{2}K}</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="spherical-harmonics">
+<h2>spherical_harmonics<a class="headerlink" href="#spherical-harmonics" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ._fixes.spherical_harmonics">
+<code class="descclassname">AFQ._fixes.</code><code class="descname">spherical_harmonics</code><span class="sig-paren">(</span><em>m</em>, <em>n</em>, <em>theta</em>, <em>phi</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/_fixes.html#spherical_harmonics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ._fixes.spherical_harmonics" title="Permalink to this definition">¶</a></dt>
+<dd><p>An implementation of spherical harmonics that overcomes conda compilation
+issues. See: <a class="reference external" href="https://github.com/nipy/dipy/issues/852">https://github.com/nipy/dipy/issues/852</a></p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

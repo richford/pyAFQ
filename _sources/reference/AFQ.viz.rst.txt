@@ -1,0 +1,19 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`viz`
+==========
+.. automodule:: AFQ.viz
+
+.. currentmodule:: AFQ.viz
+.. autosummary::
+
+   visualize_bundles
+
+
+.. currentmodule:: AFQ.viz
+
+visualize_bundles
+~~~~~~~~~~~~~~~~~
+
+.. autofunction:: visualize_bundles
+

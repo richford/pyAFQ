@@ -1,0 +1,67 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`data`
+===========
+.. automodule:: AFQ.data
+
+.. currentmodule:: AFQ.data
+.. autosummary::
+
+   fetch_callosum_templates
+   fetch_hcp
+   fetch_stanford_hardi_tractography
+   fetch_templates
+   organize_stanford_data
+   read_callosum_templates
+   read_stanford_hardi_tractography
+   read_templates
+   read_trk
+
+
+.. currentmodule:: AFQ.data
+
+fetch_callosum_templates
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: fetch_callosum_templates
+
+fetch_hcp
+~~~~~~~~~
+
+.. autofunction:: fetch_hcp
+
+fetch_stanford_hardi_tractography
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: fetch_stanford_hardi_tractography
+
+fetch_templates
+~~~~~~~~~~~~~~~
+
+.. autofunction:: fetch_templates
+
+organize_stanford_data
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: organize_stanford_data
+
+read_callosum_templates
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: read_callosum_templates
+
+read_stanford_hardi_tractography
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: read_stanford_hardi_tractography
+
+read_templates
+~~~~~~~~~~~~~~
+
+.. autofunction:: read_templates
+
+read_trk
+~~~~~~~~
+
+.. autofunction:: read_trk
+

@@ -1,0 +1,387 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>AFQ._fixes &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>AFQ._fixes</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for AFQ._fixes</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">types</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">lpmv</span><span class="p">,</span> <span class="n">gammaln</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="k">import</span> <span class="n">cdist</span>
+
+<span class="kn">from</span> <span class="nn">nibabel.affines</span> <span class="k">import</span> <span class="n">apply_affine</span>
+<span class="kn">import</span> <span class="nn">dipy.reconst.dki</span> <span class="k">as</span> <span class="nn">dki</span>
+
+
+<div class="viewcode-block" id="dki_prediction"><a class="viewcode-back" href="../../reference/AFQ.dki.html#AFQ._fixes.dki_prediction">[docs]</a><span class="k">def</span> <span class="nf">dki_prediction</span><span class="p">(</span><span class="n">dki_params</span><span class="p">,</span> <span class="n">gtab</span><span class="p">,</span> <span class="n">S0</span><span class="o">=</span><span class="mi">150</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    In Dipy versions &lt; 0.12, there is a bug in DKI prediction, that doesn&#39;t</span>
+<span class="sd">    allow using volumes of S0. This is temporary fix until the bug is fixed</span>
+<span class="sd">    upstream. See: https://github.com/nipy/dipy/pull/1028</span>
+
+<span class="sd">    For now, we provide this as a fix, to monkey-patch into dipy.reconst.dki</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dki_params : ndarray (x, y, z, 27) or (n, 27)</span>
+<span class="sd">        All parameters estimated from the diffusion kurtosis model.</span>
+<span class="sd">        Parameters are ordered as follows:</span>
+<span class="sd">            1) Three diffusion tensor&#39;s eigenvalues</span>
+<span class="sd">            2) Three lines of the eigenvector matrix each containing the first,</span>
+<span class="sd">               second and third coordinates of the eigenvector</span>
+<span class="sd">            3) Fifteen elements of the kurtosis tensor</span>
+<span class="sd">    gtab : a GradientTable class instance</span>
+<span class="sd">        The gradient table for this prediction</span>
+<span class="sd">    S0 : float or ndarray (optional)</span>
+<span class="sd">        The non diffusion-weighted signal in every voxel, or across all</span>
+<span class="sd">        voxels. Default: 150</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    S : (..., N) ndarray</span>
+<span class="sd">        Simulated signal based on the DKI model:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        S=S_{0}e^{-bD+\frac{1}{6}b^{2}D^{2}K}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">evals</span><span class="p">,</span> <span class="n">evecs</span><span class="p">,</span> <span class="n">kt</span> <span class="o">=</span> <span class="n">dki</span><span class="o">.</span><span class="n">split_dki_param</span><span class="p">(</span><span class="n">dki_params</span><span class="p">)</span>
+
+    <span class="c"># Define DKI design matrix according to given gtab</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">dki</span><span class="o">.</span><span class="n">design_matrix</span><span class="p">(</span><span class="n">gtab</span><span class="p">)</span>
+
+    <span class="c"># Flat parameters and initialize pred_sig</span>
+    <span class="n">fevals</span> <span class="o">=</span> <span class="n">evals</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">evals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">fevecs</span> <span class="o">=</span> <span class="n">evecs</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,)</span> <span class="o">+</span> <span class="n">evecs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span>
+    <span class="n">fkt</span> <span class="o">=</span> <span class="n">kt</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">kt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">pred_sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">fevals</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">gtab</span><span class="o">.</span><span class="n">bvals</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">S0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">S0_vol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">S0</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fevals</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">S0_vol</span> <span class="o">=</span> <span class="n">S0</span>
+    <span class="c"># looping for all voxels</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pred_sig</span><span class="p">)):</span>
+        <span class="n">DT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">fevecs</span><span class="p">[</span><span class="n">v</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">fevals</span><span class="p">[</span><span class="n">v</span><span class="p">])),</span> <span class="n">fevecs</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">dki</span><span class="o">.</span><span class="n">lower_triangular</span><span class="p">(</span><span class="n">DT</span><span class="p">)</span>
+        <span class="n">MD</span> <span class="o">=</span> <span class="p">(</span><span class="n">dt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">dt</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">dt</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span> <span class="o">/</span> <span class="mi">3</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">S0_vol</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="n">this_S0</span> <span class="o">=</span> <span class="n">S0_vol</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">this_S0</span> <span class="o">=</span> <span class="n">S0_vol</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">dt</span><span class="p">,</span> <span class="n">fkt</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">*</span> <span class="n">MD</span> <span class="o">*</span> <span class="n">MD</span><span class="p">,</span>
+                            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">this_S0</span><span class="p">)])),</span>
+                           <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">pred_sig</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">X</span><span class="p">))</span>
+
+    <span class="c"># Reshape data according to the shape of dki_params</span>
+    <span class="n">pred_sig</span> <span class="o">=</span> <span class="n">pred_sig</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">dki_params</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">pred_sig</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],))</span>
+
+    <span class="k">return</span> <span class="n">pred_sig</span></div>
+
+
+<div class="viewcode-block" id="spherical_harmonics"><a class="viewcode-back" href="../../reference/AFQ.csd.html#AFQ._fixes.spherical_harmonics">[docs]</a><span class="k">def</span> <span class="nf">spherical_harmonics</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An implementation of spherical harmonics that overcomes conda compilation</span>
+<span class="sd">    issues. See: https://github.com/nipy/dipy/issues/852</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">lpmv</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">complex</span><span class="p">)</span>
+    <span class="n">val</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mf">4.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="n">val</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">gammaln</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">gammaln</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">val</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">m</span> <span class="o">*</span> <span class="n">theta</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">val</span></div>
+
+
+<span class="k">def</span> <span class="nf">_orient_generator</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">roi1</span><span class="p">,</span> <span class="n">roi2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper function to `orient_by_rois`</span>
+
+<span class="sd">    Performs the inner loop separately. This is needed, because functions with</span>
+<span class="sd">    `yield` always return a generator</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">sl</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">out</span><span class="p">):</span>
+        <span class="n">dist1</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span> <span class="n">roi1</span><span class="p">,</span> <span class="s">&#39;euclidean&#39;</span><span class="p">)</span>
+        <span class="n">dist2</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span> <span class="n">roi2</span><span class="p">,</span> <span class="s">&#39;euclidean&#39;</span><span class="p">)</span>
+        <span class="n">min1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">dist1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">min2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">dist2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">min1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">min2</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">yield</span> <span class="n">sl</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">sl</span>
+
+
+<span class="k">def</span> <span class="nf">_orient_list</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">roi1</span><span class="p">,</span> <span class="n">roi2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper function to `orient_by_rois`</span>
+
+<span class="sd">    Performs the inner loop separately. This is needed, because functions with</span>
+<span class="sd">    `yield` always return a generator.</span>
+
+<span class="sd">    Flips the streamlines in place (as needed) and returns a reference to the</span>
+<span class="sd">    updated list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">sl</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">out</span><span class="p">):</span>
+        <span class="n">dist1</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span> <span class="n">roi1</span><span class="p">,</span> <span class="s">&#39;euclidean&#39;</span><span class="p">)</span>
+        <span class="n">dist2</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span> <span class="n">roi2</span><span class="p">,</span> <span class="s">&#39;euclidean&#39;</span><span class="p">)</span>
+        <span class="n">min1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">dist1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">min2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">dist2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">min1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">min2</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">sl</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span> <span class="nf">orient_by_rois</span><span class="p">(</span><span class="n">streamlines</span><span class="p">,</span> <span class="n">roi1</span><span class="p">,</span> <span class="n">roi2</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="k">False</span><span class="p">,</span>
+                   <span class="n">as_generator</span><span class="o">=</span><span class="k">False</span><span class="p">,</span> <span class="n">affine</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Orient a set of streamlines according to a pair of ROIs</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    streamlines : list or generator</span>
+<span class="sd">        List or generator of 2d arrays of 3d coordinates. Each array contains</span>
+<span class="sd">        the xyz coordinates of a single streamline.</span>
+<span class="sd">    roi1, roi2 : ndarray</span>
+<span class="sd">        Binary masks designating the location of the regions of interest, or</span>
+<span class="sd">        coordinate arrays (n-by-3 array with ROI coordinate in each row).</span>
+<span class="sd">    in_place : bool</span>
+<span class="sd">        Whether to make the change in-place in the original list</span>
+<span class="sd">        (and return a reference to the list), or to make a copy of the list</span>
+<span class="sd">        and return this copy, with the relevant streamlines reoriented.</span>
+<span class="sd">        Default: False.</span>
+<span class="sd">    as_generator : bool</span>
+<span class="sd">        Whether to return a generator as output. Default: False</span>
+<span class="sd">    affine : ndarray</span>
+<span class="sd">        Affine transformation from voxels to streamlines. Default: identity.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    streamlines : list or generator</span>
+<span class="sd">        The same 3D arrays as a list or generator, but reoriented with respect</span>
+<span class="sd">        to the ROIs</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; streamlines = [np.array([[0, 0., 0],</span>
+<span class="sd">    ...                          [1, 0., 0.],</span>
+<span class="sd">    ...                          [2, 0., 0.]]),</span>
+<span class="sd">    ...                np.array([[2, 0., 0.],</span>
+<span class="sd">    ...                          [1, 0., 0],</span>
+<span class="sd">    ...                          [0, 0,  0.]])]</span>
+<span class="sd">    &gt;&gt;&gt; roi1 = np.zeros((4, 4, 4), dtype=bool)</span>
+<span class="sd">    &gt;&gt;&gt; roi2 = np.zeros_like(roi1)</span>
+<span class="sd">    &gt;&gt;&gt; roi1[0, 0, 0] = True</span>
+<span class="sd">    &gt;&gt;&gt; roi2[1, 0, 0] = True</span>
+<span class="sd">    &gt;&gt;&gt; orient_by_rois(streamlines, roi1, roi2)</span>
+<span class="sd">    [array([[ 0.,  0.,  0.],</span>
+<span class="sd">           [ 1.,  0.,  0.],</span>
+<span class="sd">           [ 2.,  0.,  0.]]), array([[ 0.,  0.,  0.],</span>
+<span class="sd">           [ 1.,  0.,  0.],</span>
+<span class="sd">           [ 2.,  0.,  0.]])]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># If we don&#39;t already have coordinates on our hands:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">roi1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">roi1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">roi1</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">roi2</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">roi2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">roi2</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">if</span> <span class="n">affine</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">roi1</span> <span class="o">=</span> <span class="n">apply_affine</span><span class="p">(</span><span class="n">affine</span><span class="p">,</span> <span class="n">roi1</span><span class="p">)</span>
+        <span class="n">roi2</span> <span class="o">=</span> <span class="n">apply_affine</span><span class="p">(</span><span class="n">affine</span><span class="p">,</span> <span class="n">roi2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">as_generator</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">in_place</span><span class="p">:</span>
+            <span class="n">w_s</span> <span class="o">=</span> <span class="s">&quot;Cannot return a generator when in_place is set to True&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">w_s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_orient_generator</span><span class="p">(</span><span class="n">streamlines</span><span class="p">,</span> <span class="n">roi1</span><span class="p">,</span> <span class="n">roi2</span><span class="p">)</span>
+
+    <span class="c"># If it&#39;s a generator on input, we may as well generate it</span>
+    <span class="c"># here and now:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">streamlines</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">GeneratorType</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">streamlines</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">in_place</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">streamlines</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># Make a copy, so you don&#39;t change the output in place:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">streamlines</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_orient_list</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">roi1</span><span class="p">,</span> <span class="n">roi2</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,1257 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dipy.align.metrics &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>dipy.align.metrics</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for dipy.align.metrics</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;  Metrics for Symmetric Diffeomorphic Registration &quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">ndimage</span>
+<span class="kn">from</span> <span class="nn">dipy.utils.six</span> <span class="k">import</span> <span class="n">with_metaclass</span>
+<span class="kn">from</span> <span class="nn">dipy.align</span> <span class="k">import</span> <span class="n">vector_fields</span> <span class="k">as</span> <span class="n">vfu</span>
+<span class="kn">from</span> <span class="nn">dipy.align</span> <span class="k">import</span> <span class="n">sumsqdiff</span> <span class="k">as</span> <span class="n">ssd</span>
+<span class="kn">from</span> <span class="nn">dipy.align</span> <span class="k">import</span> <span class="n">crosscorr</span> <span class="k">as</span> <span class="n">cc</span>
+<span class="kn">from</span> <span class="nn">dipy.align</span> <span class="k">import</span> <span class="n">expectmax</span> <span class="k">as</span> <span class="n">em</span>
+<span class="kn">from</span> <span class="nn">dipy.align</span> <span class="k">import</span> <span class="n">floating</span>
+
+
+<span class="k">class</span> <span class="nc">SimilarityMetric</span><span class="p">(</span><span class="n">with_metaclass</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">,</span> <span class="nb">object</span><span class="p">)):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot; Similarity Metric abstract class</span>
+
+<span class="sd">        A similarity metric is in charge of keeping track of the numerical</span>
+<span class="sd">        value of the similarity (or distance) between the two given images. It</span>
+<span class="sd">        also computes the update field for the forward and inverse displacement</span>
+<span class="sd">        fields to be used in a gradient-based optimization algorithm. Note that</span>
+<span class="sd">        this metric does not depend on any transformation (affine or</span>
+<span class="sd">        non-linear) so it assumes the static and moving images are already</span>
+<span class="sd">        warped</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dim : int (either 2 or 3)</span>
+<span class="sd">            the dimension of the image domain</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">levels_above</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">levels_below</span> <span class="o">=</span> <span class="k">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_image</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_affine</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_spacing</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_direction</span> <span class="o">=</span> <span class="k">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_affine</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_spacing</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_direction</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask0</span> <span class="o">=</span> <span class="k">False</span>
+
+    <span class="k">def</span> <span class="nf">set_levels_below</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">levels</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Informs the metric how many pyramid levels are below the current one</span>
+
+<span class="sd">        Informs this metric the number of pyramid levels below the current one.</span>
+<span class="sd">        The metric may change its behavior (e.g. number of inner iterations)</span>
+<span class="sd">        accordingly</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        levels : int</span>
+<span class="sd">            the number of levels below the current Gaussian Pyramid level</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">levels_below</span> <span class="o">=</span> <span class="n">levels</span>
+
+    <span class="k">def</span> <span class="nf">set_levels_above</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">levels</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Informs the metric how many pyramid levels are above the current one</span>
+
+<span class="sd">        Informs this metric the number of pyramid levels above the current one.</span>
+<span class="sd">        The metric may change its behavior (e.g. number of inner iterations)</span>
+<span class="sd">        accordingly</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        levels : int</span>
+<span class="sd">            the number of levels above the current Gaussian Pyramid level</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">levels_above</span> <span class="o">=</span> <span class="n">levels</span>
+
+    <span class="k">def</span> <span class="nf">set_static_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static_image</span><span class="p">,</span> <span class="n">static_affine</span><span class="p">,</span> <span class="n">static_spacing</span><span class="p">,</span>
+                         <span class="n">static_direction</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Sets the static image being compared against the moving one.</span>
+
+<span class="sd">        Sets the static image. The default behavior (of this abstract class) is</span>
+<span class="sd">        simply to assign the reference to an attribute, but</span>
+<span class="sd">        generalizations of the metric may need to perform other operations</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        static_image : array, shape (R, C) or (S, R, C)</span>
+<span class="sd">            the static image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_image</span> <span class="o">=</span> <span class="n">static_image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_affine</span> <span class="o">=</span> <span class="n">static_affine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_spacing</span> <span class="o">=</span> <span class="n">static_spacing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_direction</span> <span class="o">=</span> <span class="n">static_direction</span>
+
+    <span class="k">def</span> <span class="nf">use_static_image_dynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">original_static_image</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;This is called by the optimizer just after setting the static image.</span>
+
+<span class="sd">        This method allows the metric to compute any useful</span>
+<span class="sd">        information from knowing how the current static image was generated</span>
+<span class="sd">        (as the transformation of an original static image). This method is</span>
+<span class="sd">        called by the optimizer just after it sets the static image.</span>
+<span class="sd">        Transformation will be an instance of DiffeomorficMap or None</span>
+<span class="sd">        if the original_static_image equals self.moving_image.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        original_static_image : array, shape (R, C) or (S, R, C)</span>
+<span class="sd">            original image from which the current static image was generated</span>
+<span class="sd">        transformation : DiffeomorphicMap object</span>
+<span class="sd">            the transformation that was applied to original image to generate</span>
+<span class="sd">            the current static image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">set_moving_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moving_image</span><span class="p">,</span> <span class="n">moving_affine</span><span class="p">,</span> <span class="n">moving_spacing</span><span class="p">,</span>
+                         <span class="n">moving_direction</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Sets the moving image being compared against the static one.</span>
+
+<span class="sd">        Sets the moving image. The default behavior (of this abstract class) is</span>
+<span class="sd">        simply to assign the reference to an attribute, but</span>
+<span class="sd">        generalizations of the metric may need to perform other operations</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        moving_image : array, shape (R, C) or (S, R, C)</span>
+<span class="sd">            the moving image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span> <span class="o">=</span> <span class="n">moving_image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_affine</span> <span class="o">=</span> <span class="n">moving_affine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_spacing</span> <span class="o">=</span> <span class="n">moving_spacing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_direction</span> <span class="o">=</span> <span class="n">moving_direction</span>
+
+    <span class="k">def</span> <span class="nf">use_moving_image_dynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">original_moving_image</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;This is called by the optimizer just after setting the moving image</span>
+
+<span class="sd">        This method allows the metric to compute any useful</span>
+<span class="sd">        information from knowing how the current static image was generated</span>
+<span class="sd">        (as the transformation of an original static image). This method is</span>
+<span class="sd">        called by the optimizer just after it sets the static image.</span>
+<span class="sd">        Transformation will be an instance of DiffeomorficMap or None if</span>
+<span class="sd">        the original_moving_image equals self.moving_image.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        original_moving_image : array, shape (R, C) or (S, R, C)</span>
+<span class="sd">            original image from which the current moving image was generated</span>
+<span class="sd">        transformation : DiffeomorphicMap object</span>
+<span class="sd">            the transformation that was applied to original image to generate</span>
+<span class="sd">            the current moving image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">initialize_iteration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Prepares the metric to compute one displacement field iteration.</span>
+
+<span class="sd">        This method will be called before any compute_forward or</span>
+<span class="sd">        compute_backward call, this allows the Metric to pre-compute any useful</span>
+<span class="sd">        information for speeding up the update computations. This</span>
+<span class="sd">        initialization was needed in ANTS because the updates are called once</span>
+<span class="sd">        per voxel. In Python this is unpractical, though.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">free_iteration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Releases the resources no longer needed by the metric</span>
+
+<span class="sd">        This method is called by the RegistrationOptimizer after the required</span>
+<span class="sd">        iterations have been computed (forward and / or backward) so that the</span>
+<span class="sd">        SimilarityMetric can safely delete any data it computed as part of the</span>
+<span class="sd">        initialization</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">compute_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Computes one step bringing the reference image towards the static.</span>
+
+<span class="sd">        Computes the forward update field to register the moving image towards</span>
+<span class="sd">        the static image in a gradient-based optimization algorithm</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">compute_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Computes one step bringing the static image towards the moving.</span>
+
+<span class="sd">        Computes the backward update field to register the static image towards</span>
+<span class="sd">        the moving image in a gradient-based optimization algorithm</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Numerical value assigned by this metric to the current image pair</span>
+
+<span class="sd">        Must return the numeric value of the similarity between the given</span>
+<span class="sd">        static and moving images</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="CCMetric"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.CCMetric">[docs]</a><span class="k">class</span> <span class="nc">CCMetric</span><span class="p">(</span><span class="n">SimilarityMetric</span><span class="p">):</span>
+
+<div class="viewcode-block" id="CCMetric.__init__"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.CCMetric.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">sigma_diff</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Normalized Cross-Correlation Similarity metric.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dim : int (either 2 or 3)</span>
+<span class="sd">            the dimension of the image domain</span>
+<span class="sd">        sigma_diff : the standard deviation of the Gaussian smoothing kernel to</span>
+<span class="sd">            be applied to the update field at each iteration</span>
+<span class="sd">        radius : int</span>
+<span class="sd">            the radius of the squared (cubic) neighborhood at each voxel to be</span>
+<span class="sd">            considered to compute the cross correlation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CCMetric</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigma_diff</span> <span class="o">=</span> <span class="n">sigma_diff</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connect_functions</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_connect_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Assign the methods to be called according to the image dimension</span>
+
+<span class="sd">        Assigns the appropriate functions to be called for precomputing the</span>
+<span class="sd">        cross-correlation factors according to the dimension of the input</span>
+<span class="sd">        images</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">precompute_factors</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">precompute_cc_factors_2d</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compute_forward_step</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">compute_cc_forward_step_2d</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compute_backward_step</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">compute_cc_backward_step_2d</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reorient_vector_field</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">reorient_vector_field_2d</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">precompute_factors</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">precompute_cc_factors_3d</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compute_forward_step</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">compute_cc_forward_step_3d</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compute_backward_step</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">compute_cc_backward_step_3d</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reorient_vector_field</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">reorient_vector_field_3d</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;CC Metric not defined for dim. %d&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+
+<div class="viewcode-block" id="CCMetric.initialize_iteration"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.CCMetric.initialize_iteration">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_iteration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Prepares the metric to compute one displacement field iteration.</span>
+
+<span class="sd">        Pre-computes the cross-correlation factors for efficient computation</span>
+<span class="sd">        of the gradient of the Cross Correlation w.r.t. the displacement field.</span>
+<span class="sd">        It also pre-computes the image gradients in the physical space by</span>
+<span class="sd">        re-orienting the gradients in the voxel space using the corresponding</span>
+<span class="sd">        affine transformations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">factors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">precompute_factors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_image</span><span class="p">,</span>
+                                               <span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span><span class="p">,</span>
+                                               <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">factors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">factors</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">floating</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">grad</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">grad</span>
+
+        <span class="c"># Convert moving image&#39;s gradient field from voxel to physical space</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_spacing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_spacing</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_direction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reorient_vector_field</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">moving_direction</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">floating</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">grad</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_image</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">grad</span>
+
+        <span class="c"># Convert moving image&#39;s gradient field from voxel to physical space</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_spacing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_spacing</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_direction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reorient_vector_field</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">static_direction</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CCMetric.free_iteration"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.CCMetric.free_iteration">[docs]</a>    <span class="k">def</span> <span class="nf">free_iteration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Frees the resources allocated during initialization</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span></div>
+
+<div class="viewcode-block" id="CCMetric.compute_forward"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.CCMetric.compute_forward">[docs]</a>    <span class="k">def</span> <span class="nf">compute_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Computes one step bringing the moving image towards the static.</span>
+
+<span class="sd">        Computes the update displacement field to be used for registration of</span>
+<span class="sd">        the moving image towards the static image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">displacement</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_forward_step</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+        <span class="n">displacement</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">displacement</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">):</span>
+            <span class="n">displacement</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span>
+                <span class="n">displacement</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_diff</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">displacement</span></div>
+
+<div class="viewcode-block" id="CCMetric.compute_backward"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.CCMetric.compute_backward">[docs]</a>    <span class="k">def</span> <span class="nf">compute_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Computes one step bringing the static image towards the moving.</span>
+
+<span class="sd">        Computes the update displacement field to be used for registration of</span>
+<span class="sd">        the static image towards the moving image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">displacement</span><span class="p">,</span> <span class="n">energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_backward_step</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span><span class="p">,</span>
+                                                          <span class="bp">self</span><span class="o">.</span><span class="n">factors</span><span class="p">,</span>
+                                                          <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+        <span class="n">displacement</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">displacement</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">):</span>
+            <span class="n">displacement</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span>
+                <span class="n">displacement</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_diff</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">displacement</span></div>
+
+<div class="viewcode-block" id="CCMetric.get_energy"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.CCMetric.get_energy">[docs]</a>    <span class="k">def</span> <span class="nf">get_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Numerical value assigned by this metric to the current image pair</span>
+
+<span class="sd">        Returns the Cross Correlation (data term) energy computed at the</span>
+<span class="sd">        largest iteration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span></div></div>
+
+
+<div class="viewcode-block" id="EMMetric"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.EMMetric">[docs]</a><span class="k">class</span> <span class="nc">EMMetric</span><span class="p">(</span><span class="n">SimilarityMetric</span><span class="p">):</span>
+<div class="viewcode-block" id="EMMetric.__init__"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.EMMetric.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">dim</span><span class="p">,</span>
+                 <span class="n">smooth</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                 <span class="n">inner_iter</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                 <span class="n">q_levels</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+                 <span class="n">double_gradient</span><span class="o">=</span><span class="k">True</span><span class="p">,</span>
+                 <span class="n">step_type</span><span class="o">=</span><span class="s">&#39;gauss_newton&#39;</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Expectation-Maximization Metric</span>
+
+<span class="sd">        Similarity metric based on the Expectation-Maximization algorithm to</span>
+<span class="sd">        handle multi-modal images. The transfer function is modeled as a set of</span>
+<span class="sd">        hidden random variables that are estimated at each iteration of the</span>
+<span class="sd">        algorithm.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dim : int (either 2 or 3)</span>
+<span class="sd">            the dimension of the image domain</span>
+<span class="sd">        smooth : float</span>
+<span class="sd">            smoothness parameter, the larger the value the smoother the</span>
+<span class="sd">            deformation field</span>
+<span class="sd">        inner_iter : int</span>
+<span class="sd">            number of iterations to be performed at each level of the multi-</span>
+<span class="sd">            resolution Gauss-Seidel optimization algorithm (this is not the</span>
+<span class="sd">            number of steps per Gaussian Pyramid level, that parameter must</span>
+<span class="sd">            be set for the optimizer, not the metric)</span>
+<span class="sd">        q_levels : number of quantization levels (equal to the number of hidden</span>
+<span class="sd">            variables in the EM algorithm)</span>
+<span class="sd">        double_gradient : boolean</span>
+<span class="sd">            if True, the gradient of the expected static image under the moving</span>
+<span class="sd">            modality will be added to the gradient of the moving image,</span>
+<span class="sd">            similarly, the gradient of the expected moving image under the</span>
+<span class="sd">            static modality will be added to the gradient of the static image.</span>
+<span class="sd">        step_type : string (&#39;gauss_newton&#39;, &#39;demons&#39;)</span>
+<span class="sd">            the optimization schedule to be used in the multi-resolution</span>
+<span class="sd">            Gauss-Seidel optimization algorithm (not used if Demons Step is</span>
+<span class="sd">            selected)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">EMMetric</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">smooth</span> <span class="o">=</span> <span class="n">smooth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inner_iter</span> <span class="o">=</span> <span class="n">inner_iter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_levels</span> <span class="o">=</span> <span class="n">q_levels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_double_gradient</span> <span class="o">=</span> <span class="n">double_gradient</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step_type</span> <span class="o">=</span> <span class="n">step_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_image_mask</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_image_mask</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">staticq_means_field</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">movingq_means_field</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">movingq_levels</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">staticq_levels</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connect_functions</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_connect_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Assign the methods to be called according to the image dimension</span>
+
+<span class="sd">        Assigns the appropriate functions to be called for image quantization,</span>
+<span class="sd">        statistics computation and multi-resolution iterations according to the</span>
+<span class="sd">        dimension of the input images</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quantize</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">quantize_positive_2d</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compute_stats</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">compute_masked_class_stats_2d</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reorient_vector_field</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">reorient_vector_field_2d</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quantize</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">quantize_positive_3d</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compute_stats</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">compute_masked_class_stats_3d</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reorient_vector_field</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">reorient_vector_field_3d</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;EM Metric not defined for dim. %d&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_type</span> <span class="o">==</span> <span class="s">&#39;demons&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compute_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_demons_step</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_type</span> <span class="o">==</span> <span class="s">&#39;gauss_newton&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compute_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_gauss_newton_step</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Opt. step %s not defined&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_type</span><span class="p">))</span>
+
+<div class="viewcode-block" id="EMMetric.initialize_iteration"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.EMMetric.initialize_iteration">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_iteration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Prepares the metric to compute one displacement field iteration.</span>
+
+<span class="sd">        Pre-computes the transfer functions (hidden random variables) and</span>
+<span class="sd">        variances of the estimators. Also pre-computes the gradient of both</span>
+<span class="sd">        input images. Note that once the images are transformed to the opposite</span>
+<span class="sd">        modality, the gradient of the transformed images can be used with the</span>
+<span class="sd">        gradient of the corresponding modality in the same fashion as</span>
+<span class="sd">        diff-demons does for mono-modality images. If the flag</span>
+<span class="sd">        self.use_double_gradient is True these gradients are averaged.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sampling_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_image_mask</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">moving_image_mask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampling_mask</span> <span class="o">=</span> <span class="n">sampling_mask</span>
+        <span class="n">staticq</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">staticq_levels</span><span class="p">,</span> <span class="n">hist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_image</span><span class="p">,</span>
+                                                           <span class="bp">self</span><span class="o">.</span><span class="n">q_levels</span><span class="p">)</span>
+        <span class="n">staticq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">staticq</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">staticq_levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">staticq_levels</span><span class="p">)</span>
+        <span class="n">staticq_means</span><span class="p">,</span> <span class="n">staticq_vars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_stats</span><span class="p">(</span><span class="n">sampling_mask</span><span class="p">,</span>
+                                                         <span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span><span class="p">,</span>
+                                                         <span class="bp">self</span><span class="o">.</span><span class="n">q_levels</span><span class="p">,</span>
+                                                         <span class="n">staticq</span><span class="p">)</span>
+        <span class="n">staticq_means</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">staticq_means</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">staticq_means</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">staticq_variances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">staticq_vars</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">staticq_sigma_sq_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">staticq_variances</span><span class="p">[</span><span class="n">staticq</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">staticq_means_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">staticq_means</span><span class="p">[</span><span class="n">staticq</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">floating</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">grad</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">grad</span>
+
+        <span class="c"># Convert moving image&#39;s gradient field from voxel to physical space</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_spacing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_spacing</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_direction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reorient_vector_field</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">moving_direction</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">floating</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">grad</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_image</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">grad</span>
+
+        <span class="c"># Convert moving image&#39;s gradient field from voxel to physical space</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_spacing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_spacing</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_direction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reorient_vector_field</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">static_direction</span><span class="p">)</span>
+
+        <span class="n">movingq</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">movingq_levels</span><span class="p">,</span> <span class="n">hist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span><span class="p">,</span>
+                                                           <span class="bp">self</span><span class="o">.</span><span class="n">q_levels</span><span class="p">)</span>
+        <span class="n">movingq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">movingq</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">movingq_levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">movingq_levels</span><span class="p">)</span>
+        <span class="n">movingq_means</span><span class="p">,</span> <span class="n">movingq_variances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_stats</span><span class="p">(</span>
+            <span class="n">sampling_mask</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_levels</span><span class="p">,</span> <span class="n">movingq</span><span class="p">)</span>
+        <span class="n">movingq_means</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">movingq_means</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">movingq_means</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">movingq_variances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">movingq_variances</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">movingq_sigma_sq_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">movingq_variances</span><span class="p">[</span><span class="n">movingq</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">movingq_means_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">movingq_means</span><span class="p">[</span><span class="n">movingq</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_double_gradient</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">grad</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">staticq_means_field</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">grad</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">grad</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">movingq_means_field</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">grad</span></div>
+
+<div class="viewcode-block" id="EMMetric.free_iteration"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.EMMetric.free_iteration">[docs]</a>    <span class="k">def</span> <span class="nf">free_iteration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;</span>
+<span class="sd">        Frees the resources allocated during initialization</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling_mask</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">staticq_levels</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">movingq_levels</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">staticq_sigma_sq_field</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">staticq_means_field</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">movingq_sigma_sq_field</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">movingq_means_field</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span></div>
+
+<div class="viewcode-block" id="EMMetric.compute_forward"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.EMMetric.compute_forward">[docs]</a>    <span class="k">def</span> <span class="nf">compute_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes one step bringing the reference image towards the static.</span>
+
+<span class="sd">        Computes the forward update field to register the moving image towards</span>
+<span class="sd">        the static image in a gradient-based optimization algorithm</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_step</span><span class="p">(</span><span class="k">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EMMetric.compute_backward"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.EMMetric.compute_backward">[docs]</a>    <span class="k">def</span> <span class="nf">compute_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Computes one step bringing the static image towards the moving.</span>
+
+<span class="sd">        Computes the update displacement field to be used for registration of</span>
+<span class="sd">        the static image towards the moving image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_step</span><span class="p">(</span><span class="k">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EMMetric.compute_gauss_newton_step"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.EMMetric.compute_gauss_newton_step">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gauss_newton_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forward_step</span><span class="o">=</span><span class="k">True</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Computes the Gauss-Newton energy minimization step</span>
+
+<span class="sd">        Computes the Newton step to minimize this energy, i.e., minimizes the</span>
+<span class="sd">        linearized energy function with respect to the</span>
+<span class="sd">        regularized displacement field (this step does not require</span>
+<span class="sd">        post-smoothing, as opposed to the demons step, which does not include</span>
+<span class="sd">        regularization). To accelerate convergence we use the multi-grid</span>
+<span class="sd">        Gauss-Seidel algorithm proposed by Bruhn and Weickert et al [Bruhn05]</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        forward_step : boolean</span>
+<span class="sd">            if True, computes the Newton step in the forward direction</span>
+<span class="sd">            (warping the moving towards the static image). If False,</span>
+<span class="sd">            computes the backward step (warping the static image to the</span>
+<span class="sd">            moving image)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        displacement : array, shape (R, C, 2) or (S, R, C, 3)</span>
+<span class="sd">            the Newton step</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        [Bruhn05] Andres Bruhn and Joachim Weickert, &quot;Towards ultimate motion</span>
+<span class="sd">                  estimation: combining highest accuracy with real-time</span>
+<span class="sd">                  performance&quot;, 10th IEEE International Conference on Computer</span>
+<span class="sd">                  Vision, 2005. ICCV 2005.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reference_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_image</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="k">if</span> <span class="n">forward_step</span><span class="p">:</span>
+            <span class="n">gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">staticq_means_field</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span>
+            <span class="n">sigma_sq_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">staticq_sigma_sq_field</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">movingq_means_field</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_image</span>
+            <span class="n">sigma_sq_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">movingq_sigma_sq_field</span>
+
+        <span class="n">displacement</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">reference_shape</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,),</span>
+                                <span class="n">dtype</span><span class="o">=</span><span class="n">floating</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">v_cycle_2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels_below</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">inner_iter</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span>
+                                     <span class="n">sigma_sq_field</span><span class="p">,</span>
+                                     <span class="n">gradient</span><span class="p">,</span>
+                                     <span class="k">None</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">smooth</span><span class="p">,</span>
+                                     <span class="n">displacement</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">v_cycle_3d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels_below</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">inner_iter</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span>
+                                     <span class="n">sigma_sq_field</span><span class="p">,</span>
+                                     <span class="n">gradient</span><span class="p">,</span>
+                                     <span class="k">None</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">smooth</span><span class="p">,</span>
+                                     <span class="n">displacement</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">displacement</span></div>
+
+<div class="viewcode-block" id="EMMetric.compute_demons_step"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.EMMetric.compute_demons_step">[docs]</a>    <span class="k">def</span> <span class="nf">compute_demons_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forward_step</span><span class="o">=</span><span class="k">True</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Demons step for EM metric</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        forward_step : boolean</span>
+<span class="sd">            if True, computes the Demons step in the forward direction</span>
+<span class="sd">            (warping the moving towards the static image). If False,</span>
+<span class="sd">            computes the backward step (warping the static image to the</span>
+<span class="sd">            moving image)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        displacement : array, shape (R, C, 2) or (S, R, C, 3)</span>
+<span class="sd">            the Demons step</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sigma_reg_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_spacing</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span>
+
+        <span class="k">if</span> <span class="n">forward_step</span><span class="p">:</span>
+            <span class="n">gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span>
+            <span class="n">delta_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_image</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">movingq_means_field</span>
+            <span class="n">sigma_sq_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">movingq_sigma_sq_field</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span>
+            <span class="n">delta_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">staticq_means_field</span>
+            <span class="n">sigma_sq_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">staticq_sigma_sq_field</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">compute_em_demons_step_2d</span><span class="p">(</span><span class="n">delta_field</span><span class="p">,</span>
+                                                             <span class="n">sigma_sq_field</span><span class="p">,</span>
+                                                             <span class="n">gradient</span><span class="p">,</span>
+                                                             <span class="n">sigma_reg_2</span><span class="p">,</span>
+                                                             <span class="k">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">compute_em_demons_step_3d</span><span class="p">(</span><span class="n">delta_field</span><span class="p">,</span>
+                                                             <span class="n">sigma_sq_field</span><span class="p">,</span>
+                                                             <span class="n">gradient</span><span class="p">,</span>
+                                                             <span class="n">sigma_reg_2</span><span class="p">,</span>
+                                                             <span class="k">None</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">):</span>
+            <span class="n">step</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">step</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span>
+                                                           <span class="bp">self</span><span class="o">.</span><span class="n">smooth</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">step</span></div>
+
+<div class="viewcode-block" id="EMMetric.get_energy"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.EMMetric.get_energy">[docs]</a>    <span class="k">def</span> <span class="nf">get_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;The numerical value assigned by this metric to the current image pair</span>
+
+<span class="sd">        Returns the EM (data term) energy computed at the largest</span>
+<span class="sd">        iteration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span></div>
+
+<div class="viewcode-block" id="EMMetric.use_static_image_dynamics"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.EMMetric.use_static_image_dynamics">[docs]</a>    <span class="k">def</span> <span class="nf">use_static_image_dynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">original_static_image</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;This is called by the optimizer just after setting the static image.</span>
+
+<span class="sd">        EMMetric takes advantage of the image dynamics by computing the</span>
+<span class="sd">        current static image mask from the originalstaticImage mask (warped</span>
+<span class="sd">        by nearest neighbor interpolation)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        original_static_image : array, shape (R, C) or (S, R, C)</span>
+<span class="sd">            the original static image from which the current static image was</span>
+<span class="sd">            generated, the current static image is the one that was provided</span>
+<span class="sd">            via &#39;set_static_image(...)&#39;, which may not be the same as the</span>
+<span class="sd">            original static image but a warped version of it (even the static</span>
+<span class="sd">            image changes during Symmetric Normalization, not only the moving</span>
+<span class="sd">            one).</span>
+<span class="sd">        transformation : DiffeomorphicMap object</span>
+<span class="sd">            the transformation that was applied to the original_static_image</span>
+<span class="sd">            to generate the current static image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_image_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">original_static_image</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">transformation</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_image</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="n">affine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_affine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_image_mask</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">static_image_mask</span><span class="p">,</span> <span class="s">&#39;nearest&#39;</span><span class="p">,</span> <span class="k">None</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">affine</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EMMetric.use_moving_image_dynamics"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.EMMetric.use_moving_image_dynamics">[docs]</a>    <span class="k">def</span> <span class="nf">use_moving_image_dynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">original_moving_image</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;This is called by the optimizer just after setting the moving image.</span>
+
+<span class="sd">        EMMetric takes advantage of the image dynamics by computing the</span>
+<span class="sd">        current moving image mask from the original_moving_image mask (warped</span>
+<span class="sd">        by nearest neighbor interpolation)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        original_moving_image : array, shape (R, C) or (S, R, C)</span>
+<span class="sd">            the original moving image from which the current moving image was</span>
+<span class="sd">            generated, the current moving image is the one that was provided</span>
+<span class="sd">            via &#39;set_moving_image(...)&#39;, which may not be the same as the</span>
+<span class="sd">            original moving image but a warped version of it.</span>
+<span class="sd">        transformation : DiffeomorphicMap object</span>
+<span class="sd">            the transformation that was applied to the original_moving_image</span>
+<span class="sd">            to generate the current moving image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_image_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">original_moving_image</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">transformation</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="n">affine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_affine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_image_mask</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">moving_image_mask</span><span class="p">,</span> <span class="s">&#39;nearest&#39;</span><span class="p">,</span> <span class="k">None</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">affine</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="SSDMetric"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.SSDMetric">[docs]</a><span class="k">class</span> <span class="nc">SSDMetric</span><span class="p">(</span><span class="n">SimilarityMetric</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SSDMetric.__init__"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.SSDMetric.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">inner_iter</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">step_type</span><span class="o">=</span><span class="s">&#39;demons&#39;</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Sum of Squared Differences (SSD) Metric</span>
+
+<span class="sd">        Similarity metric for (mono-modal) nonlinear image registration defined</span>
+<span class="sd">        by the sum of squared differences (SSD)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dim : int (either 2 or 3)</span>
+<span class="sd">            the dimension of the image domain</span>
+<span class="sd">        smooth : float</span>
+<span class="sd">            smoothness parameter, the larger the value the smoother the</span>
+<span class="sd">            deformation field</span>
+<span class="sd">        inner_iter : int</span>
+<span class="sd">            number of iterations to be performed at each level of the multi-</span>
+<span class="sd">            resolution Gauss-Seidel optimization algorithm (this is not the</span>
+<span class="sd">            number of steps per Gaussian Pyramid level, that parameter must</span>
+<span class="sd">            be set for the optimizer, not the metric)</span>
+<span class="sd">        step_type : string</span>
+<span class="sd">            the displacement field step to be computed when &#39;compute_forward&#39;</span>
+<span class="sd">            and &#39;compute_backward&#39; are called. Either &#39;demons&#39; or</span>
+<span class="sd">            &#39;gauss_newton&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SSDMetric</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">smooth</span> <span class="o">=</span> <span class="n">smooth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inner_iter</span> <span class="o">=</span> <span class="n">inner_iter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step_type</span> <span class="o">=</span> <span class="n">step_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">levels_below</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connect_functions</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_connect_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Assign the methods to be called according to the image dimension</span>
+
+<span class="sd">        Assigns the appropriate functions to be called for vector field</span>
+<span class="sd">        reorientation and displacement field steps according to the</span>
+<span class="sd">        dimension of the input images and the select type of step (either</span>
+<span class="sd">        Demons or Gauss Newton)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reorient_vector_field</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">reorient_vector_field_2d</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reorient_vector_field</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">reorient_vector_field_3d</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;SSD Metric not defined for dim. %d&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_type</span> <span class="o">==</span> <span class="s">&#39;gauss_newton&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compute_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_gauss_newton_step</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_type</span> <span class="o">==</span> <span class="s">&#39;demons&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compute_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_demons_step</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Opt. step %s not defined&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_type</span><span class="p">))</span>
+
+<div class="viewcode-block" id="SSDMetric.initialize_iteration"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.SSDMetric.initialize_iteration">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_iteration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Prepares the metric to compute one displacement field iteration.</span>
+
+<span class="sd">        Pre-computes the gradient of the input images to be used in the</span>
+<span class="sd">        computation of the forward and backward steps.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">floating</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">grad</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gradient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">grad</span>
+
+        <span class="c"># Convert static image&#39;s gradient field from voxel to physical space</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_spacing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_spacing</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_direction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reorient_vector_field</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">moving_direction</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">floating</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">grad</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gradient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_image</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">grad</span>
+
+        <span class="c"># Convert static image&#39;s gradient field from voxel to physical space</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_spacing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_spacing</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_direction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reorient_vector_field</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">static_direction</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SSDMetric.compute_forward"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.SSDMetric.compute_forward">[docs]</a>    <span class="k">def</span> <span class="nf">compute_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Computes one step bringing the reference image towards the static.</span>
+
+<span class="sd">        Computes the update displacement field to be used for registration of</span>
+<span class="sd">        the moving image towards the static image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_step</span><span class="p">(</span><span class="k">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SSDMetric.compute_backward"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.SSDMetric.compute_backward">[docs]</a>    <span class="k">def</span> <span class="nf">compute_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Computes one step bringing the static image towards the moving.</span>
+
+<span class="sd">        Computes the update displacement field to be used for registration of</span>
+<span class="sd">        the static image towards the moving image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_step</span><span class="p">(</span><span class="k">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SSDMetric.compute_gauss_newton_step"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.SSDMetric.compute_gauss_newton_step">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gauss_newton_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forward_step</span><span class="o">=</span><span class="k">True</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Computes the Gauss-Newton energy minimization step</span>
+
+<span class="sd">        Minimizes the linearized energy function (Newton step) defined by the</span>
+<span class="sd">        sum of squared differences of corresponding pixels of the input images</span>
+<span class="sd">        with respect to the displacement field.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        forward_step : boolean</span>
+<span class="sd">            if True, computes the Newton step in the forward direction</span>
+<span class="sd">            (warping the moving towards the static image). If False,</span>
+<span class="sd">            computes the backward step (warping the static image to the</span>
+<span class="sd">            moving image)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        displacement : array, shape = static_image.shape + (3,)</span>
+<span class="sd">            if forward_step==True, the forward SSD Gauss-Newton step,</span>
+<span class="sd">            else, the backward step</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reference_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_image</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="k">if</span> <span class="n">forward_step</span><span class="p">:</span>
+            <span class="n">gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span>
+            <span class="n">delta_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_image</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span>
+            <span class="n">delta_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_image</span>
+
+        <span class="n">displacement</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">reference_shape</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,),</span>
+                                <span class="n">dtype</span><span class="o">=</span><span class="n">floating</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">v_cycle_2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels_below</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_iter</span><span class="p">,</span>
+                                     <span class="n">delta_field</span><span class="p">,</span> <span class="k">None</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="k">None</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">smooth</span><span class="p">,</span> <span class="n">displacement</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">v_cycle_3d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels_below</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_iter</span><span class="p">,</span>
+                                     <span class="n">delta_field</span><span class="p">,</span> <span class="k">None</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="k">None</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">smooth</span><span class="p">,</span> <span class="n">displacement</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">displacement</span></div>
+
+<div class="viewcode-block" id="SSDMetric.compute_demons_step"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.SSDMetric.compute_demons_step">[docs]</a>    <span class="k">def</span> <span class="nf">compute_demons_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forward_step</span><span class="o">=</span><span class="k">True</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Demons step for SSD metric</span>
+
+<span class="sd">        Computes the demons step proposed by Vercauteren et al.[Vercauteren09]</span>
+<span class="sd">        for the SSD metric.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        forward_step : boolean</span>
+<span class="sd">            if True, computes the Demons step in the forward direction</span>
+<span class="sd">            (warping the moving towards the static image). If False,</span>
+<span class="sd">            computes the backward step (warping the static image to the</span>
+<span class="sd">            moving image)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        displacement : array, shape (R, C, 2) or (S, R, C, 3)</span>
+<span class="sd">            the Demons step</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        [Vercauteren09] Tom Vercauteren, Xavier Pennec, Aymeric Perchant,</span>
+<span class="sd">                        Nicholas Ayache, &quot;Diffeomorphic Demons: Efficient</span>
+<span class="sd">                        Non-parametric Image Registration&quot;, Neuroimage 2009</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sigma_reg_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_spacing</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span>
+
+        <span class="k">if</span> <span class="n">forward_step</span><span class="p">:</span>
+            <span class="n">gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient_static</span>
+            <span class="n">delta_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_image</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient_moving</span>
+            <span class="n">delta_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_image</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_image</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">ssd</span><span class="o">.</span><span class="n">compute_ssd_demons_step_2d</span><span class="p">(</span><span class="n">delta_field</span><span class="p">,</span>
+                                                               <span class="n">gradient</span><span class="p">,</span>
+                                                               <span class="n">sigma_reg_2</span><span class="p">,</span>
+                                                               <span class="k">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">ssd</span><span class="o">.</span><span class="n">compute_ssd_demons_step_3d</span><span class="p">(</span><span class="n">delta_field</span><span class="p">,</span>
+                                                               <span class="n">gradient</span><span class="p">,</span>
+                                                               <span class="n">sigma_reg_2</span><span class="p">,</span>
+                                                               <span class="k">None</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">):</span>
+            <span class="n">step</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">step</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span>
+                                                           <span class="bp">self</span><span class="o">.</span><span class="n">smooth</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">step</span></div>
+
+<div class="viewcode-block" id="SSDMetric.get_energy"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.SSDMetric.get_energy">[docs]</a>    <span class="k">def</span> <span class="nf">get_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;The numerical value assigned by this metric to the current image pair</span>
+
+<span class="sd">        Returns the Sum of Squared Differences (data term) energy computed at</span>
+<span class="sd">        the largest iteration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span></div>
+
+<div class="viewcode-block" id="SSDMetric.free_iteration"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.SSDMetric.free_iteration">[docs]</a>    <span class="k">def</span> <span class="nf">free_iteration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;</span>
+<span class="sd">        Nothing to free for the SSD metric</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">v_cycle_2d</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">delta_field</span><span class="p">,</span> <span class="n">sigma_sq_field</span><span class="p">,</span> <span class="n">gradient_field</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span>
+               <span class="n">lambda_param</span><span class="p">,</span> <span class="n">displacement</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Multi-resolution Gauss-Seidel solver using V-type cycles</span>
+
+<span class="sd">    Multi-resolution Gauss-Seidel solver: solves the Gauss-Newton linear system</span>
+<span class="sd">    by first filtering (GS-iterate) the current level, then solves for the</span>
+<span class="sd">    residual at a coarser resolution and finally refines the solution at the</span>
+<span class="sd">    current resolution. This scheme corresponds to the V-cycle proposed by</span>
+<span class="sd">    Bruhn and Weickert[Bruhn05].</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">        number of levels of the multi-resolution algorithm (it will be called</span>
+<span class="sd">        recursively until level n == 0)</span>
+<span class="sd">    k : int</span>
+<span class="sd">        the number of iterations at each multi-resolution level</span>
+<span class="sd">    delta_field : array, shape (R, C)</span>
+<span class="sd">        the difference between the static and moving image (the &#39;derivative</span>
+<span class="sd">        w.r.t. time&#39; in the optical flow model)</span>
+<span class="sd">    sigma_sq_field : array, shape (R, C)</span>
+<span class="sd">        the variance of the gray level value at each voxel, according to the</span>
+<span class="sd">        EM model (for SSD, it is 1 for all voxels). Inf and 0 values</span>
+<span class="sd">        are processed specially to support infinite and zero variance.</span>
+<span class="sd">    gradient_field : array, shape (R, C, 2)</span>
+<span class="sd">        the gradient of the moving image</span>
+<span class="sd">    target : array, shape (R, C, 2)</span>
+<span class="sd">        right-hand side of the linear system to be solved in the Weickert&#39;s</span>
+<span class="sd">        multi-resolution algorithm</span>
+<span class="sd">    lambda_param : float</span>
+<span class="sd">        smoothness parameter, the larger its value the smoother the</span>
+<span class="sd">        displacement field</span>
+<span class="sd">    displacement : array, shape (R, C, 2)</span>
+<span class="sd">        the displacement field to start the optimization from</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    energy : the energy of the EM (or SSD if sigmafield[...]==1) metric at this</span>
+<span class="sd">        iteration</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Bruhn05] Andres Bruhn and Joachim Weickert, &quot;Towards ultimate motion</span>
+<span class="sd">              estimation: combining highest accuracy with real-time</span>
+<span class="sd">              performance&quot;, 10th IEEE International Conference on Computer</span>
+<span class="sd">              Vision, 2005. ICCV 2005.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># pre-smoothing</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="n">ssd</span><span class="o">.</span><span class="n">iterate_residual_displacement_field_ssd_2d</span><span class="p">(</span><span class="n">delta_field</span><span class="p">,</span>
+                                                       <span class="n">sigma_sq_field</span><span class="p">,</span>
+                                                       <span class="n">gradient_field</span><span class="p">,</span>
+                                                       <span class="n">target</span><span class="p">,</span>
+                                                       <span class="n">lambda_param</span><span class="p">,</span>
+                                                       <span class="n">displacement</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">energy</span> <span class="o">=</span> <span class="n">ssd</span><span class="o">.</span><span class="n">compute_energy_ssd_2d</span><span class="p">(</span><span class="n">delta_field</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">energy</span>
+
+    <span class="c"># solve at coarser grid</span>
+    <span class="n">residual</span> <span class="o">=</span> <span class="k">None</span>
+    <span class="n">residual</span> <span class="o">=</span> <span class="n">ssd</span><span class="o">.</span><span class="n">compute_residual_displacement_field_ssd_2d</span><span class="p">(</span><span class="n">delta_field</span><span class="p">,</span>
+                                                              <span class="n">sigma_sq_field</span><span class="p">,</span>
+                                                              <span class="n">gradient_field</span><span class="p">,</span>
+                                                              <span class="n">target</span><span class="p">,</span>
+                                                              <span class="n">lambda_param</span><span class="p">,</span>
+                                                              <span class="n">displacement</span><span class="p">,</span>
+                                                              <span class="n">residual</span><span class="p">)</span>
+    <span class="n">sub_residual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vfu</span><span class="o">.</span><span class="n">downsample_displacement_field_2d</span><span class="p">(</span><span class="n">residual</span><span class="p">))</span>
+    <span class="k">del</span> <span class="n">residual</span>
+    <span class="n">subsigma_sq_field</span> <span class="o">=</span> <span class="k">None</span>
+    <span class="k">if</span> <span class="n">sigma_sq_field</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">subsigma_sq_field</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">downsample_scalar_field_2d</span><span class="p">(</span><span class="n">sigma_sq_field</span><span class="p">)</span>
+    <span class="n">subdelta_field</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">downsample_scalar_field_2d</span><span class="p">(</span><span class="n">delta_field</span><span class="p">)</span>
+
+    <span class="n">subgradient_field</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="n">vfu</span><span class="o">.</span><span class="n">downsample_displacement_field_2d</span><span class="p">(</span><span class="n">gradient_field</span><span class="p">))</span>
+
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">displacement</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+    <span class="n">half_shape</span> <span class="o">=</span> <span class="p">((</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">sub_displacement</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">half_shape</span><span class="p">,</span>
+                                <span class="n">dtype</span><span class="o">=</span><span class="n">floating</span><span class="p">)</span>
+    <span class="n">sublambda_param</span> <span class="o">=</span> <span class="n">lambda_param</span><span class="o">*</span><span class="mf">0.25</span>
+    <span class="n">v_cycle_2d</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">subdelta_field</span><span class="p">,</span> <span class="n">subsigma_sq_field</span><span class="p">,</span> <span class="n">subgradient_field</span><span class="p">,</span>
+               <span class="n">sub_residual</span><span class="p">,</span> <span class="n">sublambda_param</span><span class="p">,</span> <span class="n">sub_displacement</span><span class="p">,</span> <span class="n">depth</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c"># displacement += np.array(</span>
+    <span class="c">#    vfu.upsample_displacement_field(sub_displacement, shape))</span>
+    <span class="n">displacement</span> <span class="o">+=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">resample_displacement_field_2d</span><span class="p">(</span><span class="n">sub_displacement</span><span class="p">,</span>
+                                                       <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]),</span>
+                                                       <span class="n">shape</span><span class="p">)</span>
+
+    <span class="c"># post-smoothing</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="n">ssd</span><span class="o">.</span><span class="n">iterate_residual_displacement_field_ssd_2d</span><span class="p">(</span><span class="n">delta_field</span><span class="p">,</span>
+                                                       <span class="n">sigma_sq_field</span><span class="p">,</span>
+                                                       <span class="n">gradient_field</span><span class="p">,</span>
+                                                       <span class="n">target</span><span class="p">,</span>
+                                                       <span class="n">lambda_param</span><span class="p">,</span>
+                                                       <span class="n">displacement</span><span class="p">)</span>
+    <span class="n">energy</span> <span class="o">=</span> <span class="n">ssd</span><span class="o">.</span><span class="n">compute_energy_ssd_2d</span><span class="p">(</span><span class="n">delta_field</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">energy</span>
+
+
+<span class="k">def</span> <span class="nf">v_cycle_3d</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">delta_field</span><span class="p">,</span> <span class="n">sigma_sq_field</span><span class="p">,</span> <span class="n">gradient_field</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span>
+               <span class="n">lambda_param</span><span class="p">,</span> <span class="n">displacement</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Multi-resolution Gauss-Seidel solver using V-type cycles</span>
+
+<span class="sd">    Multi-resolution Gauss-Seidel solver: solves the linear system by first</span>
+<span class="sd">    filtering (GS-iterate) the current level, then solves for the residual</span>
+<span class="sd">    at a coarser resolution and finally refines the solution at the current</span>
+<span class="sd">    resolution. This scheme corresponds to the V-cycle proposed by Bruhn and</span>
+<span class="sd">    Weickert[1].</span>
+<span class="sd">    [1] Andres Bruhn and Joachim Weickert, &quot;Towards ultimate motion estimation:</span>
+<span class="sd">        combining highest accuracy with real-time performance&quot;,</span>
+<span class="sd">        10th IEEE International Conference on Computer Vision, 2005.</span>
+<span class="sd">        ICCV 2005.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">        number of levels of the multi-resolution algorithm (it will be called</span>
+<span class="sd">        recursively until level n == 0)</span>
+<span class="sd">    k : int</span>
+<span class="sd">        the number of iterations at each multi-resolution level</span>
+<span class="sd">    delta_field : array, shape (S, R, C)</span>
+<span class="sd">        the difference between the static and moving image (the &#39;derivative</span>
+<span class="sd">        w.r.t. time&#39; in the optical flow model)</span>
+<span class="sd">    sigma_sq_field : array, shape (S, R, C)</span>
+<span class="sd">        the variance of the gray level value at each voxel, according to the</span>
+<span class="sd">        EM model (for SSD, it is 1 for all voxels). Inf and 0 values</span>
+<span class="sd">        are processed specially to support infinite and zero variance.</span>
+<span class="sd">    gradient_field : array, shape (S, R, C, 3)</span>
+<span class="sd">        the gradient of the moving image</span>
+<span class="sd">    target : array, shape (S, R, C, 3)</span>
+<span class="sd">        right-hand side of the linear system to be solved in the Weickert&#39;s</span>
+<span class="sd">        multi-resolution algorithm</span>
+<span class="sd">    lambda_param : float</span>
+<span class="sd">        smoothness parameter, the larger its value the smoother the</span>
+<span class="sd">        displacement field</span>
+<span class="sd">    displacement : array, shape (S, R, C, 3)</span>
+<span class="sd">        the displacement field to start the optimization from</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    energy : the energy of the EM (or SSD if sigmafield[...]==1) metric at this</span>
+<span class="sd">        iteration</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># pre-smoothing</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="n">ssd</span><span class="o">.</span><span class="n">iterate_residual_displacement_field_ssd_3d</span><span class="p">(</span><span class="n">delta_field</span><span class="p">,</span>
+                                                       <span class="n">sigma_sq_field</span><span class="p">,</span>
+                                                       <span class="n">gradient_field</span><span class="p">,</span>
+                                                       <span class="n">target</span><span class="p">,</span>
+                                                       <span class="n">lambda_param</span><span class="p">,</span>
+                                                       <span class="n">displacement</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">energy</span> <span class="o">=</span> <span class="n">ssd</span><span class="o">.</span><span class="n">compute_energy_ssd_3d</span><span class="p">(</span><span class="n">delta_field</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">energy</span>
+    <span class="c"># solve at coarser grid</span>
+    <span class="n">residual</span> <span class="o">=</span> <span class="n">ssd</span><span class="o">.</span><span class="n">compute_residual_displacement_field_ssd_3d</span><span class="p">(</span><span class="n">delta_field</span><span class="p">,</span>
+                                                              <span class="n">sigma_sq_field</span><span class="p">,</span>
+                                                              <span class="n">gradient_field</span><span class="p">,</span>
+                                                              <span class="n">target</span><span class="p">,</span>
+                                                              <span class="n">lambda_param</span><span class="p">,</span>
+                                                              <span class="n">displacement</span><span class="p">,</span>
+                                                              <span class="k">None</span><span class="p">)</span>
+    <span class="n">sub_residual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vfu</span><span class="o">.</span><span class="n">downsample_displacement_field_3d</span><span class="p">(</span><span class="n">residual</span><span class="p">))</span>
+    <span class="k">del</span> <span class="n">residual</span>
+    <span class="n">subsigma_sq_field</span> <span class="o">=</span> <span class="k">None</span>
+    <span class="k">if</span> <span class="n">sigma_sq_field</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">subsigma_sq_field</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">downsample_scalar_field_3d</span><span class="p">(</span><span class="n">sigma_sq_field</span><span class="p">)</span>
+    <span class="n">subdelta_field</span> <span class="o">=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">downsample_scalar_field_3d</span><span class="p">(</span><span class="n">delta_field</span><span class="p">)</span>
+    <span class="n">subgradient_field</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="n">vfu</span><span class="o">.</span><span class="n">downsample_displacement_field_3d</span><span class="p">(</span><span class="n">gradient_field</span><span class="p">))</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">displacement</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+    <span class="n">sub_displacement</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+        <span class="n">shape</span><span class="o">=</span><span class="p">((</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">floating</span><span class="p">)</span>
+    <span class="n">sublambda_param</span> <span class="o">=</span> <span class="n">lambda_param</span><span class="o">*</span><span class="mf">0.25</span>
+    <span class="n">v_cycle_3d</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">subdelta_field</span><span class="p">,</span> <span class="n">subsigma_sq_field</span><span class="p">,</span> <span class="n">subgradient_field</span><span class="p">,</span>
+               <span class="n">sub_residual</span><span class="p">,</span> <span class="n">sublambda_param</span><span class="p">,</span> <span class="n">sub_displacement</span><span class="p">,</span> <span class="n">depth</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">subdelta_field</span>
+    <span class="k">del</span> <span class="n">subsigma_sq_field</span>
+    <span class="k">del</span> <span class="n">subgradient_field</span>
+    <span class="k">del</span> <span class="n">sub_residual</span>
+    <span class="n">displacement</span> <span class="o">+=</span> <span class="n">vfu</span><span class="o">.</span><span class="n">resample_displacement_field_3d</span><span class="p">(</span><span class="n">sub_displacement</span><span class="p">,</span>
+                                                       <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+                                                       <span class="n">shape</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">sub_displacement</span>
+    <span class="c"># post-smoothing</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="n">ssd</span><span class="o">.</span><span class="n">iterate_residual_displacement_field_ssd_3d</span><span class="p">(</span><span class="n">delta_field</span><span class="p">,</span>
+                                                       <span class="n">sigma_sq_field</span><span class="p">,</span>
+                                                       <span class="n">gradient_field</span><span class="p">,</span>
+                                                       <span class="n">target</span><span class="p">,</span>
+                                                       <span class="n">lambda_param</span><span class="p">,</span>
+                                                       <span class="n">displacement</span><span class="p">)</span>
+    <span class="n">energy</span> <span class="o">=</span> <span class="n">ssd</span><span class="o">.</span><span class="n">compute_energy_ssd_3d</span><span class="p">(</span><span class="n">delta_field</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">energy</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

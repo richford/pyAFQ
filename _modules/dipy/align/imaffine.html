@@ -1,0 +1,1334 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dipy.align.imaffine &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>dipy.align.imaffine</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for dipy.align.imaffine</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot; Affine image registration module consisting of the following classes:</span>
+
+<span class="sd">    AffineMap: encapsulates the necessary information to perform affine</span>
+<span class="sd">        transforms between two domains, defined by a `static` and a `moving`</span>
+<span class="sd">        image. The `domain` of the transform is the set of points in the</span>
+<span class="sd">        `static` image&#39;s grid, and the `codomain` is the set of points in</span>
+<span class="sd">        the `moving` image. When we call the `transform` method, `AffineMap`</span>
+<span class="sd">        maps each point `x` of the domain (`static` grid) to the codomain</span>
+<span class="sd">        (`moving` grid) and interpolates the `moving` image at that point</span>
+<span class="sd">        to obtain the intensity value to be placed at `x` in the resulting</span>
+<span class="sd">        grid. The `transform_inverse` method performs the opposite operation</span>
+<span class="sd">        mapping points in the codomain to points in the domain.</span>
+
+<span class="sd">    ParzenJointHistogram: computes the marginal and joint distributions of</span>
+<span class="sd">        intensities of a pair of images, using Parzen windows [Parzen62]</span>
+<span class="sd">        with a cubic spline kernel, as proposed by Mattes et al. [Mattes03].</span>
+<span class="sd">        It also computes the gradient of the joint histogram w.r.t. the</span>
+<span class="sd">        parameters of a given transform.</span>
+
+<span class="sd">    MutualInformationMetric: computes the value and gradient of the mutual</span>
+<span class="sd">        information metric the way `Optimizer` needs them. That is, given</span>
+<span class="sd">        a set of transform parameters, it will use `ParzenJointHistogram`</span>
+<span class="sd">        to compute the value and gradient of the joint intensity histogram</span>
+<span class="sd">        evaluated at the given parameters, and evaluate the the value and</span>
+<span class="sd">        gradient of the histogram&#39;s mutual information.</span>
+
+<span class="sd">    AffineRegistration: it runs the multi-resolution registration, putting</span>
+<span class="sd">        all the pieces together. It needs to create the scale space of the</span>
+<span class="sd">        images and run the multi-resolution registration by using the Metric</span>
+<span class="sd">        and the Optimizer at each level of the Gaussian pyramid. At each</span>
+<span class="sd">        level, it will setup the metric to compute value and gradient of the</span>
+<span class="sd">        metric with the input images with different levels of smoothing.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Parzen62] E. Parzen. On the estimation of a probability density</span>
+<span class="sd">               function and the mode. Annals of Mathematical Statistics,</span>
+<span class="sd">               33(3), 1065-1076, 1962.</span>
+<span class="sd">    [Mattes03] Mattes, D., Haynor, D. R., Vesselle, H., Lewellen, T. K.,</span>
+<span class="sd">               &amp; Eubank, W. PET-CT image registration in the chest using</span>
+<span class="sd">               free-form deformations. IEEE Transactions on Medical</span>
+<span class="sd">               Imaging, 22(1), 120-8, 2003.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="nn">npl</span>
+<span class="kn">import</span> <span class="nn">scipy.ndimage</span> <span class="k">as</span> <span class="nn">ndimage</span>
+<span class="kn">from</span> <span class="nn">dipy.core.optimize</span> <span class="k">import</span> <span class="n">Optimizer</span>
+<span class="kn">from</span> <span class="nn">dipy.core.optimize</span> <span class="k">import</span> <span class="n">SCIPY_LESS_0_12</span>
+<span class="kn">from</span> <span class="nn">dipy.align</span> <span class="k">import</span> <span class="n">vector_fields</span> <span class="k">as</span> <span class="n">vf</span>
+<span class="kn">from</span> <span class="nn">dipy.align</span> <span class="k">import</span> <span class="n">VerbosityLevels</span>
+<span class="kn">from</span> <span class="nn">dipy.align.parzenhist</span> <span class="k">import</span> <span class="p">(</span><span class="n">ParzenJointHistogram</span><span class="p">,</span>
+                                   <span class="n">sample_domain_regular</span><span class="p">,</span>
+                                   <span class="n">compute_parzen_mi</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dipy.align.imwarp</span> <span class="k">import</span> <span class="p">(</span><span class="n">get_direction_and_spacings</span><span class="p">,</span> <span class="n">ScaleSpace</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dipy.align.scalespace</span> <span class="k">import</span> <span class="n">IsotropicScaleSpace</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="k">import</span> <span class="n">warn</span>
+
+<span class="n">_interp_options</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;nearest&#39;</span><span class="p">,</span> <span class="s">&#39;linear&#39;</span><span class="p">]</span>
+<span class="n">_transform_method</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">_transform_method</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&#39;nearest&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">vf</span><span class="o">.</span><span class="n">transform_2d_affine_nn</span>
+<span class="n">_transform_method</span><span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="s">&#39;nearest&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">vf</span><span class="o">.</span><span class="n">transform_3d_affine_nn</span>
+<span class="n">_transform_method</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&#39;linear&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">vf</span><span class="o">.</span><span class="n">transform_2d_affine</span>
+<span class="n">_transform_method</span><span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="s">&#39;linear&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">vf</span><span class="o">.</span><span class="n">transform_3d_affine</span>
+
+
+<span class="k">class</span> <span class="nc">AffineInversionError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="AffineMap"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.AffineMap">[docs]</a><span class="k">class</span> <span class="nc">AffineMap</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<div class="viewcode-block" id="AffineMap.__init__"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.AffineMap.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">domain_grid_shape</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">domain_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">codomain_grid_shape</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">codomain_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; AffineMap</span>
+
+<span class="sd">        Implements an affine transformation whose domain is given by</span>
+<span class="sd">        `domain_grid` and `domain_grid2world`, and whose co-domain is</span>
+<span class="sd">        given by `codomain_grid` and `codomain_grid2world`.</span>
+
+<span class="sd">        The actual transform is represented by the `affine` matrix, which</span>
+<span class="sd">        operate in world coordinates. Therefore, to transform a moving image</span>
+<span class="sd">        towards a static image, we first map each voxel (i,j,k) of the static</span>
+<span class="sd">        image to world coordinates (x,y,z) by applying `domain_grid2world`.</span>
+<span class="sd">        Then we apply the `affine` transform to (x,y,z) obtaining (x&#39;, y&#39;, z&#39;)</span>
+<span class="sd">        in moving image&#39;s world coordinates. Finally, (x&#39;, y&#39;, z&#39;) is mapped</span>
+<span class="sd">        to voxel coordinates (i&#39;, j&#39;, k&#39;) in the moving image by multiplying</span>
+<span class="sd">        (x&#39;, y&#39;, z&#39;) by the inverse of `codomain_grid2world`. The</span>
+<span class="sd">        `codomain_grid_shape` is used analogously to transform the static</span>
+<span class="sd">        image towards the moving image when calling `transform_inverse`.</span>
+
+<span class="sd">        If the domain/co-domain information is not provided (None) then the</span>
+<span class="sd">        sampling information needs to be specified each time the `transform`</span>
+<span class="sd">        or `transform_inverse` is called to transform images. Note that such</span>
+<span class="sd">        sampling information is not necessary to transform points defined in</span>
+<span class="sd">        physical space, such as stream lines.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        affine : array, shape (dim + 1, dim + 1)</span>
+<span class="sd">            the matrix defining the affine transform, where `dim` is the</span>
+<span class="sd">            dimension of the space this map operates in (2 for 2D images,</span>
+<span class="sd">            3 for 3D images). If None, then `self` represents the identity</span>
+<span class="sd">            transformation.</span>
+<span class="sd">        domain_grid_shape : sequence, shape (dim,), optional</span>
+<span class="sd">            the shape of the default domain sampling grid. When `transform`</span>
+<span class="sd">            is called to transform an image, the resulting image will have</span>
+<span class="sd">            this shape, unless a different sampling information is provided.</span>
+<span class="sd">            If None, then the sampling grid shape must be specified each time</span>
+<span class="sd">            the `transform` method is called.</span>
+<span class="sd">        domain_grid2world : array, shape (dim + 1, dim + 1), optional</span>
+<span class="sd">            the grid-to-world transform associated with the domain grid.</span>
+<span class="sd">            If None (the default), then the grid-to-world transform is assumed</span>
+<span class="sd">            to be the identity.</span>
+<span class="sd">        codomain_grid_shape : sequence of integers, shape (dim,)</span>
+<span class="sd">            the shape of the default co-domain sampling grid. When</span>
+<span class="sd">            `transform_inverse` is called to transform an image, the resulting</span>
+<span class="sd">            image will have this shape, unless a different sampling</span>
+<span class="sd">            information is provided. If None (the default), then the sampling</span>
+<span class="sd">            grid shape must be specified each time the `transform_inverse`</span>
+<span class="sd">            method is called.</span>
+<span class="sd">        codomain_grid2world : array, shape (dim + 1, dim + 1)</span>
+<span class="sd">            the grid-to-world transform associated with the co-domain grid.</span>
+<span class="sd">            If None (the default), then the grid-to-world transform is assumed</span>
+<span class="sd">            to be the identity.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_affine</span><span class="p">(</span><span class="n">affine</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">domain_shape</span> <span class="o">=</span> <span class="n">domain_grid_shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">domain_grid2world</span> <span class="o">=</span> <span class="n">domain_grid2world</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">codomain_shape</span> <span class="o">=</span> <span class="n">codomain_grid_shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">codomain_grid2world</span> <span class="o">=</span> <span class="n">codomain_grid2world</span></div>
+
+<div class="viewcode-block" id="AffineMap.set_affine"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.AffineMap.set_affine">[docs]</a>    <span class="k">def</span> <span class="nf">set_affine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">affine</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Sets the affine transform (operating in physical space)</span>
+
+<span class="sd">        Also sets `self.affine_inv` - the inverse of `affine`, or None if</span>
+<span class="sd">        there is no inverse.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        affine : array, shape (dim + 1, dim + 1)</span>
+<span class="sd">            the matrix representing the affine transform operating in</span>
+<span class="sd">            physical space. The domain and co-domain information</span>
+<span class="sd">            remains unchanged. If None, then `self` represents the identity</span>
+<span class="sd">            transformation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">affine</span> <span class="o">=</span> <span class="n">affine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">affine_inv</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">affine</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">affine</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="n">AffineInversionError</span><span class="p">(</span><span class="s">&#39;Affine contains invalid elements&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">affine_inv</span> <span class="o">=</span> <span class="n">npl</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">affine</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">npl</span><span class="o">.</span><span class="n">LinAlgError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AffineInversionError</span><span class="p">(</span><span class="s">&#39;Affine cannot be inverted&#39;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_apply_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">interp</span><span class="o">=</span><span class="s">&#39;linear&#39;</span><span class="p">,</span> <span class="n">image_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                         <span class="n">sampling_grid_shape</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">sampling_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                         <span class="n">resample_only</span><span class="o">=</span><span class="k">False</span><span class="p">,</span> <span class="n">apply_inverse</span><span class="o">=</span><span class="k">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Transforms the input image applying this affine transform</span>
+
+<span class="sd">        This is a generic function to transform images using either this</span>
+<span class="sd">        (direct) transform or its inverse.</span>
+
+<span class="sd">        If applying the direct transform (`apply_inverse=False`):</span>
+<span class="sd">            by default, the transformed image is sampled at a grid defined by</span>
+<span class="sd">            `self.domain_shape` and `self.domain_grid2world`.</span>
+<span class="sd">        If applying the inverse transform (`apply_inverse=True`):</span>
+<span class="sd">            by default, the transformed image is sampled at a grid defined by</span>
+<span class="sd">            `self.codomain_shape` and `self.codomain_grid2world`.</span>
+
+<span class="sd">        If the sampling information was not provided at initialization of this</span>
+<span class="sd">        transform then `sampling_grid_shape` is mandatory.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        image : array, shape (X, Y) or (X, Y, Z)</span>
+<span class="sd">            the image to be transformed</span>
+<span class="sd">        interp : string, either &#39;linear&#39; or &#39;nearest&#39;</span>
+<span class="sd">            the type of interpolation to be used, either &#39;linear&#39;</span>
+<span class="sd">            (for k-linear interpolation) or &#39;nearest&#39; for nearest neighbor</span>
+<span class="sd">        image_grid2world : array, shape (dim + 1, dim + 1), optional</span>
+<span class="sd">            the grid-to-world transform associated with `image`.</span>
+<span class="sd">            If None (the default), then the grid-to-world transform is assumed</span>
+<span class="sd">            to be the identity.</span>
+<span class="sd">        sampling_grid_shape : sequence, shape (dim,), optional</span>
+<span class="sd">            the shape of the grid where the transformed image must be sampled.</span>
+<span class="sd">            If None (the default), then `self.domain_shape` is used instead</span>
+<span class="sd">            (which must have been set at initialization, otherwise an exception</span>
+<span class="sd">            will be raised).</span>
+<span class="sd">        sampling_grid2world : array, shape (dim + 1, dim + 1), optional</span>
+<span class="sd">            the grid-to-world transform associated with the sampling grid</span>
+<span class="sd">            (specified by `sampling_grid_shape`, or by default</span>
+<span class="sd">            `self.domain_shape`). If None (the default), then the</span>
+<span class="sd">            grid-to-world transform is assumed to be the identity.</span>
+<span class="sd">        resample_only : Boolean, optional</span>
+<span class="sd">            If False (the default) the affine transform is applied normally.</span>
+<span class="sd">            If True, then the affine transform is not applied, and the input</span>
+<span class="sd">            image is just re-sampled on the domain grid of this transform.</span>
+<span class="sd">        apply_inverse : Boolean, optional</span>
+<span class="sd">            If False (the default) the image is transformed from the codomain</span>
+<span class="sd">            of this transform to its domain using the (direct) affine</span>
+<span class="sd">            transform. Otherwise, the image is transformed from the domain</span>
+<span class="sd">            of this transform to its codomain using the (inverse) affine</span>
+<span class="sd">            transform.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        transformed : array, shape `sampling_grid_shape` or `self.domain_shape`</span>
+<span class="sd">            the transformed image, sampled at the requested grid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Verify valid interpolation requested</span>
+        <span class="k">if</span> <span class="n">interp</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_interp_options</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Unknown interpolation method: %s&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">interp</span><span class="p">,))</span>
+
+        <span class="c"># Obtain sampling grid</span>
+        <span class="k">if</span> <span class="n">sampling_grid_shape</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">apply_inverse</span><span class="p">:</span>
+                <span class="n">sampling_grid_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codomain_shape</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sampling_grid_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain_shape</span>
+        <span class="k">if</span> <span class="n">sampling_grid_shape</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Unknown sampling info. Provide a valid sampling_grid_shape&#39;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sampling_grid_shape</span><span class="p">)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sampling_grid_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+        <span class="c"># Verify valid image dimension</span>
+        <span class="n">img_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">img_dim</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">img_dim</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Undefined transform for dim: %d&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">img_dim</span><span class="p">,))</span>
+
+        <span class="c"># Obtain grid-to-world transform for sampling grid</span>
+        <span class="k">if</span> <span class="n">sampling_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">apply_inverse</span><span class="p">:</span>
+                <span class="n">sampling_grid2world</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codomain_grid2world</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sampling_grid2world</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain_grid2world</span>
+        <span class="k">if</span> <span class="n">sampling_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">sampling_grid2world</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c"># Obtain world-to-grid transform for input image</span>
+        <span class="k">if</span> <span class="n">image_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">apply_inverse</span><span class="p">:</span>
+                <span class="n">image_grid2world</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain_grid2world</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">image_grid2world</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codomain_grid2world</span>
+            <span class="k">if</span> <span class="n">image_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+                <span class="n">image_grid2world</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">image_world2grid</span> <span class="o">=</span> <span class="n">npl</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">image_grid2world</span><span class="p">)</span>
+
+        <span class="c"># Compute the transform from sampling grid to input image grid</span>
+        <span class="k">if</span> <span class="n">apply_inverse</span><span class="p">:</span>
+            <span class="n">aff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">affine_inv</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">aff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">affine</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">aff</span> <span class="ow">is</span> <span class="k">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">resample_only</span><span class="p">:</span>
+            <span class="n">comp</span> <span class="o">=</span> <span class="n">image_world2grid</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">sampling_grid2world</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">comp</span> <span class="o">=</span> <span class="n">image_world2grid</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">aff</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">sampling_grid2world</span><span class="p">))</span>
+
+        <span class="c"># Transform the input image</span>
+        <span class="k">if</span> <span class="n">interp</span> <span class="o">==</span> <span class="s">&#39;linear&#39;</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">transformed</span> <span class="o">=</span> <span class="n">_transform_method</span><span class="p">[(</span><span class="n">dim</span><span class="p">,</span> <span class="n">interp</span><span class="p">)](</span><span class="n">image</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">comp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">transformed</span>
+
+<div class="viewcode-block" id="AffineMap.transform"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.AffineMap.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">interp</span><span class="o">=</span><span class="s">&#39;linear&#39;</span><span class="p">,</span> <span class="n">image_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                  <span class="n">sampling_grid_shape</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">sampling_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                  <span class="n">resample_only</span><span class="o">=</span><span class="k">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Transforms the input image from co-domain to domain space</span>
+
+<span class="sd">        By default, the transformed image is sampled at a grid defined by</span>
+<span class="sd">        `self.domain_shape` and `self.domain_grid2world`. If such</span>
+<span class="sd">        information was not provided then `sampling_grid_shape` is mandatory.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        image : array, shape (X, Y) or (X, Y, Z)</span>
+<span class="sd">            the image to be transformed</span>
+<span class="sd">        interp : string, either &#39;linear&#39; or &#39;nearest&#39;</span>
+<span class="sd">            the type of interpolation to be used, either &#39;linear&#39;</span>
+<span class="sd">            (for k-linear interpolation) or &#39;nearest&#39; for nearest neighbor</span>
+<span class="sd">        image_grid2world : array, shape (dim + 1, dim + 1), optional</span>
+<span class="sd">            the grid-to-world transform associated with `image`.</span>
+<span class="sd">            If None (the default), then the grid-to-world transform is assumed</span>
+<span class="sd">            to be the identity.</span>
+<span class="sd">        sampling_grid_shape : sequence, shape (dim,), optional</span>
+<span class="sd">            the shape of the grid where the transformed image must be sampled.</span>
+<span class="sd">            If None (the default), then `self.codomain_shape` is used instead</span>
+<span class="sd">            (which must have been set at initialization, otherwise an exception</span>
+<span class="sd">            will be raised).</span>
+<span class="sd">        sampling_grid2world : array, shape (dim + 1, dim + 1), optional</span>
+<span class="sd">            the grid-to-world transform associated with the sampling grid</span>
+<span class="sd">            (specified by `sampling_grid_shape`, or by default</span>
+<span class="sd">            `self.codomain_shape`). If None (the default), then the</span>
+<span class="sd">            grid-to-world transform is assumed to be the identity.</span>
+<span class="sd">        resample_only : Boolean, optional</span>
+<span class="sd">            If False (the default) the affine transform is applied normally.</span>
+<span class="sd">            If True, then the affine transform is not applied, and the input</span>
+<span class="sd">            image is just re-sampled on the domain grid of this transform.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        transformed : array, shape `sampling_grid_shape` or</span>
+<span class="sd">                      `self.codomain_shape`</span>
+<span class="sd">            the transformed image, sampled at the requested grid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">transformed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_transform</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">interp</span><span class="p">,</span> <span class="n">image_grid2world</span><span class="p">,</span>
+                                            <span class="n">sampling_grid_shape</span><span class="p">,</span>
+                                            <span class="n">sampling_grid2world</span><span class="p">,</span>
+                                            <span class="n">resample_only</span><span class="p">,</span>
+                                            <span class="n">apply_inverse</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">transformed</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AffineMap.transform_inverse"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.AffineMap.transform_inverse">[docs]</a>    <span class="k">def</span> <span class="nf">transform_inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">interp</span><span class="o">=</span><span class="s">&#39;linear&#39;</span><span class="p">,</span> <span class="n">image_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                          <span class="n">sampling_grid_shape</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">sampling_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                          <span class="n">resample_only</span><span class="o">=</span><span class="k">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Transforms the input image from domain to co-domain space</span>
+
+<span class="sd">        By default, the transformed image is sampled at a grid defined by</span>
+<span class="sd">        `self.codomain_shape` and `self.codomain_grid2world`. If such</span>
+<span class="sd">        information was not provided then `sampling_grid_shape` is mandatory.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        image : array, shape (X, Y) or (X, Y, Z)</span>
+<span class="sd">            the image to be transformed</span>
+<span class="sd">        interp : string, either &#39;linear&#39; or &#39;nearest&#39;</span>
+<span class="sd">            the type of interpolation to be used, either &#39;linear&#39;</span>
+<span class="sd">            (for k-linear interpolation) or &#39;nearest&#39; for nearest neighbor</span>
+<span class="sd">        image_grid2world : array, shape (dim + 1, dim + 1), optional</span>
+<span class="sd">            the grid-to-world transform associated with `image`.</span>
+<span class="sd">            If None (the default), then the grid-to-world transform is assumed</span>
+<span class="sd">            to be the identity.</span>
+<span class="sd">        sampling_grid_shape : sequence, shape (dim,), optional</span>
+<span class="sd">            the shape of the grid where the transformed image must be sampled.</span>
+<span class="sd">            If None (the default), then `self.codomain_shape` is used instead</span>
+<span class="sd">            (which must have been set at initialization, otherwise an exception</span>
+<span class="sd">            will be raised).</span>
+<span class="sd">        sampling_grid2world : array, shape (dim + 1, dim + 1), optional</span>
+<span class="sd">            the grid-to-world transform associated with the sampling grid</span>
+<span class="sd">            (specified by `sampling_grid_shape`, or by default</span>
+<span class="sd">            `self.codomain_shape`). If None (the default), then the</span>
+<span class="sd">            grid-to-world transform is assumed to be the identity.</span>
+<span class="sd">        resample_only : Boolean, optional</span>
+<span class="sd">            If False (the default) the affine transform is applied normally.</span>
+<span class="sd">            If True, then the affine transform is not applied, and the input</span>
+<span class="sd">            image is just re-sampled on the domain grid of this transform.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        transformed : array, shape `sampling_grid_shape` or</span>
+<span class="sd">                      `self.codomain_shape`</span>
+<span class="sd">            the transformed image, sampled at the requested grid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">transformed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_transform</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">interp</span><span class="p">,</span> <span class="n">image_grid2world</span><span class="p">,</span>
+                                            <span class="n">sampling_grid_shape</span><span class="p">,</span>
+                                            <span class="n">sampling_grid2world</span><span class="p">,</span>
+                                            <span class="n">resample_only</span><span class="p">,</span>
+                                            <span class="n">apply_inverse</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">transformed</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MutualInformationMetric"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.MutualInformationMetric">[docs]</a><span class="k">class</span> <span class="nc">MutualInformationMetric</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<div class="viewcode-block" id="MutualInformationMetric.__init__"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.MutualInformationMetric.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">sampling_proportion</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot; Initializes an instance of the Mutual Information metric</span>
+
+<span class="sd">        This class implements the methods required by Optimizer to drive the</span>
+<span class="sd">        registration process.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        nbins : int, optional</span>
+<span class="sd">            the number of bins to be used for computing the intensity</span>
+<span class="sd">            histograms. The default is 32.</span>
+<span class="sd">        sampling_proportion : None or float in interval (0, 1], optional</span>
+<span class="sd">            There are two types of sampling: dense and sparse. Dense sampling</span>
+<span class="sd">            uses all voxels for estimating the (joint and marginal) intensity</span>
+<span class="sd">            histograms, while sparse sampling uses a subset of them. If</span>
+<span class="sd">            `sampling_proportion` is None, then dense sampling is</span>
+<span class="sd">            used. If `sampling_proportion` is a floating point value in (0,1]</span>
+<span class="sd">            then sparse sampling is used, where `sampling_proportion`</span>
+<span class="sd">            specifies the proportion of voxels to be used. The default is</span>
+<span class="sd">            None.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Since we use linear interpolation, images are not, in general,</span>
+<span class="sd">        differentiable at exact voxel coordinates, but they are differentiable</span>
+<span class="sd">        between voxel coordinates. When using sparse sampling, selected voxels</span>
+<span class="sd">        are slightly moved by adding a small random displacement within one</span>
+<span class="sd">        voxel to prevent sampling points from being located exactly at voxel</span>
+<span class="sd">        coordinates. When using dense sampling, this random displacement is</span>
+<span class="sd">        not applied.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">histogram</span> <span class="o">=</span> <span class="n">ParzenJointHistogram</span><span class="p">(</span><span class="n">nbins</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampling_proportion</span> <span class="o">=</span> <span class="n">sampling_proportion</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric_val</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric_grad</span> <span class="o">=</span> <span class="k">None</span></div>
+
+<div class="viewcode-block" id="MutualInformationMetric.setup"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.MutualInformationMetric.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transform</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">moving</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+              <span class="n">moving_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">starting_affine</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot; Prepares the metric to compute intensity densities and gradients</span>
+
+<span class="sd">        The histograms will be setup to compute probability densities of</span>
+<span class="sd">        intensities within the minimum and maximum values of `static` and</span>
+<span class="sd">        `moving`</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        transform: instance of Transform</span>
+<span class="sd">            the transformation with respect to whose parameters the gradient</span>
+<span class="sd">            must be computed</span>
+<span class="sd">        static : array, shape (S, R, C) or (R, C)</span>
+<span class="sd">            static image</span>
+<span class="sd">        moving : array, shape (S&#39;, R&#39;, C&#39;) or (R&#39;, C&#39;)</span>
+<span class="sd">            moving image. The dimensions of the static (S, R, C) and moving</span>
+<span class="sd">            (S&#39;, R&#39;, C&#39;) images do not need to be the same.</span>
+<span class="sd">        static_grid2world : array (dim+1, dim+1), optional</span>
+<span class="sd">            the grid-to-space transform of the static image. The default is</span>
+<span class="sd">            None, implying the transform is the identity.</span>
+<span class="sd">        moving_grid2world : array (dim+1, dim+1)</span>
+<span class="sd">            the grid-to-space transform of the moving image. The default is</span>
+<span class="sd">            None, implying the spacing along all axes is 1.</span>
+<span class="sd">        starting_affine : array, shape (dim+1, dim+1), optional</span>
+<span class="sd">            the pre-aligning matrix (an affine transform) that roughly aligns</span>
+<span class="sd">            the moving image towards the static image. If None, no</span>
+<span class="sd">            pre-alignment is performed. If a pre-alignment matrix is available,</span>
+<span class="sd">            it is recommended to provide this matrix as `starting_affine`</span>
+<span class="sd">            instead of manually transforming the moving image to reduce</span>
+<span class="sd">            interpolation artifacts. The default is None, implying no</span>
+<span class="sd">            pre-alignment is performed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">get_number_of_parameters</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric_grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">static</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">moving_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">moving_grid2world</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">static_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">static_grid2world</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">transform</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">static</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">moving</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_grid2world</span> <span class="o">=</span> <span class="n">static_grid2world</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_world2grid</span> <span class="o">=</span> <span class="n">npl</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">static_grid2world</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_grid2world</span> <span class="o">=</span> <span class="n">moving_grid2world</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_world2grid</span> <span class="o">=</span> <span class="n">npl</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">moving_grid2world</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_direction</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_spacing</span> <span class="o">=</span> \
+            <span class="n">get_direction_and_spacings</span><span class="p">(</span><span class="n">static_grid2world</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_direction</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_spacing</span> <span class="o">=</span> \
+            <span class="n">get_direction_and_spacings</span><span class="p">(</span><span class="n">moving_grid2world</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span> <span class="o">=</span> <span class="n">starting_affine</span>
+
+        <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">P</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">affine_map</span> <span class="o">=</span> <span class="n">AffineMap</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">static</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">,</span>
+                                    <span class="n">moving</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interp_method</span> <span class="o">=</span> <span class="n">vf</span><span class="o">.</span><span class="n">interpolate_scalar_2d</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interp_method</span> <span class="o">=</span> <span class="n">vf</span><span class="o">.</span><span class="n">interpolate_scalar_3d</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling_proportion</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">samples</span> <span class="o">=</span> <span class="k">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ns</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling_proportion</span><span class="p">))</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">static</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">samples</span> <span class="o">=</span> <span class="n">sample_domain_regular</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c"># Add a column of ones (homogeneous coordinates)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ns</span><span class="p">)[:,</span> <span class="k">None</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">samples_prealigned</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">samples_prealigned</span> <span class="o">=</span>\
+                    <span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+            <span class="c"># Sample the static image</span>
+            <span class="n">static_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_world2grid</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">static_p</span> <span class="o">=</span> <span class="n">static_p</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">static_vals</span><span class="p">,</span> <span class="n">inside</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interp_method</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="n">static_p</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">static_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_vals</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">histogram</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_update_histogram</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot; Updates the histogram according to the current affine transform</span>
+
+<span class="sd">        The current affine transform is given by `self.affine_map`, which</span>
+<span class="sd">        must be set before calling this method.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        static_values: array, shape(n,) if sparse sampling is being used,</span>
+<span class="sd">                       array, shape(S, R, C) or (R, C) if dense sampling</span>
+<span class="sd">            the intensity values corresponding to the static image used to</span>
+<span class="sd">            update the histogram. If sparse sampling is being used, then</span>
+<span class="sd">            it is simply a sequence of scalars, obtained by sampling the static</span>
+<span class="sd">            image at the `n` sampling points. If dense sampling is being used,</span>
+<span class="sd">            then the intensities are given directly by the static image,</span>
+<span class="sd">            whose shape is (S, R, C) in the 3D case or (R, C) in the 2D case.</span>
+<span class="sd">        moving_values: array, shape(n,) if sparse sampling is being used,</span>
+<span class="sd">                       array, shape(S, R, C) or (R, C) if dense sampling</span>
+<span class="sd">            the intensity values corresponding to the moving image used to</span>
+<span class="sd">            update the histogram. If sparse sampling is being used, then</span>
+<span class="sd">            it is simply a sequence of scalars, obtained by sampling the moving</span>
+<span class="sd">            image at the `n` sampling points (mapped to the moving space by the</span>
+<span class="sd">            current affine transform). If dense sampling is being used,</span>
+<span class="sd">            then the intensities are given by the moving imaged linearly</span>
+<span class="sd">            transformed towards the static image by the current affine, which</span>
+<span class="sd">            results in an image of the same shape as the static image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">static_values</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="n">moving_values</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling_proportion</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>  <span class="c"># Dense case</span>
+            <span class="n">static_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static</span>
+            <span class="n">moving_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">affine_map</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moving</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">histogram</span><span class="o">.</span><span class="n">update_pdfs_dense</span><span class="p">(</span><span class="n">static_values</span><span class="p">,</span> <span class="n">moving_values</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c"># Sparse case</span>
+            <span class="n">sp_to_moving</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_world2grid</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">affine_map</span><span class="o">.</span><span class="n">affine</span><span class="p">)</span>
+            <span class="n">pts</span> <span class="o">=</span> <span class="n">sp_to_moving</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>  <span class="c"># Points on moving grid</span>
+            <span class="n">pts</span> <span class="o">=</span> <span class="n">pts</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">moving_vals</span><span class="p">,</span> <span class="n">inside</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interp_method</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moving</span><span class="p">,</span> <span class="n">pts</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">moving_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moving_vals</span><span class="p">)</span>
+            <span class="n">static_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_vals</span>
+            <span class="n">moving_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_vals</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">histogram</span><span class="o">.</span><span class="n">update_pdfs_sparse</span><span class="p">(</span><span class="n">static_values</span><span class="p">,</span> <span class="n">moving_values</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">static_values</span><span class="p">,</span> <span class="n">moving_values</span>
+
+    <span class="k">def</span> <span class="nf">_update_mutual_information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">update_gradient</span><span class="o">=</span><span class="k">True</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot; Updates marginal and joint distributions and the joint gradient</span>
+
+<span class="sd">        The distributions are updated according to the static and transformed</span>
+<span class="sd">        images. The transformed image is precisely the moving image after</span>
+<span class="sd">        transforming it by the transform defined by the `params` parameters.</span>
+
+<span class="sd">        The gradient of the joint PDF is computed only if update_gradient</span>
+<span class="sd">        is True.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        params : array, shape (n,)</span>
+<span class="sd">            the parameter vector of the transform currently used by the metric</span>
+<span class="sd">            (the transform name is provided when self.setup is called), n is</span>
+<span class="sd">            the number of parameters of the transform</span>
+<span class="sd">        update_gradient : Boolean, optional</span>
+<span class="sd">            if True, the gradient of the joint PDF will also be computed,</span>
+<span class="sd">            otherwise, only the marginal and joint PDFs will be computed.</span>
+<span class="sd">            The default is True.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Get the matrix associated with the `params` parameter vector</span>
+        <span class="n">current_affine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">param_to_matrix</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="c"># Get the static-to-prealigned matrix (only needed for the MI gradient)</span>
+        <span class="n">static2prealigned</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_grid2world</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">current_affine</span> <span class="o">=</span> <span class="n">current_affine</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span><span class="p">)</span>
+            <span class="n">static2prealigned</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">static2prealigned</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">affine_map</span><span class="o">.</span><span class="n">set_affine</span><span class="p">(</span><span class="n">current_affine</span><span class="p">)</span>
+
+        <span class="c"># Update the histogram with the current joint intensities</span>
+        <span class="n">static_values</span><span class="p">,</span> <span class="n">moving_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_histogram</span><span class="p">()</span>
+
+        <span class="n">H</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">histogram</span>  <span class="c"># Shortcut to `self.histogram`</span>
+        <span class="n">grad</span> <span class="o">=</span> <span class="k">None</span>  <span class="c"># Buffer to write the MI gradient into (if needed)</span>
+        <span class="k">if</span> <span class="n">update_gradient</span><span class="p">:</span>
+            <span class="n">grad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric_grad</span>
+            <span class="c"># Compute the gradient of the joint PDF w.r.t. parameters</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling_proportion</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>  <span class="c"># Dense case</span>
+                <span class="c"># Compute the gradient of moving img. at physical points</span>
+                <span class="c"># associated with the &gt;&gt;static image&#39;s grid&lt;&lt; cells</span>
+                <span class="c"># The image gradient must be eval. at current moved points</span>
+                <span class="n">grid_to_world</span> <span class="o">=</span> <span class="n">current_affine</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_grid2world</span><span class="p">)</span>
+                <span class="n">mgrad</span><span class="p">,</span> <span class="n">inside</span> <span class="o">=</span> <span class="n">vf</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moving</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">moving_world2grid</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">moving_spacing</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">static</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                                            <span class="n">grid_to_world</span><span class="p">)</span>
+                <span class="c"># The Jacobian must be evaluated at the pre-aligned points</span>
+                <span class="n">H</span><span class="o">.</span><span class="n">update_gradient_dense</span><span class="p">(</span>
+                    <span class="n">params</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">,</span>
+                    <span class="n">static_values</span><span class="p">,</span>
+                    <span class="n">moving_values</span><span class="p">,</span>
+                    <span class="n">static2prealigned</span><span class="p">,</span>
+                    <span class="n">mgrad</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c"># Sparse case</span>
+                <span class="c"># Compute the gradient of moving at the sampling points</span>
+                <span class="c"># which are already given in physical space coordinates</span>
+                <span class="n">pts</span> <span class="o">=</span> <span class="n">current_affine</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>  <span class="c"># Moved points</span>
+                <span class="n">mgrad</span><span class="p">,</span> <span class="n">inside</span> <span class="o">=</span> <span class="n">vf</span><span class="o">.</span><span class="n">sparse_gradient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moving</span><span class="p">,</span>
+                                                   <span class="bp">self</span><span class="o">.</span><span class="n">moving_world2grid</span><span class="p">,</span>
+                                                   <span class="bp">self</span><span class="o">.</span><span class="n">moving_spacing</span><span class="p">,</span>
+                                                   <span class="n">pts</span><span class="p">)</span>
+                <span class="c"># The Jacobian must be evaluated at the pre-aligned points</span>
+                <span class="n">pts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples_prealigned</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]</span>
+                <span class="n">H</span><span class="o">.</span><span class="n">update_gradient_sparse</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">,</span> <span class="n">static_values</span><span class="p">,</span>
+                                         <span class="n">moving_values</span><span class="p">,</span> <span class="n">pts</span><span class="p">,</span> <span class="n">mgrad</span><span class="p">)</span>
+
+        <span class="c"># Call the cythonized MI computation with self.histogram fields</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric_val</span> <span class="o">=</span> <span class="n">compute_parzen_mi</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">joint</span><span class="p">,</span> <span class="n">H</span><span class="o">.</span><span class="n">joint_grad</span><span class="p">,</span>
+                                            <span class="n">H</span><span class="o">.</span><span class="n">smarginal</span><span class="p">,</span> <span class="n">H</span><span class="o">.</span><span class="n">mmarginal</span><span class="p">,</span>
+                                            <span class="n">grad</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MutualInformationMetric.distance"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.MutualInformationMetric.distance">[docs]</a>    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot; Numeric value of the negative Mutual Information</span>
+
+<span class="sd">        We need to change the sign so we can use standard minimization</span>
+<span class="sd">        algorithms.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        params : array, shape (n,)</span>
+<span class="sd">            the parameter vector of the transform currently used by the metric</span>
+<span class="sd">            (the transform name is provided when self.setup is called), n is</span>
+<span class="sd">            the number of parameters of the transform</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        neg_mi : float</span>
+<span class="sd">            the negative mutual information of the input images after</span>
+<span class="sd">            transforming the moving image by the currently set transform</span>
+<span class="sd">            with `params` parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_mutual_information</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="k">False</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">AffineInversionError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric_val</span></div>
+
+<div class="viewcode-block" id="MutualInformationMetric.gradient"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.MutualInformationMetric.gradient">[docs]</a>    <span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot; Numeric value of the metric&#39;s gradient at the given parameters</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        params : array, shape (n,)</span>
+<span class="sd">            the parameter vector of the transform currently used by the metric</span>
+<span class="sd">            (the transform name is provided when self.setup is called), n is</span>
+<span class="sd">            the number of parameters of the transform</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        grad : array, shape (n,)</span>
+<span class="sd">            the gradient of the negative Mutual Information</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_mutual_information</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="k">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">AffineInversionError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric_grad</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric_grad</span></div>
+
+<div class="viewcode-block" id="MutualInformationMetric.distance_and_gradient"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.MutualInformationMetric.distance_and_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">distance_and_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot; Numeric value of the metric and its gradient at given parameters</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        params : array, shape (n,)</span>
+<span class="sd">            the parameter vector of the transform currently used by the metric</span>
+<span class="sd">            (the transform name is provided when self.setup is called), n is</span>
+<span class="sd">            the number of parameters of the transform</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        neg_mi : float</span>
+<span class="sd">            the negative mutual information of the input images after</span>
+<span class="sd">            transforming the moving image by the currently set transform</span>
+<span class="sd">            with `params` parameters</span>
+<span class="sd">        neg_mi_grad : array, shape (n,)</span>
+<span class="sd">            the gradient of the negative Mutual Information</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_mutual_information</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="k">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">AffineInversionError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="mi">0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric_grad</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric_val</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric_grad</span></div></div>
+
+
+<div class="viewcode-block" id="AffineRegistration"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.AffineRegistration">[docs]</a><span class="k">class</span> <span class="nc">AffineRegistration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<div class="viewcode-block" id="AffineRegistration.__init__"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.AffineRegistration.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">metric</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">level_iters</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">sigmas</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">factors</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">method</span><span class="o">=</span><span class="s">&#39;L-BFGS-B&#39;</span><span class="p">,</span>
+                 <span class="n">ss_sigma_factor</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">options</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">verbosity</span><span class="o">=</span><span class="n">VerbosityLevels</span><span class="o">.</span><span class="n">STATUS</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Initializes an instance of the AffineRegistration class</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        metric : None or object, optional</span>
+<span class="sd">            an instance of a metric. The default is None, implying</span>
+<span class="sd">            the Mutual Information metric with default settings.</span>
+<span class="sd">        level_iters : sequence, optional</span>
+<span class="sd">            the number of iterations at each scale of the scale space.</span>
+<span class="sd">            `level_iters[0]` corresponds to the coarsest scale,</span>
+<span class="sd">            `level_iters[-1]` the finest, where n is the length of the</span>
+<span class="sd">            sequence. By default, a 3-level scale space with iterations</span>
+<span class="sd">            sequence equal to [10000, 1000, 100] will be used.</span>
+<span class="sd">        sigmas : sequence of floats, optional</span>
+<span class="sd">            custom smoothing parameter to build the scale space (one parameter</span>
+<span class="sd">            for each scale). By default, the sequence of sigmas will be</span>
+<span class="sd">            [3, 1, 0].</span>
+<span class="sd">        factors : sequence of floats, optional</span>
+<span class="sd">            custom scale factors to build the scale space (one factor for each</span>
+<span class="sd">            scale). By default, the sequence of factors will be [4, 2, 1].</span>
+<span class="sd">        method : string, optional</span>
+<span class="sd">            optimization method to be used. If Scipy version &lt; 0.12, then</span>
+<span class="sd">            only L-BFGS-B is available. Otherwise, `method` can be any</span>
+<span class="sd">            gradient-based method available in `dipy.core.Optimize`: CG, BFGS,</span>
+<span class="sd">            Newton-CG, dogleg or trust-ncg.</span>
+<span class="sd">            The default is &#39;L-BFGS-B&#39;.</span>
+<span class="sd">        ss_sigma_factor : float, optional</span>
+<span class="sd">            If None, this parameter is not used and an isotropic scale</span>
+<span class="sd">            space with the given `factors` and `sigmas` will be built.</span>
+<span class="sd">            If not None, an anisotropic scale space will be used by</span>
+<span class="sd">            automatically selecting the smoothing sigmas along each axis</span>
+<span class="sd">            according to the voxel dimensions of the given image.</span>
+<span class="sd">            The `ss_sigma_factor` is used to scale the automatically computed</span>
+<span class="sd">            sigmas. For example, in the isotropic case, the sigma of the</span>
+<span class="sd">            kernel will be $factor * (2 ^ i)$ where</span>
+<span class="sd">            $i = 1, 2, ..., n_scales - 1$ is the scale (the finest resolution</span>
+<span class="sd">            image $i=0$ is never smoothed). The default is None.</span>
+<span class="sd">        options : dict, optional</span>
+<span class="sd">            extra optimization options. The default is None, implying</span>
+<span class="sd">            no extra options are passed to the optimizer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric</span> <span class="o">=</span> <span class="n">metric</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metric</span> <span class="o">=</span> <span class="n">MutualInformationMetric</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">level_iters</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">level_iters</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level_iters</span> <span class="o">=</span> <span class="n">level_iters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">level_iters</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;The iterations sequence cannot be empty&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
+        <span class="k">if</span> <span class="n">ss_sigma_factor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">use_isotropic</span> <span class="o">=</span> <span class="k">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ss_sigma_factor</span> <span class="o">=</span> <span class="n">ss_sigma_factor</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">use_isotropic</span> <span class="o">=</span> <span class="k">True</span>
+            <span class="k">if</span> <span class="n">factors</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+                <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">sigmas</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+                <span class="n">sigmas</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">factors</span> <span class="o">=</span> <span class="n">factors</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sigmas</span> <span class="o">=</span> <span class="n">sigmas</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">=</span> <span class="n">verbosity</span></div>
+
+    <span class="c"># Separately add a string that tells about the verbosity kwarg. This needs</span>
+    <span class="c"># to be separate, because it is set as a module-wide option in __init__:</span>
+    <span class="n">docstring_addendum</span> <span class="o">=</span>\
+        <span class="sd">&quot;&quot;&quot;verbosity: int (one of {0, 1, 2, 3}), optional</span>
+<span class="sd">            Set the verbosity level of the algorithm:</span>
+<span class="sd">            0 : do not print anything</span>
+<span class="sd">            1 : print information about the current status of the algorithm</span>
+<span class="sd">            2 : print high level information of the components involved in</span>
+<span class="sd">                the registration that can be used to detect a failing</span>
+<span class="sd">                component.</span>
+<span class="sd">            3 : print as much information as possible to isolate the cause</span>
+<span class="sd">                of a bug.</span>
+<span class="sd">            Default: % s</span>
+<span class="sd">    &quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">VerbosityLevels</span><span class="o">.</span><span class="n">STATUS</span>
+
+    <span class="n">__init__</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="n">__init__</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+</span> <span class="n">docstring_addendum</span>
+
+    <span class="k">def</span> <span class="nf">_init_optimizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">moving</span><span class="p">,</span> <span class="n">transform</span><span class="p">,</span> <span class="n">params0</span><span class="p">,</span>
+                        <span class="n">static_grid2world</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">,</span>
+                        <span class="n">starting_affine</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Initializes the registration optimizer</span>
+
+<span class="sd">        Initializes the optimizer by computing the scale space of the input</span>
+<span class="sd">        images</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        static : array, shape (S, R, C) or (R, C)</span>
+<span class="sd">            the image to be used as reference during optimization.</span>
+<span class="sd">        moving : array, shape (S&#39;, R&#39;, C&#39;) or (R&#39;, C&#39;)</span>
+<span class="sd">            the image to be used as &quot;moving&quot; during optimization. The</span>
+<span class="sd">            dimensions of the static (S, R, C) and moving (S&#39;, R&#39;, C&#39;) images</span>
+<span class="sd">            do not need to be the same.</span>
+<span class="sd">        transform : instance of Transform</span>
+<span class="sd">            the transformation with respect to whose parameters the gradient</span>
+<span class="sd">            must be computed</span>
+<span class="sd">        params0 : array, shape (n,)</span>
+<span class="sd">            parameters from which to start the optimization. If None, the</span>
+<span class="sd">            optimization will start at the identity transform. n is the</span>
+<span class="sd">            number of parameters of the specified transformation.</span>
+<span class="sd">        static_grid2world : array, shape (dim+1, dim+1)</span>
+<span class="sd">            the voxel-to-space transformation associated with the static image</span>
+<span class="sd">        moving_grid2world : array, shape (dim+1, dim+1)</span>
+<span class="sd">            the voxel-to-space transformation associated with the moving image</span>
+<span class="sd">        starting_affine : string, or matrix, or None</span>
+<span class="sd">            If string:</span>
+<span class="sd">                &#39;mass&#39;: align centers of gravity</span>
+<span class="sd">                &#39;voxel-origin&#39;: align physical coordinates of voxel (0,0,0)</span>
+<span class="sd">                &#39;centers&#39;: align physical coordinates of central voxels</span>
+<span class="sd">            If matrix:</span>
+<span class="sd">                array, shape (dim+1, dim+1)</span>
+<span class="sd">            If None:</span>
+<span class="sd">                Start from identity</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">static</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">transform</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">get_number_of_parameters</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nparams</span> <span class="o">=</span> <span class="n">n</span>
+
+        <span class="k">if</span> <span class="n">params0</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">params0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">get_identity_parameters</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params0</span> <span class="o">=</span> <span class="n">params0</span>
+        <span class="k">if</span> <span class="n">starting_affine</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">starting_affine</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">starting_affine</span> <span class="o">==</span> <span class="s">&#39;mass&#39;</span><span class="p">:</span>
+                <span class="n">affine_map</span> <span class="o">=</span> <span class="n">transform_centers_of_mass</span><span class="p">(</span><span class="n">static</span><span class="p">,</span>
+                                                       <span class="n">static_grid2world</span><span class="p">,</span>
+                                                       <span class="n">moving</span><span class="p">,</span>
+                                                       <span class="n">moving_grid2world</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span> <span class="o">=</span> <span class="n">affine_map</span><span class="o">.</span><span class="n">affine</span>
+            <span class="k">elif</span> <span class="n">starting_affine</span> <span class="o">==</span> <span class="s">&#39;voxel-origin&#39;</span><span class="p">:</span>
+                <span class="n">affine_map</span> <span class="o">=</span> <span class="n">transform_origins</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">,</span>
+                                               <span class="n">moving</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span> <span class="o">=</span> <span class="n">affine_map</span><span class="o">.</span><span class="n">affine</span>
+            <span class="k">elif</span> <span class="n">starting_affine</span> <span class="o">==</span> <span class="s">&#39;centers&#39;</span><span class="p">:</span>
+                <span class="n">affine_map</span> <span class="o">=</span> <span class="n">transform_geometric_centers</span><span class="p">(</span><span class="n">static</span><span class="p">,</span>
+                                                         <span class="n">static_grid2world</span><span class="p">,</span>
+                                                         <span class="n">moving</span><span class="p">,</span>
+                                                         <span class="n">moving_grid2world</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span> <span class="o">=</span> <span class="n">affine_map</span><span class="o">.</span><span class="n">affine</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Invalid starting_affine strategy&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">starting_affine</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span>
+              <span class="n">starting_affine</span><span class="o">.</span><span class="n">shape</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span> <span class="o">=</span> <span class="n">starting_affine</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Invalid starting_affine matrix&#39;</span><span class="p">)</span>
+        <span class="c"># Extract information from affine matrices to create the scale space</span>
+        <span class="n">static_direction</span><span class="p">,</span> <span class="n">static_spacing</span> <span class="o">=</span> \
+            <span class="n">get_direction_and_spacings</span><span class="p">(</span><span class="n">static_grid2world</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+        <span class="n">moving_direction</span><span class="p">,</span> <span class="n">moving_spacing</span> <span class="o">=</span> \
+            <span class="n">get_direction_and_spacings</span><span class="p">(</span><span class="n">moving_grid2world</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+
+        <span class="n">static</span> <span class="o">=</span> <span class="p">((</span><span class="n">static</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">-</span> <span class="n">static</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">/</span>
+                  <span class="p">(</span><span class="n">static</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">static</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span>
+        <span class="n">moving</span> <span class="o">=</span> <span class="p">((</span><span class="n">moving</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">-</span> <span class="n">moving</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">/</span>
+                  <span class="p">(</span><span class="n">moving</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">moving</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span>
+
+        <span class="c"># Build the scale space of the input images</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_isotropic</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">moving_ss</span> <span class="o">=</span> <span class="n">IsotropicScaleSpace</span><span class="p">(</span><span class="n">moving</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span><span class="p">,</span>
+                                                 <span class="bp">self</span><span class="o">.</span><span class="n">sigmas</span><span class="p">,</span>
+                                                 <span class="n">moving_grid2world</span><span class="p">,</span>
+                                                 <span class="n">moving_spacing</span><span class="p">,</span> <span class="k">False</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span> <span class="o">=</span> <span class="n">IsotropicScaleSpace</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span><span class="p">,</span>
+                                                 <span class="bp">self</span><span class="o">.</span><span class="n">sigmas</span><span class="p">,</span>
+                                                 <span class="n">static_grid2world</span><span class="p">,</span>
+                                                 <span class="n">static_spacing</span><span class="p">,</span> <span class="k">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">moving_ss</span> <span class="o">=</span> <span class="n">ScaleSpace</span><span class="p">(</span><span class="n">moving</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">,</span>
+                                        <span class="n">moving_spacing</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_sigma_factor</span><span class="p">,</span>
+                                        <span class="k">False</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span> <span class="o">=</span> <span class="n">ScaleSpace</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">,</span>
+                                        <span class="n">static_spacing</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_sigma_factor</span><span class="p">,</span>
+                                        <span class="k">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AffineRegistration.optimize"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.AffineRegistration.optimize">[docs]</a>    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">moving</span><span class="p">,</span> <span class="n">transform</span><span class="p">,</span> <span class="n">params0</span><span class="p">,</span>
+                 <span class="n">static_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">starting_affine</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">r&#39;&#39;&#39; Starts the optimization process</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        static : array, shape (S, R, C) or (R, C)</span>
+<span class="sd">            the image to be used as reference during optimization.</span>
+<span class="sd">        moving : array, shape (S&#39;, R&#39;, C&#39;) or (R&#39;, C&#39;)</span>
+<span class="sd">            the image to be used as &quot;moving&quot; during optimization. It is</span>
+<span class="sd">            necessary to pre-align the moving image to ensure its domain</span>
+<span class="sd">            lies inside the domain of the deformation fields. This is assumed</span>
+<span class="sd">            to be accomplished by &quot;pre-aligning&quot; the moving image towards the</span>
+<span class="sd">            static using an affine transformation given by the</span>
+<span class="sd">            &#39;starting_affine&#39; matrix</span>
+<span class="sd">        transform : instance of Transform</span>
+<span class="sd">            the transformation with respect to whose parameters the gradient</span>
+<span class="sd">            must be computed</span>
+<span class="sd">        params0 : array, shape (n,)</span>
+<span class="sd">            parameters from which to start the optimization. If None, the</span>
+<span class="sd">            optimization will start at the identity transform. n is the</span>
+<span class="sd">            number of parameters of the specified transformation.</span>
+<span class="sd">        static_grid2world : array, shape (dim+1, dim+1), optional</span>
+<span class="sd">            the voxel-to-space transformation associated with the static</span>
+<span class="sd">            image. The default is None, implying the transform is the</span>
+<span class="sd">            identity.</span>
+<span class="sd">        moving_grid2world : array, shape (dim+1, dim+1), optional</span>
+<span class="sd">            the voxel-to-space transformation associated with the moving</span>
+<span class="sd">            image. The default is None, implying the transform is the</span>
+<span class="sd">            identity.</span>
+<span class="sd">        starting_affine : string, or matrix, or None, optional</span>
+<span class="sd">            If string:</span>
+<span class="sd">                &#39;mass&#39;: align centers of gravity</span>
+<span class="sd">                &#39;voxel-origin&#39;: align physical coordinates of voxel (0,0,0)</span>
+<span class="sd">                &#39;centers&#39;: align physical coordinates of central voxels</span>
+<span class="sd">            If matrix:</span>
+<span class="sd">                array, shape (dim+1, dim+1).</span>
+<span class="sd">            If None:</span>
+<span class="sd">                Start from identity.</span>
+<span class="sd">            The default is None.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        affine_map : instance of AffineMap</span>
+<span class="sd">            the affine resulting affine transformation</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_optimizer</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="n">moving</span><span class="p">,</span> <span class="n">transform</span><span class="p">,</span> <span class="n">params0</span><span class="p">,</span>
+                             <span class="n">static_grid2world</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">,</span>
+                             <span class="n">starting_affine</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">starting_affine</span>  <span class="c"># Now we must refer to self.starting_affine</span>
+
+        <span class="c"># Multi-resolution iterations</span>
+        <span class="n">original_static_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span><span class="o">.</span><span class="n">get_image</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">original_static_grid2world</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span><span class="o">.</span><span class="n">get_affine</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">original_moving_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_ss</span><span class="o">.</span><span class="n">get_image</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">original_moving_grid2world</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_ss</span><span class="o">.</span><span class="n">get_affine</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">affine_map</span> <span class="o">=</span> <span class="n">AffineMap</span><span class="p">(</span><span class="k">None</span><span class="p">,</span>
+                               <span class="n">original_static_shape</span><span class="p">,</span>
+                               <span class="n">original_static_grid2world</span><span class="p">,</span>
+                               <span class="n">original_moving_shape</span><span class="p">,</span>
+                               <span class="n">original_moving_grid2world</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_level</span> <span class="o">=</span> <span class="n">level</span>
+            <span class="n">max_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_iters</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">level</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="n">VerbosityLevels</span><span class="o">.</span><span class="n">STATUS</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s">&#39;Optimizing level %d [max iter: %d]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">))</span>
+
+            <span class="c"># Resample the smooth static image to the shape of this level</span>
+            <span class="n">smooth_static</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span><span class="o">.</span><span class="n">get_image</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+            <span class="n">current_static_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span><span class="o">.</span><span class="n">get_domain_shape</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+            <span class="n">current_static_grid2world</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_ss</span><span class="o">.</span><span class="n">get_affine</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+
+            <span class="n">current_affine_map</span> <span class="o">=</span> <span class="n">AffineMap</span><span class="p">(</span><span class="k">None</span><span class="p">,</span>
+                                           <span class="n">current_static_shape</span><span class="p">,</span>
+                                           <span class="n">current_static_grid2world</span><span class="p">,</span>
+                                           <span class="n">original_static_shape</span><span class="p">,</span>
+                                           <span class="n">original_static_grid2world</span><span class="p">)</span>
+            <span class="n">current_static</span> <span class="o">=</span> <span class="n">current_affine_map</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">smooth_static</span><span class="p">)</span>
+
+            <span class="c"># The moving image is full resolution</span>
+            <span class="n">current_moving_grid2world</span> <span class="o">=</span> <span class="n">original_moving_grid2world</span>
+
+            <span class="n">current_moving</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_ss</span><span class="o">.</span><span class="n">get_image</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+
+            <span class="c"># Prepare the metric for iterations at this resolution</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">current_static</span><span class="p">,</span> <span class="n">current_moving</span><span class="p">,</span>
+                              <span class="n">current_static_grid2world</span><span class="p">,</span>
+                              <span class="n">current_moving_grid2world</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span><span class="p">)</span>
+
+            <span class="c"># Optimize this level</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;gtol&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span>
+                                <span class="s">&#39;disp&#39;</span><span class="p">:</span> <span class="k">False</span><span class="p">}</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;L-BFGS-B&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;maxfun&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_iter</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;maxiter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_iter</span>
+
+            <span class="k">if</span> <span class="n">SCIPY_LESS_0_12</span><span class="p">:</span>
+                <span class="c"># Older versions don&#39;t expect value and gradient from</span>
+                <span class="c"># the same function</span>
+                <span class="n">opt</span> <span class="o">=</span> <span class="n">Optimizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">params0</span><span class="p">,</span>
+                                <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">gradient</span><span class="p">,</span>
+                                <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">opt</span> <span class="o">=</span> <span class="n">Optimizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">distance_and_gradient</span><span class="p">,</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">params0</span><span class="p">,</span>
+                                <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="k">True</span><span class="p">,</span>
+                                <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">xopt</span>
+
+            <span class="c"># Update starting_affine matrix with optimal parameters</span>
+            <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">param_to_matrix</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span><span class="p">)</span>
+
+            <span class="c"># Start next iteration at identity</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">get_identity_parameters</span><span class="p">()</span>
+
+        <span class="n">affine_map</span><span class="o">.</span><span class="n">set_affine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">starting_affine</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">affine_map</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">align_centers_of_mass</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">,</span>
+                          <span class="n">moving</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">):</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;This function is deprecated please use&quot;</span>
+    <span class="n">msg</span> <span class="o">+=</span> <span class="s">&quot; dipy.align.imaffine.transform_centers_of_mass instead.&quot;</span>
+    <span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">transform_centers_of_mass</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">,</span>
+                                     <span class="n">moving</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">align_geometric_centers</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">,</span>
+                            <span class="n">moving</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">):</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;This function is deprecated please use&quot;</span>
+    <span class="n">msg</span> <span class="o">+=</span> <span class="s">&quot; dipy.align.imaffine.transform_geometric_centers instead.&quot;</span>
+    <span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">transform_geometric_centers</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">,</span>
+                                       <span class="n">moving</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">align_origins</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">,</span>
+                  <span class="n">moving</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">):</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;This function is deprecated please use&quot;</span>
+    <span class="n">msg</span> <span class="o">+=</span> <span class="s">&quot; dipy.align.imaffine.transform_origins instead.&quot;</span>
+    <span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">transform_origins</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">,</span>
+                             <span class="n">moving</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="transform_centers_of_mass"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.transform_centers_of_mass">[docs]</a><span class="k">def</span> <span class="nf">transform_centers_of_mass</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">,</span>
+                              <span class="n">moving</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot; Transformation to align the center of mass of the input images</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    static : array, shape (S, R, C)</span>
+<span class="sd">        static image</span>
+<span class="sd">    static_grid2world : array, shape (dim+1, dim+1)</span>
+<span class="sd">        the voxel-to-space transformation of the static image</span>
+<span class="sd">    moving : array, shape (S, R, C)</span>
+<span class="sd">        moving image</span>
+<span class="sd">    moving_grid2world : array, shape (dim+1, dim+1)</span>
+<span class="sd">        the voxel-to-space transformation of the moving image</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    affine_map : instance of AffineMap</span>
+<span class="sd">        the affine transformation (translation only, in this case) aligning</span>
+<span class="sd">        the center of mass of the moving image towards the one of the static</span>
+<span class="sd">        image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">static</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">static_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">static_grid2world</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">moving_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">moving_grid2world</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">c_static</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">measurements</span><span class="o">.</span><span class="n">center_of_mass</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">static</span><span class="p">))</span>
+    <span class="n">c_static</span> <span class="o">=</span> <span class="n">static_grid2world</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">c_static</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+    <span class="n">c_moving</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">measurements</span><span class="o">.</span><span class="n">center_of_mass</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">moving</span><span class="p">))</span>
+    <span class="n">c_moving</span> <span class="o">=</span> <span class="n">moving_grid2world</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">c_moving</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">transform</span><span class="p">[:</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">c_moving</span> <span class="o">-</span> <span class="n">c_static</span><span class="p">)[:</span><span class="n">dim</span><span class="p">]</span>
+    <span class="n">affine_map</span> <span class="o">=</span> <span class="n">AffineMap</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span>
+                           <span class="n">static</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">,</span>
+                           <span class="n">moving</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">affine_map</span></div>
+
+
+<span class="k">def</span> <span class="nf">transform_geometric_centers</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">,</span>
+                                <span class="n">moving</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot; Transformation to align the geometric center of the input images</span>
+
+<span class="sd">    With &quot;geometric center&quot; of a volume we mean the physical coordinates of</span>
+<span class="sd">    its central voxel</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    static : array, shape (S, R, C)</span>
+<span class="sd">        static image</span>
+<span class="sd">    static_grid2world : array, shape (dim+1, dim+1)</span>
+<span class="sd">        the voxel-to-space transformation of the static image</span>
+<span class="sd">    moving : array, shape (S, R, C)</span>
+<span class="sd">        moving image</span>
+<span class="sd">    moving_grid2world : array, shape (dim+1, dim+1)</span>
+<span class="sd">        the voxel-to-space transformation of the moving image</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    affine_map : instance of AffineMap</span>
+<span class="sd">        the affine transformation (translation only, in this case) aligning</span>
+<span class="sd">        the geometric center of the moving image towards the one of the static</span>
+<span class="sd">        image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">static</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">static_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">static_grid2world</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">moving_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">moving_grid2world</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">c_static</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">static</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">c_static</span> <span class="o">=</span> <span class="n">static_grid2world</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">c_static</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+    <span class="n">c_moving</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">moving</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">c_moving</span> <span class="o">=</span> <span class="n">moving_grid2world</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">c_moving</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">transform</span><span class="p">[:</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">c_moving</span> <span class="o">-</span> <span class="n">c_static</span><span class="p">)[:</span><span class="n">dim</span><span class="p">]</span>
+    <span class="n">affine_map</span> <span class="o">=</span> <span class="n">AffineMap</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span>
+                           <span class="n">static</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">,</span>
+                           <span class="n">moving</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">affine_map</span>
+
+
+<span class="k">def</span> <span class="nf">transform_origins</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">,</span>
+                      <span class="n">moving</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot; Transformation to align the origins of the input images</span>
+
+<span class="sd">    With &quot;origin&quot; of a volume we mean the physical coordinates of</span>
+<span class="sd">    voxel (0,0,0)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    static : array, shape (S, R, C)</span>
+<span class="sd">        static image</span>
+<span class="sd">    static_grid2world : array, shape (dim+1, dim+1)</span>
+<span class="sd">        the voxel-to-space transformation of the static image</span>
+<span class="sd">    moving : array, shape (S, R, C)</span>
+<span class="sd">        moving image</span>
+<span class="sd">    moving_grid2world : array, shape (dim+1, dim+1)</span>
+<span class="sd">        the voxel-to-space transformation of the moving image</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    affine_map : instance of AffineMap</span>
+<span class="sd">        the affine transformation (translation only, in this case) aligning</span>
+<span class="sd">        the origin of the moving image towards the one of the static</span>
+<span class="sd">        image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">static</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">static_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">static_grid2world</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">moving_grid2world</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">moving_grid2world</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">c_static</span> <span class="o">=</span> <span class="n">static_grid2world</span><span class="p">[:</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">]</span>
+    <span class="n">c_moving</span> <span class="o">=</span> <span class="n">moving_grid2world</span><span class="p">[:</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">]</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">transform</span><span class="p">[:</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">c_moving</span> <span class="o">-</span> <span class="n">c_static</span><span class="p">)[:</span><span class="n">dim</span><span class="p">]</span>
+    <span class="n">affine_map</span> <span class="o">=</span> <span class="n">AffineMap</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span>
+                           <span class="n">static</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">static_grid2world</span><span class="p">,</span>
+                           <span class="n">moving</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">moving_grid2world</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">affine_map</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

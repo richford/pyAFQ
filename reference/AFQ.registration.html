@@ -1,0 +1,2900 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>registration &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../index.html"/>
+        <link rel="up" title="API Reference" href="index.html"/>
+        <link rel="prev" title="dti" href="AFQ.dti.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">API Reference</a> &raquo;</li>
+      
+    <li><code class="docutils literal"><span class="pre">registration</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/reference/AFQ.registration.rst.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="module-AFQ.registration">
+<span id="registration"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">registration</span></code><a class="headerlink" href="#module-AFQ.registration" title="Permalink to this headline">¶</a></h1>
+<p>Registration tools</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.AffineMap" title="AFQ.registration.AffineMap"><code class="xref py py-obj docutils literal"><span class="pre">AffineMap</span></code></a>(affine[,&nbsp;domain_grid_shape,&nbsp;...])</td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.AffineRegistration" title="AFQ.registration.AffineRegistration"><code class="xref py py-obj docutils literal"><span class="pre">AffineRegistration</span></code></a>([metric,&nbsp;level_iters,&nbsp;...])</td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.AffineTransform3D" title="AFQ.registration.AffineTransform3D"><code class="xref py py-obj docutils literal"><span class="pre">AffineTransform3D</span></code></a></td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.CCMetric" title="AFQ.registration.CCMetric"><code class="xref py py-obj docutils literal"><span class="pre">CCMetric</span></code></a>(dim[,&nbsp;sigma_diff,&nbsp;radius])</td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.DiffeomorphicMap" title="AFQ.registration.DiffeomorphicMap"><code class="xref py py-obj docutils literal"><span class="pre">DiffeomorphicMap</span></code></a>(dim,&nbsp;disp_shape[,&nbsp;...])</td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.EMMetric" title="AFQ.registration.EMMetric"><code class="xref py py-obj docutils literal"><span class="pre">EMMetric</span></code></a>(dim[,&nbsp;smooth,&nbsp;inner_iter,&nbsp;...])</td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.MutualInformationMetric" title="AFQ.registration.MutualInformationMetric"><code class="xref py py-obj docutils literal"><span class="pre">MutualInformationMetric</span></code></a>([nbins,&nbsp;...])</td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.RigidTransform3D" title="AFQ.registration.RigidTransform3D"><code class="xref py py-obj docutils literal"><span class="pre">RigidTransform3D</span></code></a></td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.SSDMetric" title="AFQ.registration.SSDMetric"><code class="xref py py-obj docutils literal"><span class="pre">SSDMetric</span></code></a>(dim[,&nbsp;smooth,&nbsp;inner_iter,&nbsp;step_type])</td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.StreamlineLinearRegistration" title="AFQ.registration.StreamlineLinearRegistration"><code class="xref py py-obj docutils literal"><span class="pre">StreamlineLinearRegistration</span></code></a>([metric,&nbsp;x0,&nbsp;...])</td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.SymmetricDiffeomorphicRegistration" title="AFQ.registration.SymmetricDiffeomorphicRegistration"><code class="xref py py-obj docutils literal"><span class="pre">SymmetricDiffeomorphicRegistration</span></code></a>(metric[,&nbsp;...])</td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.TranslationTransform3D" title="AFQ.registration.TranslationTransform3D"><code class="xref py py-obj docutils literal"><span class="pre">TranslationTransform3D</span></code></a></td>
+<td><p class="rubric">Methods</p>
+</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.affine" title="AFQ.registration.affine"><code class="xref py py-obj docutils literal"><span class="pre">affine</span></code></a>(moving,&nbsp;static,&nbsp;static_affine,&nbsp;...[,&nbsp;...])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.affine_registration" title="AFQ.registration.affine_registration"><code class="xref py py-obj docutils literal"><span class="pre">affine_registration</span></code></a>(moving,&nbsp;static[,&nbsp;...])</td>
+<td>Find the affine transformation between two 3D images.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.c_of_mass" title="AFQ.registration.c_of_mass"><code class="xref py py-obj docutils literal"><span class="pre">c_of_mass</span></code></a>(moving,&nbsp;static,&nbsp;static_affine,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.move_streamlines" title="AFQ.registration.move_streamlines"><code class="xref py py-obj docutils literal"><span class="pre">move_streamlines</span></code></a>(streamlines,&nbsp;output_space)</td>
+<td>Applies a linear transformation, given by affine, to streamlines.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.read_mapping" title="AFQ.registration.read_mapping"><code class="xref py py-obj docutils literal"><span class="pre">read_mapping</span></code></a>(disp,&nbsp;domain_img,&nbsp;codomain_img)</td>
+<td>Read a syn registration mapping from a nifti file</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.register_dwi" title="AFQ.registration.register_dwi"><code class="xref py py-obj docutils literal"><span class="pre">register_dwi</span></code></a>(data_files,&nbsp;bval_files,&nbsp;bvec_files)</td>
+<td>Register a DWI data-set</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.register_series" title="AFQ.registration.register_series"><code class="xref py py-obj docutils literal"><span class="pre">register_series</span></code></a>(series,&nbsp;ref,&nbsp;pipeline)</td>
+<td>Register a series to a reference image.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.resample" title="AFQ.registration.resample"><code class="xref py py-obj docutils literal"><span class="pre">resample</span></code></a>(moving,&nbsp;static,&nbsp;moving_affine,&nbsp;...)</td>
+<td>Resample an image from one space to another.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.rigid" title="AFQ.registration.rigid"><code class="xref py py-obj docutils literal"><span class="pre">rigid</span></code></a>(moving,&nbsp;static,&nbsp;static_affine,&nbsp;...[,&nbsp;...])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.set_number_of_points" title="AFQ.registration.set_number_of_points"><code class="xref py py-obj docutils literal"><span class="pre">set_number_of_points</span></code></a></td>
+<td>Change the number of points of streamlines</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.streamline_registration" title="AFQ.registration.streamline_registration"><code class="xref py py-obj docutils literal"><span class="pre">streamline_registration</span></code></a>(moving,&nbsp;static[,&nbsp;...])</td>
+<td>Register two collections of streamlines (&#8216;bundles&#8217;) to each other</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.syn_register_dwi" title="AFQ.registration.syn_register_dwi"><code class="xref py py-obj docutils literal"><span class="pre">syn_register_dwi</span></code></a>(dwi,&nbsp;gtab[,&nbsp;template])</td>
+<td><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.syn_registration" title="AFQ.registration.syn_registration"><code class="xref py py-obj docutils literal"><span class="pre">syn_registration</span></code></a>(moving,&nbsp;static[,&nbsp;...])</td>
+<td>Register a source image (moving) to a target image (static).</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.transform_centers_of_mass" title="AFQ.registration.transform_centers_of_mass"><code class="xref py py-obj docutils literal"><span class="pre">transform_centers_of_mass</span></code></a>(static,&nbsp;...)</td>
+<td>Transformation to align the center of mass of the input images</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.translation" title="AFQ.registration.translation"><code class="xref py py-obj docutils literal"><span class="pre">translation</span></code></a>(moving,&nbsp;static,&nbsp;static_affine,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.write_mapping" title="AFQ.registration.write_mapping"><code class="xref py py-obj docutils literal"><span class="pre">write_mapping</span></code></a>(mapping,&nbsp;fname)</td>
+<td>Write out a syn registration mapping to file</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="affinemap">
+<h2><a class="reference internal" href="#AFQ.registration.AffineMap" title="AFQ.registration.AffineMap"><code class="xref py py-class docutils literal"><span class="pre">AffineMap</span></code></a><a class="headerlink" href="#affinemap" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.registration.AffineMap">
+<em class="property">class </em><code class="descclassname">AFQ.registration.</code><code class="descname">AffineMap</code><span class="sig-paren">(</span><em>affine</em>, <em>domain_grid_shape=None</em>, <em>domain_grid2world=None</em>, <em>codomain_grid_shape=None</em>, <em>codomain_grid2world=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imaffine.html#AffineMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.AffineMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.AffineMap.set_affine" title="AFQ.registration.AffineMap.set_affine"><code class="xref py py-obj docutils literal"><span class="pre">set_affine</span></code></a>(affine)</td>
+<td>Sets the affine transform (operating in physical space)</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.AffineMap.transform" title="AFQ.registration.AffineMap.transform"><code class="xref py py-obj docutils literal"><span class="pre">transform</span></code></a>(image[,&nbsp;interp,&nbsp;image_grid2world,&nbsp;...])</td>
+<td>Transforms the input image from co-domain to domain space</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.AffineMap.transform_inverse" title="AFQ.registration.AffineMap.transform_inverse"><code class="xref py py-obj docutils literal"><span class="pre">transform_inverse</span></code></a>(image[,&nbsp;interp,&nbsp;...])</td>
+<td>Transforms the input image from domain to co-domain space</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.registration.AffineMap.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>affine</em>, <em>domain_grid_shape=None</em>, <em>domain_grid2world=None</em>, <em>codomain_grid_shape=None</em>, <em>codomain_grid2world=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imaffine.html#AffineMap.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.AffineMap.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>AffineMap</p>
+<p>Implements an affine transformation whose domain is given by
+<cite>domain_grid</cite> and <cite>domain_grid2world</cite>, and whose co-domain is
+given by <cite>codomain_grid</cite> and <cite>codomain_grid2world</cite>.</p>
+<p>The actual transform is represented by the <cite>affine</cite> matrix, which
+operate in world coordinates. Therefore, to transform a moving image
+towards a static image, we first map each voxel (i,j,k) of the static
+image to world coordinates (x,y,z) by applying <cite>domain_grid2world</cite>.
+Then we apply the <cite>affine</cite> transform to (x,y,z) obtaining (x&#8217;, y&#8217;, z&#8217;)
+in moving image&#8217;s world coordinates. Finally, (x&#8217;, y&#8217;, z&#8217;) is mapped
+to voxel coordinates (i&#8217;, j&#8217;, k&#8217;) in the moving image by multiplying
+(x&#8217;, y&#8217;, z&#8217;) by the inverse of <cite>codomain_grid2world</cite>. The
+<cite>codomain_grid_shape</cite> is used analogously to transform the static
+image towards the moving image when calling <cite>transform_inverse</cite>.</p>
+<p>If the domain/co-domain information is not provided (None) then the
+sampling information needs to be specified each time the <cite>transform</cite>
+or <cite>transform_inverse</cite> is called to transform images. Note that such
+sampling information is not necessary to transform points defined in
+physical space, such as stream lines.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>affine</strong> : array, shape (dim + 1, dim + 1)</p>
+<blockquote>
+<div><p>the matrix defining the affine transform, where <cite>dim</cite> is the
+dimension of the space this map operates in (2 for 2D images,
+3 for 3D images). If None, then <cite>self</cite> represents the identity
+transformation.</p>
+</div></blockquote>
+<p><strong>domain_grid_shape</strong> : sequence, shape (dim,), optional</p>
+<blockquote>
+<div><p>the shape of the default domain sampling grid. When <cite>transform</cite>
+is called to transform an image, the resulting image will have
+this shape, unless a different sampling information is provided.
+If None, then the sampling grid shape must be specified each time
+the <cite>transform</cite> method is called.</p>
+</div></blockquote>
+<p><strong>domain_grid2world</strong> : array, shape (dim + 1, dim + 1), optional</p>
+<blockquote>
+<div><p>the grid-to-world transform associated with the domain grid.
+If None (the default), then the grid-to-world transform is assumed
+to be the identity.</p>
+</div></blockquote>
+<p><strong>codomain_grid_shape</strong> : sequence of integers, shape (dim,)</p>
+<blockquote>
+<div><p>the shape of the default co-domain sampling grid. When
+<cite>transform_inverse</cite> is called to transform an image, the resulting
+image will have this shape, unless a different sampling
+information is provided. If None (the default), then the sampling
+grid shape must be specified each time the <cite>transform_inverse</cite>
+method is called.</p>
+</div></blockquote>
+<p><strong>codomain_grid2world</strong> : array, shape (dim + 1, dim + 1)</p>
+<blockquote class="last">
+<div><p>the grid-to-world transform associated with the co-domain grid.
+If None (the default), then the grid-to-world transform is assumed
+to be the identity.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.AffineMap.set_affine">
+<code class="descname">set_affine</code><span class="sig-paren">(</span><em>affine</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imaffine.html#AffineMap.set_affine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.AffineMap.set_affine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the affine transform (operating in physical space)</p>
+<p>Also sets <cite>self.affine_inv</cite> - the inverse of <cite>affine</cite>, or None if
+there is no inverse.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>affine</strong> : array, shape (dim + 1, dim + 1)</p>
+<blockquote class="last">
+<div><p>the matrix representing the affine transform operating in
+physical space. The domain and co-domain information
+remains unchanged. If None, then <cite>self</cite> represents the identity
+transformation.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.AffineMap.transform">
+<code class="descname">transform</code><span class="sig-paren">(</span><em>image</em>, <em>interp='linear'</em>, <em>image_grid2world=None</em>, <em>sampling_grid_shape=None</em>, <em>sampling_grid2world=None</em>, <em>resample_only=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imaffine.html#AffineMap.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.AffineMap.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the input image from co-domain to domain space</p>
+<p>By default, the transformed image is sampled at a grid defined by
+<cite>self.domain_shape</cite> and <cite>self.domain_grid2world</cite>. If such
+information was not provided then <cite>sampling_grid_shape</cite> is mandatory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>image</strong> : array, shape (X, Y) or (X, Y, Z)</p>
+<blockquote>
+<div><p>the image to be transformed</p>
+</div></blockquote>
+<p><strong>interp</strong> : string, either &#8216;linear&#8217; or &#8216;nearest&#8217;</p>
+<blockquote>
+<div><p>the type of interpolation to be used, either &#8216;linear&#8217;
+(for k-linear interpolation) or &#8216;nearest&#8217; for nearest neighbor</p>
+</div></blockquote>
+<p><strong>image_grid2world</strong> : array, shape (dim + 1, dim + 1), optional</p>
+<blockquote>
+<div><p>the grid-to-world transform associated with <cite>image</cite>.
+If None (the default), then the grid-to-world transform is assumed
+to be the identity.</p>
+</div></blockquote>
+<p><strong>sampling_grid_shape</strong> : sequence, shape (dim,), optional</p>
+<blockquote>
+<div><p>the shape of the grid where the transformed image must be sampled.
+If None (the default), then <cite>self.codomain_shape</cite> is used instead
+(which must have been set at initialization, otherwise an exception
+will be raised).</p>
+</div></blockquote>
+<p><strong>sampling_grid2world</strong> : array, shape (dim + 1, dim + 1), optional</p>
+<blockquote>
+<div><p>the grid-to-world transform associated with the sampling grid
+(specified by <cite>sampling_grid_shape</cite>, or by default
+<cite>self.codomain_shape</cite>). If None (the default), then the
+grid-to-world transform is assumed to be the identity.</p>
+</div></blockquote>
+<p><strong>resample_only</strong> : Boolean, optional</p>
+<blockquote>
+<div><p>If False (the default) the affine transform is applied normally.
+If True, then the affine transform is not applied, and the input
+image is just re-sampled on the domain grid of this transform.</p>
+</div></blockquote>
+<p><strong>Returns</strong></p>
+<p><strong>&#8212;&#8212;-</strong></p>
+<p><strong>transformed</strong> : array, shape <cite>sampling_grid_shape</cite> or</p>
+<blockquote class="last">
+<div><blockquote>
+<div><p><cite>self.codomain_shape</cite></p>
+</div></blockquote>
+<p>the transformed image, sampled at the requested grid</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.AffineMap.transform_inverse">
+<code class="descname">transform_inverse</code><span class="sig-paren">(</span><em>image</em>, <em>interp='linear'</em>, <em>image_grid2world=None</em>, <em>sampling_grid_shape=None</em>, <em>sampling_grid2world=None</em>, <em>resample_only=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imaffine.html#AffineMap.transform_inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.AffineMap.transform_inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the input image from domain to co-domain space</p>
+<p>By default, the transformed image is sampled at a grid defined by
+<cite>self.codomain_shape</cite> and <cite>self.codomain_grid2world</cite>. If such
+information was not provided then <cite>sampling_grid_shape</cite> is mandatory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>image</strong> : array, shape (X, Y) or (X, Y, Z)</p>
+<blockquote>
+<div><p>the image to be transformed</p>
+</div></blockquote>
+<p><strong>interp</strong> : string, either &#8216;linear&#8217; or &#8216;nearest&#8217;</p>
+<blockquote>
+<div><p>the type of interpolation to be used, either &#8216;linear&#8217;
+(for k-linear interpolation) or &#8216;nearest&#8217; for nearest neighbor</p>
+</div></blockquote>
+<p><strong>image_grid2world</strong> : array, shape (dim + 1, dim + 1), optional</p>
+<blockquote>
+<div><p>the grid-to-world transform associated with <cite>image</cite>.
+If None (the default), then the grid-to-world transform is assumed
+to be the identity.</p>
+</div></blockquote>
+<p><strong>sampling_grid_shape</strong> : sequence, shape (dim,), optional</p>
+<blockquote>
+<div><p>the shape of the grid where the transformed image must be sampled.
+If None (the default), then <cite>self.codomain_shape</cite> is used instead
+(which must have been set at initialization, otherwise an exception
+will be raised).</p>
+</div></blockquote>
+<p><strong>sampling_grid2world</strong> : array, shape (dim + 1, dim + 1), optional</p>
+<blockquote>
+<div><p>the grid-to-world transform associated with the sampling grid
+(specified by <cite>sampling_grid_shape</cite>, or by default
+<cite>self.codomain_shape</cite>). If None (the default), then the
+grid-to-world transform is assumed to be the identity.</p>
+</div></blockquote>
+<p><strong>resample_only</strong> : Boolean, optional</p>
+<blockquote>
+<div><p>If False (the default) the affine transform is applied normally.
+If True, then the affine transform is not applied, and the input
+image is just re-sampled on the domain grid of this transform.</p>
+</div></blockquote>
+<p><strong>Returns</strong></p>
+<p><strong>&#8212;&#8212;-</strong></p>
+<p><strong>transformed</strong> : array, shape <cite>sampling_grid_shape</cite> or</p>
+<blockquote class="last">
+<div><blockquote>
+<div><p><cite>self.codomain_shape</cite></p>
+</div></blockquote>
+<p>the transformed image, sampled at the requested grid</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="affineregistration">
+<h2><a class="reference internal" href="#AFQ.registration.AffineRegistration" title="AFQ.registration.AffineRegistration"><code class="xref py py-class docutils literal"><span class="pre">AffineRegistration</span></code></a><a class="headerlink" href="#affineregistration" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.registration.AffineRegistration">
+<em class="property">class </em><code class="descclassname">AFQ.registration.</code><code class="descname">AffineRegistration</code><span class="sig-paren">(</span><em>metric=None</em>, <em>level_iters=None</em>, <em>sigmas=None</em>, <em>factors=None</em>, <em>method='L-BFGS-B'</em>, <em>ss_sigma_factor=None</em>, <em>options=None</em>, <em>verbosity=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imaffine.html#AffineRegistration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.AffineRegistration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.AffineRegistration.optimize" title="AFQ.registration.AffineRegistration.optimize"><code class="xref py py-obj docutils literal"><span class="pre">optimize</span></code></a>(static,&nbsp;moving,&nbsp;transform,&nbsp;params0)</td>
+<td>Starts the optimization process</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.registration.AffineRegistration.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>metric=None</em>, <em>level_iters=None</em>, <em>sigmas=None</em>, <em>factors=None</em>, <em>method='L-BFGS-B'</em>, <em>ss_sigma_factor=None</em>, <em>options=None</em>, <em>verbosity=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imaffine.html#AffineRegistration.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.AffineRegistration.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes an instance of the AffineRegistration class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>metric</strong> : None or object, optional</p>
+<blockquote>
+<div><p>an instance of a metric. The default is None, implying
+the Mutual Information metric with default settings.</p>
+</div></blockquote>
+<p><strong>level_iters</strong> : sequence, optional</p>
+<blockquote>
+<div><p>the number of iterations at each scale of the scale space.
+<cite>level_iters[0]</cite> corresponds to the coarsest scale,
+<cite>level_iters[-1]</cite> the finest, where n is the length of the
+sequence. By default, a 3-level scale space with iterations
+sequence equal to [10000, 1000, 100] will be used.</p>
+</div></blockquote>
+<p><strong>sigmas</strong> : sequence of floats, optional</p>
+<blockquote>
+<div><p>custom smoothing parameter to build the scale space (one parameter
+for each scale). By default, the sequence of sigmas will be
+[3, 1, 0].</p>
+</div></blockquote>
+<p><strong>factors</strong> : sequence of floats, optional</p>
+<blockquote>
+<div><p>custom scale factors to build the scale space (one factor for each
+scale). By default, the sequence of factors will be [4, 2, 1].</p>
+</div></blockquote>
+<p><strong>method</strong> : string, optional</p>
+<blockquote>
+<div><p>optimization method to be used. If Scipy version &lt; 0.12, then
+only L-BFGS-B is available. Otherwise, <cite>method</cite> can be any
+gradient-based method available in <cite>dipy.core.Optimize</cite>: CG, BFGS,
+Newton-CG, dogleg or trust-ncg.
+The default is &#8216;L-BFGS-B&#8217;.</p>
+</div></blockquote>
+<p><strong>ss_sigma_factor</strong> : float, optional</p>
+<blockquote>
+<div><p>If None, this parameter is not used and an isotropic scale
+space with the given <cite>factors</cite> and <cite>sigmas</cite> will be built.
+If not None, an anisotropic scale space will be used by
+automatically selecting the smoothing sigmas along each axis
+according to the voxel dimensions of the given image.
+The <cite>ss_sigma_factor</cite> is used to scale the automatically computed
+sigmas. For example, in the isotropic case, the sigma of the
+kernel will be $factor * (2 ^ i)$ where
+$i = 1, 2, ..., n_scales - 1$ is the scale (the finest resolution
+image $i=0$ is never smoothed). The default is None.</p>
+</div></blockquote>
+<p><strong>options</strong> : dict, optional</p>
+<blockquote>
+<div><p>extra optimization options. The default is None, implying
+no extra options are passed to the optimizer.</p>
+</div></blockquote>
+<p><strong>verbosity: int (one of {0, 1, 2, 3}), optional</strong></p>
+<blockquote class="last">
+<div><p>Set the verbosity level of the algorithm:
+0 : do not print anything
+1 : print information about the current status of the algorithm
+2 : print high level information of the components involved in</p>
+<blockquote>
+<div><p>the registration that can be used to detect a failing
+component.</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>3</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">print as much information as possible to isolate the cause</span><dd><p class="first last">of a bug.</p>
+</dd>
+</dl>
+<p>Default: 1</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="AFQ.registration.AffineRegistration.docstring_addendum">
+<code class="descname">docstring_addendum</code><em class="property"> = 'verbosity: int (one of {0, 1, 2, 3}), optional\n            Set the verbosity level of the algorithm:\n            0 : do not print anything\n            1 : print information about the current status of the algorithm\n            2 : print high level information of the components involved in\n                the registration that can be used to detect a failing\n                component.\n            3 : print as much information as possible to isolate the cause\n                of a bug.\n            Default: 1\n    '</em><a class="headerlink" href="#AFQ.registration.AffineRegistration.docstring_addendum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.AffineRegistration.optimize">
+<code class="descname">optimize</code><span class="sig-paren">(</span><em>static</em>, <em>moving</em>, <em>transform</em>, <em>params0</em>, <em>static_grid2world=None</em>, <em>moving_grid2world=None</em>, <em>starting_affine=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imaffine.html#AffineRegistration.optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.AffineRegistration.optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the optimization process</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>static</strong> : array, shape (S, R, C) or (R, C)</p>
+<blockquote>
+<div><p>the image to be used as reference during optimization.</p>
+</div></blockquote>
+<p><strong>moving</strong> : array, shape (S&#8217;, R&#8217;, C&#8217;) or (R&#8217;, C&#8217;)</p>
+<blockquote>
+<div><p>the image to be used as &#8220;moving&#8221; during optimization. It is
+necessary to pre-align the moving image to ensure its domain
+lies inside the domain of the deformation fields. This is assumed
+to be accomplished by &#8220;pre-aligning&#8221; the moving image towards the
+static using an affine transformation given by the
+&#8216;starting_affine&#8217; matrix</p>
+</div></blockquote>
+<p><strong>transform</strong> : instance of Transform</p>
+<blockquote>
+<div><p>the transformation with respect to whose parameters the gradient
+must be computed</p>
+</div></blockquote>
+<p><strong>params0</strong> : array, shape (n,)</p>
+<blockquote>
+<div><p>parameters from which to start the optimization. If None, the
+optimization will start at the identity transform. n is the
+number of parameters of the specified transformation.</p>
+</div></blockquote>
+<p><strong>static_grid2world</strong> : array, shape (dim+1, dim+1), optional</p>
+<blockquote>
+<div><p>the voxel-to-space transformation associated with the static
+image. The default is None, implying the transform is the
+identity.</p>
+</div></blockquote>
+<p><strong>moving_grid2world</strong> : array, shape (dim+1, dim+1), optional</p>
+<blockquote>
+<div><p>the voxel-to-space transformation associated with the moving
+image. The default is None, implying the transform is the
+identity.</p>
+</div></blockquote>
+<p><strong>starting_affine</strong> : string, or matrix, or None, optional</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>If string:</dt>
+<dd><p class="first last">&#8216;mass&#8217;: align centers of gravity
+&#8216;voxel-origin&#8217;: align physical coordinates of voxel (0,0,0)
+&#8216;centers&#8217;: align physical coordinates of central voxels</p>
+</dd>
+<dt>If matrix:</dt>
+<dd><p class="first last">array, shape (dim+1, dim+1).</p>
+</dd>
+<dt>If None:</dt>
+<dd><p class="first last">Start from identity.</p>
+</dd>
+</dl>
+<p>The default is None.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>affine_map</strong> : instance of AffineMap</p>
+<blockquote class="last">
+<div><p>the affine resulting affine transformation</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="affinetransform3d">
+<h2><a class="reference internal" href="#AFQ.registration.AffineTransform3D" title="AFQ.registration.AffineTransform3D"><code class="xref py py-class docutils literal"><span class="pre">AffineTransform3D</span></code></a><a class="headerlink" href="#affinetransform3d" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.registration.AffineTransform3D">
+<em class="property">class </em><code class="descclassname">AFQ.registration.</code><code class="descname">AffineTransform3D</code><a class="headerlink" href="#AFQ.registration.AffineTransform3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">dipy.align.transforms.Transform</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_dim</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_identity_parameters</span></code></td>
+<td>Parameter values corresponding to the identity transform</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_number_of_parameters</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">jacobian</span></code></td>
+<td>Jacobian function of this transform</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">param_to_matrix</span></code></td>
+<td>Matrix representation of this transform with the given parameters</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.registration.AffineTransform3D.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AFQ.registration.AffineTransform3D.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Affine transform in 3D</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="ccmetric">
+<h2><a class="reference internal" href="#AFQ.registration.CCMetric" title="AFQ.registration.CCMetric"><code class="xref py py-class docutils literal"><span class="pre">CCMetric</span></code></a><a class="headerlink" href="#ccmetric" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.registration.CCMetric">
+<em class="property">class </em><code class="descclassname">AFQ.registration.</code><code class="descname">CCMetric</code><span class="sig-paren">(</span><em>dim</em>, <em>sigma_diff=2.0</em>, <em>radius=4</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#CCMetric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.CCMetric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">dipy.align.metrics.SimilarityMetric</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.CCMetric.compute_backward" title="AFQ.registration.CCMetric.compute_backward"><code class="xref py py-obj docutils literal"><span class="pre">compute_backward</span></code></a>()</td>
+<td>Computes one step bringing the static image towards the moving.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.CCMetric.compute_forward" title="AFQ.registration.CCMetric.compute_forward"><code class="xref py py-obj docutils literal"><span class="pre">compute_forward</span></code></a>()</td>
+<td>Computes one step bringing the moving image towards the static.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.CCMetric.free_iteration" title="AFQ.registration.CCMetric.free_iteration"><code class="xref py py-obj docutils literal"><span class="pre">free_iteration</span></code></a>()</td>
+<td>Frees the resources allocated during initialization</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.CCMetric.get_energy" title="AFQ.registration.CCMetric.get_energy"><code class="xref py py-obj docutils literal"><span class="pre">get_energy</span></code></a>()</td>
+<td>Numerical value assigned by this metric to the current image pair</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.CCMetric.initialize_iteration" title="AFQ.registration.CCMetric.initialize_iteration"><code class="xref py py-obj docutils literal"><span class="pre">initialize_iteration</span></code></a>()</td>
+<td>Prepares the metric to compute one displacement field iteration.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">set_levels_above</span></code>(levels)</td>
+<td>Informs the metric how many pyramid levels are above the current one</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_levels_below</span></code>(levels)</td>
+<td>Informs the metric how many pyramid levels are below the current one</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">set_moving_image</span></code>(moving_image,&nbsp;...)</td>
+<td>Sets the moving image being compared against the static one.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_static_image</span></code>(static_image,&nbsp;...)</td>
+<td>Sets the static image being compared against the moving one.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">use_moving_image_dynamics</span></code>(...)</td>
+<td>This is called by the optimizer just after setting the moving image</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">use_static_image_dynamics</span></code>(...)</td>
+<td>This is called by the optimizer just after setting the static image.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.registration.CCMetric.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>dim</em>, <em>sigma_diff=2.0</em>, <em>radius=4</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#CCMetric.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.CCMetric.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalized Cross-Correlation Similarity metric.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dim</strong> : int (either 2 or 3)</p>
+<blockquote>
+<div><p>the dimension of the image domain</p>
+</div></blockquote>
+<p><strong>sigma_diff</strong> : the standard deviation of the Gaussian smoothing kernel to</p>
+<blockquote>
+<div><p>be applied to the update field at each iteration</p>
+</div></blockquote>
+<p><strong>radius</strong> : int</p>
+<blockquote class="last">
+<div><p>the radius of the squared (cubic) neighborhood at each voxel to be
+considered to compute the cross correlation</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.CCMetric.compute_backward">
+<code class="descname">compute_backward</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#CCMetric.compute_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.CCMetric.compute_backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes one step bringing the static image towards the moving.</p>
+<p>Computes the update displacement field to be used for registration of
+the static image towards the moving image</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.CCMetric.compute_forward">
+<code class="descname">compute_forward</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#CCMetric.compute_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.CCMetric.compute_forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes one step bringing the moving image towards the static.</p>
+<p>Computes the update displacement field to be used for registration of
+the moving image towards the static image</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.CCMetric.free_iteration">
+<code class="descname">free_iteration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#CCMetric.free_iteration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.CCMetric.free_iteration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frees the resources allocated during initialization</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.CCMetric.get_energy">
+<code class="descname">get_energy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#CCMetric.get_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.CCMetric.get_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Numerical value assigned by this metric to the current image pair</p>
+<p>Returns the Cross Correlation (data term) energy computed at the
+largest iteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.CCMetric.initialize_iteration">
+<code class="descname">initialize_iteration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#CCMetric.initialize_iteration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.CCMetric.initialize_iteration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares the metric to compute one displacement field iteration.</p>
+<p>Pre-computes the cross-correlation factors for efficient computation
+of the gradient of the Cross Correlation w.r.t. the displacement field.
+It also pre-computes the image gradients in the physical space by
+re-orienting the gradients in the voxel space using the corresponding
+affine transformations.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="diffeomorphicmap">
+<h2><a class="reference internal" href="#AFQ.registration.DiffeomorphicMap" title="AFQ.registration.DiffeomorphicMap"><code class="xref py py-class docutils literal"><span class="pre">DiffeomorphicMap</span></code></a><a class="headerlink" href="#diffeomorphicmap" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.registration.DiffeomorphicMap">
+<em class="property">class </em><code class="descclassname">AFQ.registration.</code><code class="descname">DiffeomorphicMap</code><span class="sig-paren">(</span><em>dim</em>, <em>disp_shape</em>, <em>disp_grid2world=None</em>, <em>domain_shape=None</em>, <em>domain_grid2world=None</em>, <em>codomain_shape=None</em>, <em>codomain_grid2world=None</em>, <em>prealign=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.DiffeomorphicMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.DiffeomorphicMap.allocate" title="AFQ.registration.DiffeomorphicMap.allocate"><code class="xref py py-obj docutils literal"><span class="pre">allocate</span></code></a>()</td>
+<td>Creates a zero displacement field</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.DiffeomorphicMap.compute_inversion_error" title="AFQ.registration.DiffeomorphicMap.compute_inversion_error"><code class="xref py py-obj docutils literal"><span class="pre">compute_inversion_error</span></code></a>()</td>
+<td>Inversion error of the displacement fields</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.DiffeomorphicMap.expand_fields" title="AFQ.registration.DiffeomorphicMap.expand_fields"><code class="xref py py-obj docutils literal"><span class="pre">expand_fields</span></code></a>(expand_factors,&nbsp;new_shape)</td>
+<td>Expands the displacement fields from current shape to new_shape</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.DiffeomorphicMap.get_backward_field" title="AFQ.registration.DiffeomorphicMap.get_backward_field"><code class="xref py py-obj docutils literal"><span class="pre">get_backward_field</span></code></a>()</td>
+<td>Deformation field to transform an image in the backward direction</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.DiffeomorphicMap.get_forward_field" title="AFQ.registration.DiffeomorphicMap.get_forward_field"><code class="xref py py-obj docutils literal"><span class="pre">get_forward_field</span></code></a>()</td>
+<td>Deformation field to transform an image in the forward direction</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.DiffeomorphicMap.get_simplified_transform" title="AFQ.registration.DiffeomorphicMap.get_simplified_transform"><code class="xref py py-obj docutils literal"><span class="pre">get_simplified_transform</span></code></a>()</td>
+<td>Constructs a simplified version of this Diffeomorhic Map</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.DiffeomorphicMap.interpret_matrix" title="AFQ.registration.DiffeomorphicMap.interpret_matrix"><code class="xref py py-obj docutils literal"><span class="pre">interpret_matrix</span></code></a>(obj)</td>
+<td>Try to interpret <cite>obj</cite> as a matrix</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.DiffeomorphicMap.inverse" title="AFQ.registration.DiffeomorphicMap.inverse"><code class="xref py py-obj docutils literal"><span class="pre">inverse</span></code></a>()</td>
+<td>Inverse of this DiffeomorphicMap instance</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.DiffeomorphicMap.shallow_copy" title="AFQ.registration.DiffeomorphicMap.shallow_copy"><code class="xref py py-obj docutils literal"><span class="pre">shallow_copy</span></code></a>()</td>
+<td>Shallow copy of this DiffeomorphicMap instance</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.DiffeomorphicMap.transform" title="AFQ.registration.DiffeomorphicMap.transform"><code class="xref py py-obj docutils literal"><span class="pre">transform</span></code></a>(image[,&nbsp;interpolation,&nbsp;...])</td>
+<td>Warps an image in the forward direction</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.DiffeomorphicMap.transform_inverse" title="AFQ.registration.DiffeomorphicMap.transform_inverse"><code class="xref py py-obj docutils literal"><span class="pre">transform_inverse</span></code></a>(image[,&nbsp;interpolation,&nbsp;...])</td>
+<td>Warps an image in the backward direction</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.DiffeomorphicMap.warp_endomorphism" title="AFQ.registration.DiffeomorphicMap.warp_endomorphism"><code class="xref py py-obj docutils literal"><span class="pre">warp_endomorphism</span></code></a>(phi)</td>
+<td>Composition of this DiffeomorphicMap with a given endomorphism</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.registration.DiffeomorphicMap.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>dim</em>, <em>disp_shape</em>, <em>disp_grid2world=None</em>, <em>domain_shape=None</em>, <em>domain_grid2world=None</em>, <em>codomain_shape=None</em>, <em>codomain_grid2world=None</em>, <em>prealign=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.DiffeomorphicMap.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>DiffeomorphicMap</p>
+<p>Implements a diffeomorphic transformation on the physical space. The
+deformation fields encoding the direct and inverse transformations
+share the same domain discretization (both the discretization grid
+shape and voxel-to-space matrix). The input coordinates (physical
+coordinates) are first aligned using prealign, and then displaced
+using the corresponding vector field interpolated at the aligned
+coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dim</strong> : int, 2 or 3</p>
+<blockquote>
+<div><p>the transformation&#8217;s dimension</p>
+</div></blockquote>
+<p><strong>disp_shape</strong> : array, shape (dim,)</p>
+<blockquote>
+<div><p>the number of slices (if 3D), rows and columns of the deformation
+field&#8217;s discretization</p>
+</div></blockquote>
+<p><strong>disp_grid2world</strong> : the voxel-to-space transform between the def. fields</p>
+<blockquote>
+<div><p>grid and space</p>
+</div></blockquote>
+<p><strong>domain_shape</strong> : array, shape (dim,)</p>
+<blockquote>
+<div><p>the number of slices (if 3D), rows and columns of the default
+discretizatio of this map&#8217;s domain</p>
+</div></blockquote>
+<p><strong>domain_grid2world</strong> : array, shape (dim+1, dim+1)</p>
+<blockquote>
+<div><p>the default voxel-to-space transformation between this map&#8217;s
+discretization and physical space</p>
+</div></blockquote>
+<p><strong>codomain_shape</strong> : array, shape (dim,)</p>
+<blockquote>
+<div><p>the number of slices (if 3D), rows and columns of the images that
+are &#8216;normally&#8217; warped using this transformation in the forward
+direction (this will provide default transformation parameters to
+warp images under this transformation). By default, we assume that
+the inverse transformation is &#8216;normally&#8217; used to warp images with
+the same discretization and voxel-to-space transformation as the
+deformation field grid.</p>
+</div></blockquote>
+<p><strong>codomain_grid2world</strong> : array, shape (dim+1, dim+1)</p>
+<blockquote>
+<div><p>the voxel-to-space transformation of images that are &#8216;normally&#8217;
+warped using this transformation (in the forward direction).</p>
+</div></blockquote>
+<p><strong>prealign</strong> : array, shape (dim+1, dim+1)</p>
+<blockquote class="last">
+<div><p>the linear transformation to be applied to align input images to
+the reference space before warping under the deformation field.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.DiffeomorphicMap.allocate">
+<code class="descname">allocate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.allocate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.DiffeomorphicMap.allocate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a zero displacement field</p>
+<p>Creates a zero displacement field (the identity transformation).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.DiffeomorphicMap.compute_inversion_error">
+<code class="descname">compute_inversion_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.compute_inversion_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.DiffeomorphicMap.compute_inversion_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inversion error of the displacement fields</p>
+<p>Estimates the inversion error of the displacement fields by computing
+statistics of the residual vectors obtained after composing the forward
+and backward displacement fields.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>residual</strong> : array, shape (R, C) or (S, R, C)</p>
+<blockquote>
+<div><p>the displacement field resulting from composing the forward and
+backward displacement fields of this transformation (the residual
+should be zero for a perfect diffeomorphism)</p>
+</div></blockquote>
+<p><strong>stats</strong> : array, shape (3,)</p>
+<blockquote class="last">
+<div><p>statistics from the norms of the vectors of the residual
+displacement field: maximum, mean and standard deviation</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Since the forward and backward displacement fields have the same
+discretization, the final composition is given by</p>
+<p>comp[i] = forward[ i + Dinv * backward[i]]</p>
+<p>where Dinv is the space-to-grid transformation of the displacement
+fields</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.DiffeomorphicMap.expand_fields">
+<code class="descname">expand_fields</code><span class="sig-paren">(</span><em>expand_factors</em>, <em>new_shape</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.expand_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.DiffeomorphicMap.expand_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expands the displacement fields from current shape to new_shape</p>
+<p>Up-samples the discretization of the displacement fields to be of
+new_shape shape.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>expand_factors</strong> : array, shape (dim,)</p>
+<blockquote>
+<div><p>the factors scaling current spacings (voxel sizes) to spacings in
+the expanded discretization.</p>
+</div></blockquote>
+<p><strong>new_shape</strong> : array, shape (dim,)</p>
+<blockquote class="last">
+<div><p>the shape of the arrays holding the up-sampled discretization</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.DiffeomorphicMap.get_backward_field">
+<code class="descname">get_backward_field</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.get_backward_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.DiffeomorphicMap.get_backward_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deformation field to transform an image in the backward direction</p>
+<p>Returns the deformation field that must be used to warp an image under
+this transformation in the backward direction (note the &#8216;is_inverse&#8217;
+flag).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.DiffeomorphicMap.get_forward_field">
+<code class="descname">get_forward_field</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.get_forward_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.DiffeomorphicMap.get_forward_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deformation field to transform an image in the forward direction</p>
+<p>Returns the deformation field that must be used to warp an image under
+this transformation in the forward direction (note the &#8216;is_inverse&#8217;
+flag).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.DiffeomorphicMap.get_simplified_transform">
+<code class="descname">get_simplified_transform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.get_simplified_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.DiffeomorphicMap.get_simplified_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a simplified version of this Diffeomorhic Map</p>
+<p>The simplified version incorporates the pre-align transform, as well as
+the domain and codomain affine transforms into the displacement field.
+The resulting transformation may be regarded as operating on the
+image spaces given by the domain and codomain discretization. As a
+result, self.prealign, self.disp_grid2world, self.domain_grid2world and
+self.codomain affine will be None (denoting Identity) in the resulting
+diffeomorphic map.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.DiffeomorphicMap.interpret_matrix">
+<code class="descname">interpret_matrix</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.interpret_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.DiffeomorphicMap.interpret_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to interpret <cite>obj</cite> as a matrix</p>
+<p>Some operations are performed faster if we know in advance if a matrix
+is the identity (so we can skip the actual matrix-vector
+multiplication). This function returns None if the given object
+is None or the &#8216;identity&#8217; string. It returns the same object if it is
+a numpy array. It raises an exception otherwise.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : object</p>
+<blockquote>
+<div><p>any object</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj</strong> : object</p>
+<blockquote class="last">
+<div><p>the same object given as argument if <cite>obj</cite> is None or a numpy
+array. None if <cite>obj</cite> is the &#8216;identity&#8217; string.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.DiffeomorphicMap.inverse">
+<code class="descname">inverse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.DiffeomorphicMap.inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inverse of this DiffeomorphicMap instance</p>
+<p>Returns a diffeomorphic map object representing the inverse of this
+transformation. The internal arrays are not copied but just referenced.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>inv</strong> : DiffeomorphicMap object</p>
+<blockquote class="last">
+<div><p>the inverse of this diffeomorphic map.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.DiffeomorphicMap.shallow_copy">
+<code class="descname">shallow_copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.shallow_copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.DiffeomorphicMap.shallow_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shallow copy of this DiffeomorphicMap instance</p>
+<p>Creates a shallow copy of this diffeomorphic map (the arrays are not
+copied but just referenced)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_map</strong> : DiffeomorphicMap object</p>
+<blockquote class="last">
+<div><p>the shallow copy of this diffeomorphic map</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.DiffeomorphicMap.transform">
+<code class="descname">transform</code><span class="sig-paren">(</span><em>image</em>, <em>interpolation='linear'</em>, <em>image_world2grid=None</em>, <em>out_shape=None</em>, <em>out_grid2world=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.DiffeomorphicMap.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Warps an image in the forward direction</p>
+<p>Transforms the input image under this transformation in the forward
+direction. It uses the &#8220;is_inverse&#8221; flag to switch between &#8220;forward&#8221;
+and &#8220;backward&#8221; (if is_inverse is False, then transform(...) warps the
+image forwards, else it warps the image backwards).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>image</strong> : array, shape (s, r, c) if dim = 3 or (r, c) if dim = 2</p>
+<blockquote>
+<div><p>the image to be warped under this transformation in the forward
+direction</p>
+</div></blockquote>
+<p><strong>interpolation</strong> : string, either &#8216;linear&#8217; or &#8216;nearest&#8217;</p>
+<blockquote>
+<div><p>the type of interpolation to be used for warping, either &#8216;linear&#8217;
+(for k-linear interpolation) or &#8216;nearest&#8217; for nearest neighbor</p>
+</div></blockquote>
+<p><strong>image_world2grid</strong> : array, shape (dim+1, dim+1)</p>
+<blockquote>
+<div><p>the transformation bringing world (space) coordinates to voxel
+coordinates of the image given as input</p>
+</div></blockquote>
+<p><strong>out_shape</strong> : array, shape (dim,)</p>
+<blockquote>
+<div><p>the number of slices, rows and columns of the desired warped image</p>
+</div></blockquote>
+<p><strong>out_grid2world</strong> : the transformation bringing voxel coordinates of the</p>
+<blockquote>
+<div><p>warped image to physical space</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>warped</strong> : array, shape = out_shape or self.codomain_shape if None</p>
+<blockquote class="last">
+<div><p>the warped image under this transformation in the forward direction</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>See _warp_forward and _warp_backward documentation for further
+information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.DiffeomorphicMap.transform_inverse">
+<code class="descname">transform_inverse</code><span class="sig-paren">(</span><em>image</em>, <em>interpolation='linear'</em>, <em>image_world2grid=None</em>, <em>out_shape=None</em>, <em>out_grid2world=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.transform_inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.DiffeomorphicMap.transform_inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Warps an image in the backward direction</p>
+<p>Transforms the input image under this transformation in the backward
+direction. It uses the &#8220;is_inverse&#8221; flag to switch between &#8220;forward&#8221;
+and &#8220;backward&#8221; (if is_inverse is False, then transform_inverse(...)
+warps the image backwards, else it warps the image forwards)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>image</strong> : array, shape (s, r, c) if dim = 3 or (r, c) if dim = 2</p>
+<blockquote>
+<div><p>the image to be warped under this transformation in the forward
+direction</p>
+</div></blockquote>
+<p><strong>interpolation</strong> : string, either &#8216;linear&#8217; or &#8216;nearest&#8217;</p>
+<blockquote>
+<div><p>the type of interpolation to be used for warping, either &#8216;linear&#8217;
+(for k-linear interpolation) or &#8216;nearest&#8217; for nearest neighbor</p>
+</div></blockquote>
+<p><strong>image_world2grid</strong> : array, shape (dim+1, dim+1)</p>
+<blockquote>
+<div><p>the transformation bringing world (space) coordinates to voxel
+coordinates of the image given as input</p>
+</div></blockquote>
+<p><strong>out_shape</strong> : array, shape (dim,)</p>
+<blockquote>
+<div><p>the number of slices, rows and columns of the desired warped image</p>
+</div></blockquote>
+<p><strong>out_grid2world</strong> : the transformation bringing voxel coordinates of the</p>
+<blockquote>
+<div><p>warped image to physical space</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>warped</strong> : array, shape = out_shape or self.codomain_shape if None</p>
+<blockquote class="last">
+<div><p>warped image under this transformation in the backward direction</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>See _warp_forward and _warp_backward documentation for further
+information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.DiffeomorphicMap.warp_endomorphism">
+<code class="descname">warp_endomorphism</code><span class="sig-paren">(</span><em>phi</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#DiffeomorphicMap.warp_endomorphism"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.DiffeomorphicMap.warp_endomorphism" title="Permalink to this definition">¶</a></dt>
+<dd><p>Composition of this DiffeomorphicMap with a given endomorphism</p>
+<p>Creates a new DiffeomorphicMap C with the same properties as self and
+composes its displacement fields with phi&#8217;s corresponding fields.
+The resulting diffeomorphism is of the form C(x) = phi(self(x)) with
+inverse C^{-1}(y) = self^{-1}(phi^{-1}(y)). We assume that phi is an
+endomorphism with the same discretization and domain affine as self
+to ensure that the composition inherits self&#8217;s properties (we also
+assume that the pre-aligning matrix of phi is None or identity).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>phi</strong> : DiffeomorphicMap object</p>
+<blockquote>
+<div><p>the endomorphism to be warped by this diffeomorphic map</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>composition</strong> : the composition of this diffeomorphic map with the</p>
+<blockquote class="last">
+<div><p>endomorphism given as input</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>The problem with our current representation of a DiffeomorphicMap is
+that the set of Diffeomorphism that can be represented this way (a
+pre-aligning matrix followed by a non-linear endomorphism given as a
+displacement field) is not closed under the composition operation.</p>
+<p>Supporting a general DiffeomorphicMap class, closed under composition,
+may be extremely costly computationally, and the kind of
+transformations we actually need for Avants&#8217; mid-point algorithm (SyN)
+are much simpler.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="emmetric">
+<h2><a class="reference internal" href="#AFQ.registration.EMMetric" title="AFQ.registration.EMMetric"><code class="xref py py-class docutils literal"><span class="pre">EMMetric</span></code></a><a class="headerlink" href="#emmetric" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.registration.EMMetric">
+<em class="property">class </em><code class="descclassname">AFQ.registration.</code><code class="descname">EMMetric</code><span class="sig-paren">(</span><em>dim</em>, <em>smooth=1.0</em>, <em>inner_iter=5</em>, <em>q_levels=256</em>, <em>double_gradient=True</em>, <em>step_type='gauss_newton'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#EMMetric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.EMMetric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">dipy.align.metrics.SimilarityMetric</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.EMMetric.compute_backward" title="AFQ.registration.EMMetric.compute_backward"><code class="xref py py-obj docutils literal"><span class="pre">compute_backward</span></code></a>()</td>
+<td>Computes one step bringing the static image towards the moving.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.EMMetric.compute_demons_step" title="AFQ.registration.EMMetric.compute_demons_step"><code class="xref py py-obj docutils literal"><span class="pre">compute_demons_step</span></code></a>([forward_step])</td>
+<td>Demons step for EM metric</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.EMMetric.compute_forward" title="AFQ.registration.EMMetric.compute_forward"><code class="xref py py-obj docutils literal"><span class="pre">compute_forward</span></code></a>()</td>
+<td>Computes one step bringing the reference image towards the static.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.EMMetric.compute_gauss_newton_step" title="AFQ.registration.EMMetric.compute_gauss_newton_step"><code class="xref py py-obj docutils literal"><span class="pre">compute_gauss_newton_step</span></code></a>([forward_step])</td>
+<td>Computes the Gauss-Newton energy minimization step</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.EMMetric.free_iteration" title="AFQ.registration.EMMetric.free_iteration"><code class="xref py py-obj docutils literal"><span class="pre">free_iteration</span></code></a>()</td>
+<td>Frees the resources allocated during initialization</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.EMMetric.get_energy" title="AFQ.registration.EMMetric.get_energy"><code class="xref py py-obj docutils literal"><span class="pre">get_energy</span></code></a>()</td>
+<td>The numerical value assigned by this metric to the current image pair</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.EMMetric.initialize_iteration" title="AFQ.registration.EMMetric.initialize_iteration"><code class="xref py py-obj docutils literal"><span class="pre">initialize_iteration</span></code></a>()</td>
+<td>Prepares the metric to compute one displacement field iteration.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">set_levels_above</span></code>(levels)</td>
+<td>Informs the metric how many pyramid levels are above the current one</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_levels_below</span></code>(levels)</td>
+<td>Informs the metric how many pyramid levels are below the current one</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">set_moving_image</span></code>(moving_image,&nbsp;...)</td>
+<td>Sets the moving image being compared against the static one.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_static_image</span></code>(static_image,&nbsp;...)</td>
+<td>Sets the static image being compared against the moving one.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.EMMetric.use_moving_image_dynamics" title="AFQ.registration.EMMetric.use_moving_image_dynamics"><code class="xref py py-obj docutils literal"><span class="pre">use_moving_image_dynamics</span></code></a>(...)</td>
+<td>This is called by the optimizer just after setting the moving image.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.EMMetric.use_static_image_dynamics" title="AFQ.registration.EMMetric.use_static_image_dynamics"><code class="xref py py-obj docutils literal"><span class="pre">use_static_image_dynamics</span></code></a>(...)</td>
+<td>This is called by the optimizer just after setting the static image.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.registration.EMMetric.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>dim</em>, <em>smooth=1.0</em>, <em>inner_iter=5</em>, <em>q_levels=256</em>, <em>double_gradient=True</em>, <em>step_type='gauss_newton'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#EMMetric.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.EMMetric.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expectation-Maximization Metric</p>
+<p>Similarity metric based on the Expectation-Maximization algorithm to
+handle multi-modal images. The transfer function is modeled as a set of
+hidden random variables that are estimated at each iteration of the
+algorithm.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dim</strong> : int (either 2 or 3)</p>
+<blockquote>
+<div><p>the dimension of the image domain</p>
+</div></blockquote>
+<p><strong>smooth</strong> : float</p>
+<blockquote>
+<div><p>smoothness parameter, the larger the value the smoother the
+deformation field</p>
+</div></blockquote>
+<p><strong>inner_iter</strong> : int</p>
+<blockquote>
+<div><p>number of iterations to be performed at each level of the multi-
+resolution Gauss-Seidel optimization algorithm (this is not the
+number of steps per Gaussian Pyramid level, that parameter must
+be set for the optimizer, not the metric)</p>
+</div></blockquote>
+<p><strong>q_levels</strong> : number of quantization levels (equal to the number of hidden</p>
+<blockquote>
+<div><p>variables in the EM algorithm)</p>
+</div></blockquote>
+<p><strong>double_gradient</strong> : boolean</p>
+<blockquote>
+<div><p>if True, the gradient of the expected static image under the moving
+modality will be added to the gradient of the moving image,
+similarly, the gradient of the expected moving image under the
+static modality will be added to the gradient of the static image.</p>
+</div></blockquote>
+<p><strong>step_type</strong> : string (&#8216;gauss_newton&#8217;, &#8216;demons&#8217;)</p>
+<blockquote class="last">
+<div><p>the optimization schedule to be used in the multi-resolution
+Gauss-Seidel optimization algorithm (not used if Demons Step is
+selected)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.EMMetric.compute_backward">
+<code class="descname">compute_backward</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#EMMetric.compute_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.EMMetric.compute_backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes one step bringing the static image towards the moving.</p>
+<p>Computes the update displacement field to be used for registration of
+the static image towards the moving image</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.EMMetric.compute_demons_step">
+<code class="descname">compute_demons_step</code><span class="sig-paren">(</span><em>forward_step=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#EMMetric.compute_demons_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.EMMetric.compute_demons_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Demons step for EM metric</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>forward_step</strong> : boolean</p>
+<blockquote>
+<div><p>if True, computes the Demons step in the forward direction
+(warping the moving towards the static image). If False,
+computes the backward step (warping the static image to the
+moving image)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>displacement</strong> : array, shape (R, C, 2) or (S, R, C, 3)</p>
+<blockquote class="last">
+<div><p>the Demons step</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.EMMetric.compute_forward">
+<code class="descname">compute_forward</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#EMMetric.compute_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.EMMetric.compute_forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes one step bringing the reference image towards the static.</p>
+<p>Computes the forward update field to register the moving image towards
+the static image in a gradient-based optimization algorithm</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.EMMetric.compute_gauss_newton_step">
+<code class="descname">compute_gauss_newton_step</code><span class="sig-paren">(</span><em>forward_step=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#EMMetric.compute_gauss_newton_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.EMMetric.compute_gauss_newton_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the Gauss-Newton energy minimization step</p>
+<p>Computes the Newton step to minimize this energy, i.e., minimizes the
+linearized energy function with respect to the
+regularized displacement field (this step does not require
+post-smoothing, as opposed to the demons step, which does not include
+regularization). To accelerate convergence we use the multi-grid
+Gauss-Seidel algorithm proposed by Bruhn and Weickert et al [Bruhn05]</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>forward_step</strong> : boolean</p>
+<blockquote>
+<div><p>if True, computes the Newton step in the forward direction
+(warping the moving towards the static image). If False,
+computes the backward step (warping the static image to the
+moving image)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>displacement</strong> : array, shape (R, C, 2) or (S, R, C, 3)</p>
+<blockquote class="last">
+<div><p>the Newton step</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<dl class="docutils">
+<dt>[Bruhn05] Andres Bruhn and Joachim Weickert, &#8220;Towards ultimate motion</dt>
+<dd>estimation: combining highest accuracy with real-time
+performance&#8221;, 10th IEEE International Conference on Computer
+Vision, 2005. ICCV 2005.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.EMMetric.free_iteration">
+<code class="descname">free_iteration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#EMMetric.free_iteration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.EMMetric.free_iteration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frees the resources allocated during initialization</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.EMMetric.get_energy">
+<code class="descname">get_energy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#EMMetric.get_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.EMMetric.get_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>The numerical value assigned by this metric to the current image pair</p>
+<p>Returns the EM (data term) energy computed at the largest
+iteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.EMMetric.initialize_iteration">
+<code class="descname">initialize_iteration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#EMMetric.initialize_iteration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.EMMetric.initialize_iteration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares the metric to compute one displacement field iteration.</p>
+<p>Pre-computes the transfer functions (hidden random variables) and
+variances of the estimators. Also pre-computes the gradient of both
+input images. Note that once the images are transformed to the opposite
+modality, the gradient of the transformed images can be used with the
+gradient of the corresponding modality in the same fashion as
+diff-demons does for mono-modality images. If the flag
+self.use_double_gradient is True these gradients are averaged.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.EMMetric.use_moving_image_dynamics">
+<code class="descname">use_moving_image_dynamics</code><span class="sig-paren">(</span><em>original_moving_image</em>, <em>transformation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#EMMetric.use_moving_image_dynamics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.EMMetric.use_moving_image_dynamics" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is called by the optimizer just after setting the moving image.</p>
+<p>EMMetric takes advantage of the image dynamics by computing the
+current moving image mask from the original_moving_image mask (warped
+by nearest neighbor interpolation)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>original_moving_image</strong> : array, shape (R, C) or (S, R, C)</p>
+<blockquote>
+<div><p>the original moving image from which the current moving image was
+generated, the current moving image is the one that was provided
+via &#8216;set_moving_image(...)&#8217;, which may not be the same as the
+original moving image but a warped version of it.</p>
+</div></blockquote>
+<p><strong>transformation</strong> : DiffeomorphicMap object</p>
+<blockquote class="last">
+<div><p>the transformation that was applied to the original_moving_image
+to generate the current moving image</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.EMMetric.use_static_image_dynamics">
+<code class="descname">use_static_image_dynamics</code><span class="sig-paren">(</span><em>original_static_image</em>, <em>transformation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#EMMetric.use_static_image_dynamics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.EMMetric.use_static_image_dynamics" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is called by the optimizer just after setting the static image.</p>
+<p>EMMetric takes advantage of the image dynamics by computing the
+current static image mask from the originalstaticImage mask (warped
+by nearest neighbor interpolation)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>original_static_image</strong> : array, shape (R, C) or (S, R, C)</p>
+<blockquote>
+<div><p>the original static image from which the current static image was
+generated, the current static image is the one that was provided
+via &#8216;set_static_image(...)&#8217;, which may not be the same as the
+original static image but a warped version of it (even the static
+image changes during Symmetric Normalization, not only the moving
+one).</p>
+</div></blockquote>
+<p><strong>transformation</strong> : DiffeomorphicMap object</p>
+<blockquote class="last">
+<div><p>the transformation that was applied to the original_static_image
+to generate the current static image</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="mutualinformationmetric">
+<h2><a class="reference internal" href="#AFQ.registration.MutualInformationMetric" title="AFQ.registration.MutualInformationMetric"><code class="xref py py-class docutils literal"><span class="pre">MutualInformationMetric</span></code></a><a class="headerlink" href="#mutualinformationmetric" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.registration.MutualInformationMetric">
+<em class="property">class </em><code class="descclassname">AFQ.registration.</code><code class="descname">MutualInformationMetric</code><span class="sig-paren">(</span><em>nbins=32</em>, <em>sampling_proportion=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imaffine.html#MutualInformationMetric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.MutualInformationMetric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.MutualInformationMetric.distance" title="AFQ.registration.MutualInformationMetric.distance"><code class="xref py py-obj docutils literal"><span class="pre">distance</span></code></a>(params)</td>
+<td>Numeric value of the negative Mutual Information</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.MutualInformationMetric.distance_and_gradient" title="AFQ.registration.MutualInformationMetric.distance_and_gradient"><code class="xref py py-obj docutils literal"><span class="pre">distance_and_gradient</span></code></a>(params)</td>
+<td>Numeric value of the metric and its gradient at given parameters</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.MutualInformationMetric.gradient" title="AFQ.registration.MutualInformationMetric.gradient"><code class="xref py py-obj docutils literal"><span class="pre">gradient</span></code></a>(params)</td>
+<td>Numeric value of the metric&#8217;s gradient at the given parameters</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.MutualInformationMetric.setup" title="AFQ.registration.MutualInformationMetric.setup"><code class="xref py py-obj docutils literal"><span class="pre">setup</span></code></a>(transform,&nbsp;static,&nbsp;moving[,&nbsp;...])</td>
+<td>Prepares the metric to compute intensity densities and gradients</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.registration.MutualInformationMetric.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>nbins=32</em>, <em>sampling_proportion=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imaffine.html#MutualInformationMetric.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.MutualInformationMetric.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes an instance of the Mutual Information metric</p>
+<p>This class implements the methods required by Optimizer to drive the
+registration process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>nbins</strong> : int, optional</p>
+<blockquote>
+<div><p>the number of bins to be used for computing the intensity
+histograms. The default is 32.</p>
+</div></blockquote>
+<p><strong>sampling_proportion</strong> : None or float in interval (0, 1], optional</p>
+<blockquote class="last">
+<div><p>There are two types of sampling: dense and sparse. Dense sampling
+uses all voxels for estimating the (joint and marginal) intensity
+histograms, while sparse sampling uses a subset of them. If
+<cite>sampling_proportion</cite> is None, then dense sampling is
+used. If <cite>sampling_proportion</cite> is a floating point value in (0,1]
+then sparse sampling is used, where <cite>sampling_proportion</cite>
+specifies the proportion of voxels to be used. The default is
+None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Since we use linear interpolation, images are not, in general,
+differentiable at exact voxel coordinates, but they are differentiable
+between voxel coordinates. When using sparse sampling, selected voxels
+are slightly moved by adding a small random displacement within one
+voxel to prevent sampling points from being located exactly at voxel
+coordinates. When using dense sampling, this random displacement is
+not applied.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.MutualInformationMetric.distance">
+<code class="descname">distance</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imaffine.html#MutualInformationMetric.distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.MutualInformationMetric.distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Numeric value of the negative Mutual Information</p>
+<p>We need to change the sign so we can use standard minimization
+algorithms.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>params</strong> : array, shape (n,)</p>
+<blockquote>
+<div><p>the parameter vector of the transform currently used by the metric
+(the transform name is provided when self.setup is called), n is
+the number of parameters of the transform</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>neg_mi</strong> : float</p>
+<blockquote class="last">
+<div><p>the negative mutual information of the input images after
+transforming the moving image by the currently set transform
+with <cite>params</cite> parameters</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.MutualInformationMetric.distance_and_gradient">
+<code class="descname">distance_and_gradient</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imaffine.html#MutualInformationMetric.distance_and_gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.MutualInformationMetric.distance_and_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Numeric value of the metric and its gradient at given parameters</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>params</strong> : array, shape (n,)</p>
+<blockquote>
+<div><p>the parameter vector of the transform currently used by the metric
+(the transform name is provided when self.setup is called), n is
+the number of parameters of the transform</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>neg_mi</strong> : float</p>
+<blockquote>
+<div><p>the negative mutual information of the input images after
+transforming the moving image by the currently set transform
+with <cite>params</cite> parameters</p>
+</div></blockquote>
+<p><strong>neg_mi_grad</strong> : array, shape (n,)</p>
+<blockquote class="last">
+<div><p>the gradient of the negative Mutual Information</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.MutualInformationMetric.gradient">
+<code class="descname">gradient</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imaffine.html#MutualInformationMetric.gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.MutualInformationMetric.gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Numeric value of the metric&#8217;s gradient at the given parameters</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>params</strong> : array, shape (n,)</p>
+<blockquote>
+<div><p>the parameter vector of the transform currently used by the metric
+(the transform name is provided when self.setup is called), n is
+the number of parameters of the transform</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>grad</strong> : array, shape (n,)</p>
+<blockquote class="last">
+<div><p>the gradient of the negative Mutual Information</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.MutualInformationMetric.setup">
+<code class="descname">setup</code><span class="sig-paren">(</span><em>transform</em>, <em>static</em>, <em>moving</em>, <em>static_grid2world=None</em>, <em>moving_grid2world=None</em>, <em>starting_affine=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imaffine.html#MutualInformationMetric.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.MutualInformationMetric.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares the metric to compute intensity densities and gradients</p>
+<p>The histograms will be setup to compute probability densities of
+intensities within the minimum and maximum values of <cite>static</cite> and
+<cite>moving</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>transform: instance of Transform</strong></p>
+<blockquote>
+<div><p>the transformation with respect to whose parameters the gradient
+must be computed</p>
+</div></blockquote>
+<p><strong>static</strong> : array, shape (S, R, C) or (R, C)</p>
+<blockquote>
+<div><p>static image</p>
+</div></blockquote>
+<p><strong>moving</strong> : array, shape (S&#8217;, R&#8217;, C&#8217;) or (R&#8217;, C&#8217;)</p>
+<blockquote>
+<div><p>moving image. The dimensions of the static (S, R, C) and moving
+(S&#8217;, R&#8217;, C&#8217;) images do not need to be the same.</p>
+</div></blockquote>
+<p><strong>static_grid2world</strong> : array (dim+1, dim+1), optional</p>
+<blockquote>
+<div><p>the grid-to-space transform of the static image. The default is
+None, implying the transform is the identity.</p>
+</div></blockquote>
+<p><strong>moving_grid2world</strong> : array (dim+1, dim+1)</p>
+<blockquote>
+<div><p>the grid-to-space transform of the moving image. The default is
+None, implying the spacing along all axes is 1.</p>
+</div></blockquote>
+<p><strong>starting_affine</strong> : array, shape (dim+1, dim+1), optional</p>
+<blockquote class="last">
+<div><p>the pre-aligning matrix (an affine transform) that roughly aligns
+the moving image towards the static image. If None, no
+pre-alignment is performed. If a pre-alignment matrix is available,
+it is recommended to provide this matrix as <cite>starting_affine</cite>
+instead of manually transforming the moving image to reduce
+interpolation artifacts. The default is None, implying no
+pre-alignment is performed.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="rigidtransform3d">
+<h2><a class="reference internal" href="#AFQ.registration.RigidTransform3D" title="AFQ.registration.RigidTransform3D"><code class="xref py py-class docutils literal"><span class="pre">RigidTransform3D</span></code></a><a class="headerlink" href="#rigidtransform3d" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.registration.RigidTransform3D">
+<em class="property">class </em><code class="descclassname">AFQ.registration.</code><code class="descname">RigidTransform3D</code><a class="headerlink" href="#AFQ.registration.RigidTransform3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">dipy.align.transforms.Transform</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_dim</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_identity_parameters</span></code></td>
+<td>Parameter values corresponding to the identity transform</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_number_of_parameters</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">jacobian</span></code></td>
+<td>Jacobian function of this transform</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">param_to_matrix</span></code></td>
+<td>Matrix representation of this transform with the given parameters</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.registration.RigidTransform3D.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AFQ.registration.RigidTransform3D.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rigid transform in 3D (rotation + translation)
+The parameter vector theta of length 6 is interpreted as follows:
+theta[0] : rotation about the x axis
+theta[1] : rotation about the y axis
+theta[2] : rotation about the z axis
+theta[3] : translation along the x axis
+theta[4] : translation along the y axis
+theta[5] : translation along the z axis</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="ssdmetric">
+<h2><a class="reference internal" href="#AFQ.registration.SSDMetric" title="AFQ.registration.SSDMetric"><code class="xref py py-class docutils literal"><span class="pre">SSDMetric</span></code></a><a class="headerlink" href="#ssdmetric" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.registration.SSDMetric">
+<em class="property">class </em><code class="descclassname">AFQ.registration.</code><code class="descname">SSDMetric</code><span class="sig-paren">(</span><em>dim</em>, <em>smooth=4</em>, <em>inner_iter=10</em>, <em>step_type='demons'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#SSDMetric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.SSDMetric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">dipy.align.metrics.SimilarityMetric</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.SSDMetric.compute_backward" title="AFQ.registration.SSDMetric.compute_backward"><code class="xref py py-obj docutils literal"><span class="pre">compute_backward</span></code></a>()</td>
+<td>Computes one step bringing the static image towards the moving.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.SSDMetric.compute_demons_step" title="AFQ.registration.SSDMetric.compute_demons_step"><code class="xref py py-obj docutils literal"><span class="pre">compute_demons_step</span></code></a>([forward_step])</td>
+<td>Demons step for SSD metric</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.SSDMetric.compute_forward" title="AFQ.registration.SSDMetric.compute_forward"><code class="xref py py-obj docutils literal"><span class="pre">compute_forward</span></code></a>()</td>
+<td>Computes one step bringing the reference image towards the static.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.SSDMetric.compute_gauss_newton_step" title="AFQ.registration.SSDMetric.compute_gauss_newton_step"><code class="xref py py-obj docutils literal"><span class="pre">compute_gauss_newton_step</span></code></a>([forward_step])</td>
+<td>Computes the Gauss-Newton energy minimization step</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.SSDMetric.free_iteration" title="AFQ.registration.SSDMetric.free_iteration"><code class="xref py py-obj docutils literal"><span class="pre">free_iteration</span></code></a>()</td>
+<td>Nothing to free for the SSD metric</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.SSDMetric.get_energy" title="AFQ.registration.SSDMetric.get_energy"><code class="xref py py-obj docutils literal"><span class="pre">get_energy</span></code></a>()</td>
+<td>The numerical value assigned by this metric to the current image pair</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.SSDMetric.initialize_iteration" title="AFQ.registration.SSDMetric.initialize_iteration"><code class="xref py py-obj docutils literal"><span class="pre">initialize_iteration</span></code></a>()</td>
+<td>Prepares the metric to compute one displacement field iteration.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">set_levels_above</span></code>(levels)</td>
+<td>Informs the metric how many pyramid levels are above the current one</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_levels_below</span></code>(levels)</td>
+<td>Informs the metric how many pyramid levels are below the current one</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">set_moving_image</span></code>(moving_image,&nbsp;...)</td>
+<td>Sets the moving image being compared against the static one.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_static_image</span></code>(static_image,&nbsp;...)</td>
+<td>Sets the static image being compared against the moving one.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">use_moving_image_dynamics</span></code>(...)</td>
+<td>This is called by the optimizer just after setting the moving image</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">use_static_image_dynamics</span></code>(...)</td>
+<td>This is called by the optimizer just after setting the static image.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.registration.SSDMetric.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>dim</em>, <em>smooth=4</em>, <em>inner_iter=10</em>, <em>step_type='demons'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#SSDMetric.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.SSDMetric.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sum of Squared Differences (SSD) Metric</p>
+<p>Similarity metric for (mono-modal) nonlinear image registration defined
+by the sum of squared differences (SSD)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dim</strong> : int (either 2 or 3)</p>
+<blockquote>
+<div><p>the dimension of the image domain</p>
+</div></blockquote>
+<p><strong>smooth</strong> : float</p>
+<blockquote>
+<div><p>smoothness parameter, the larger the value the smoother the
+deformation field</p>
+</div></blockquote>
+<p><strong>inner_iter</strong> : int</p>
+<blockquote>
+<div><p>number of iterations to be performed at each level of the multi-
+resolution Gauss-Seidel optimization algorithm (this is not the
+number of steps per Gaussian Pyramid level, that parameter must
+be set for the optimizer, not the metric)</p>
+</div></blockquote>
+<p><strong>step_type</strong> : string</p>
+<blockquote class="last">
+<div><p>the displacement field step to be computed when &#8216;compute_forward&#8217;
+and &#8216;compute_backward&#8217; are called. Either &#8216;demons&#8217; or
+&#8216;gauss_newton&#8217;</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.SSDMetric.compute_backward">
+<code class="descname">compute_backward</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#SSDMetric.compute_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.SSDMetric.compute_backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes one step bringing the static image towards the moving.</p>
+<p>Computes the update displacement field to be used for registration of
+the static image towards the moving image</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.SSDMetric.compute_demons_step">
+<code class="descname">compute_demons_step</code><span class="sig-paren">(</span><em>forward_step=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#SSDMetric.compute_demons_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.SSDMetric.compute_demons_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Demons step for SSD metric</p>
+<p>Computes the demons step proposed by Vercauteren et al.[Vercauteren09]
+for the SSD metric.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>forward_step</strong> : boolean</p>
+<blockquote>
+<div><p>if True, computes the Demons step in the forward direction
+(warping the moving towards the static image). If False,
+computes the backward step (warping the static image to the
+moving image)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>displacement</strong> : array, shape (R, C, 2) or (S, R, C, 3)</p>
+<blockquote class="last">
+<div><p>the Demons step</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<dl class="docutils">
+<dt>[Vercauteren09] Tom Vercauteren, Xavier Pennec, Aymeric Perchant,</dt>
+<dd>Nicholas Ayache, &#8220;Diffeomorphic Demons: Efficient
+Non-parametric Image Registration&#8221;, Neuroimage 2009</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.SSDMetric.compute_forward">
+<code class="descname">compute_forward</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#SSDMetric.compute_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.SSDMetric.compute_forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes one step bringing the reference image towards the static.</p>
+<p>Computes the update displacement field to be used for registration of
+the moving image towards the static image</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.SSDMetric.compute_gauss_newton_step">
+<code class="descname">compute_gauss_newton_step</code><span class="sig-paren">(</span><em>forward_step=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#SSDMetric.compute_gauss_newton_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.SSDMetric.compute_gauss_newton_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the Gauss-Newton energy minimization step</p>
+<p>Minimizes the linearized energy function (Newton step) defined by the
+sum of squared differences of corresponding pixels of the input images
+with respect to the displacement field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>forward_step</strong> : boolean</p>
+<blockquote>
+<div><p>if True, computes the Newton step in the forward direction
+(warping the moving towards the static image). If False,
+computes the backward step (warping the static image to the
+moving image)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>displacement</strong> : array, shape = static_image.shape + (3,)</p>
+<blockquote class="last">
+<div><p>if forward_step==True, the forward SSD Gauss-Newton step,
+else, the backward step</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.SSDMetric.free_iteration">
+<code class="descname">free_iteration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#SSDMetric.free_iteration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.SSDMetric.free_iteration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Nothing to free for the SSD metric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.SSDMetric.get_energy">
+<code class="descname">get_energy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#SSDMetric.get_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.SSDMetric.get_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>The numerical value assigned by this metric to the current image pair</p>
+<p>Returns the Sum of Squared Differences (data term) energy computed at
+the largest iteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.SSDMetric.initialize_iteration">
+<code class="descname">initialize_iteration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/metrics.html#SSDMetric.initialize_iteration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.SSDMetric.initialize_iteration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares the metric to compute one displacement field iteration.</p>
+<p>Pre-computes the gradient of the input images to be used in the
+computation of the forward and backward steps.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="streamlinelinearregistration">
+<h2><a class="reference internal" href="#AFQ.registration.StreamlineLinearRegistration" title="AFQ.registration.StreamlineLinearRegistration"><code class="xref py py-class docutils literal"><span class="pre">StreamlineLinearRegistration</span></code></a><a class="headerlink" href="#streamlinelinearregistration" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.registration.StreamlineLinearRegistration">
+<em class="property">class </em><code class="descclassname">AFQ.registration.</code><code class="descname">StreamlineLinearRegistration</code><span class="sig-paren">(</span><em>metric=None</em>, <em>x0='rigid'</em>, <em>method='L-BFGS-B'</em>, <em>bounds=None</em>, <em>verbose=False</em>, <em>options=None</em>, <em>evolution=False</em>, <em>num_threads=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/streamlinear.html#StreamlineLinearRegistration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.StreamlineLinearRegistration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.StreamlineLinearRegistration.optimize" title="AFQ.registration.StreamlineLinearRegistration.optimize"><code class="xref py py-obj docutils literal"><span class="pre">optimize</span></code></a>(static,&nbsp;moving[,&nbsp;mat])</td>
+<td>Find the minimum of the provided metric.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.registration.StreamlineLinearRegistration.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>metric=None</em>, <em>x0='rigid'</em>, <em>method='L-BFGS-B'</em>, <em>bounds=None</em>, <em>verbose=False</em>, <em>options=None</em>, <em>evolution=False</em>, <em>num_threads=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/streamlinear.html#StreamlineLinearRegistration.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.StreamlineLinearRegistration.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Linear registration of 2 sets of streamlines <a class="reference internal" href="#garyfallidis14" id="id1">[Garyfallidis14]</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>metric</strong> : StreamlineDistanceMetric,</p>
+<blockquote>
+<div><p>If None and fast is False then the BMD distance is used. If fast
+is True then a faster implementation of BMD is used. Otherwise,
+use the given distance metric.</p>
+</div></blockquote>
+<p><strong>x0</strong> : array or int or str</p>
+<blockquote>
+<div><p>Initial parametrization for the optimization.</p>
+<dl class="docutils">
+<dt>If 1D array with:</dt>
+<dd><p class="first">a) 6 elements then only rigid registration is performed with
+the 3 first elements for translation and 3 for rotation.
+b) 7 elements also isotropic scaling is performed (similarity).
+c) 12 elements then translation, rotation (in degrees),
+scaling and shearing is performed (affine).</p>
+<p>Here is an example of x0 with 12 elements:
+<code class="docutils literal"><span class="pre">x0=np.array([0,</span> <span class="pre">10,</span> <span class="pre">0,</span> <span class="pre">40,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">2.,</span> <span class="pre">1.5,</span> <span class="pre">1,</span> <span class="pre">0.1,</span> <span class="pre">-0.5,</span> <span class="pre">0])</span></code></p>
+<p class="last">This has translation (0, 10, 0), rotation (40, 0, 0) in
+degrees, scaling (2., 1.5, 1) and shearing (0.1, -0.5, 0).</p>
+</dd>
+<dt>If int:</dt>
+<dd><ol class="first last loweralpha">
+<li><dl class="first docutils">
+<dt>6</dt>
+<dd><p class="first last"><code class="docutils literal"><span class="pre">x0</span> <span class="pre">=</span> <span class="pre">np.array([0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0])</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>7</dt>
+<dd><p class="first last"><code class="docutils literal"><span class="pre">x0</span> <span class="pre">=</span> <span class="pre">np.array([0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1.])</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>12</dt>
+<dd><p class="first last"><code class="docutils literal"><span class="pre">x0</span> <span class="pre">=</span> <span class="pre">np.array([0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1.,</span> <span class="pre">1.,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0])</span></code></p>
+</dd>
+</dl>
+</li>
+</ol>
+</dd>
+<dt>If str:</dt>
+<dd><ol class="first last loweralpha">
+<li><dl class="first docutils">
+<dt>&#8220;rigid&#8221;</dt>
+<dd><p class="first last"><code class="docutils literal"><span class="pre">x0</span> <span class="pre">=</span> <span class="pre">np.array([0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0])</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>&#8220;similarity&#8221;</dt>
+<dd><p class="first last"><code class="docutils literal"><span class="pre">x0</span> <span class="pre">=</span> <span class="pre">np.array([0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1.])</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>&#8220;affine&#8221;</dt>
+<dd><p class="first last"><code class="docutils literal"><span class="pre">x0</span> <span class="pre">=</span> <span class="pre">np.array([0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1.,</span> <span class="pre">1.,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0])</span></code></p>
+</dd>
+</dl>
+</li>
+</ol>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>method</strong> : str,</p>
+<blockquote>
+<div><p>&#8216;L_BFGS_B&#8217; or &#8216;Powell&#8217; optimizers can be used. Default is
+&#8216;L_BFGS_B&#8217;.</p>
+</div></blockquote>
+<p><strong>bounds</strong> : list of tuples or None,</p>
+<blockquote>
+<div><p>If method == &#8216;L_BFGS_B&#8217; then we can use bounded optimization.
+For example for the six parameters of rigid rotation we can set
+the bounds = [(-30, 30), (-30, 30), (-30, 30),</p>
+<blockquote>
+<div><p>(-45, 45), (-45, 45), (-45, 45)]</p>
+</div></blockquote>
+<p>That means that we have set the bounds for the three translations
+and three rotation axes (in degrees).</p>
+</div></blockquote>
+<p><strong>verbose</strong> : bool,</p>
+<blockquote>
+<div><p>If True then information about the optimization is shown.</p>
+</div></blockquote>
+<p><strong>options</strong> : None or dict,</p>
+<blockquote>
+<div><p>Extra options to be used with the selected method.</p>
+</div></blockquote>
+<p><strong>evolution</strong> : boolean</p>
+<blockquote>
+<div><p>If True save the transformation for each iteration of the
+optimizer. Default is False. Supported only with Scipy &gt;= 0.11.</p>
+</div></blockquote>
+<p><strong>num_threads</strong> : int</p>
+<blockquote class="last">
+<div><p>Number of threads. If None (default) then all available threads
+will be used. Only metrics using OpenMP will use this variable.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<table class="docutils citation" frame="void" id="garyfallidis14" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Garyfallidis14]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>)</em> Garyfallidis et al., &#8220;Direct native-space fiber
+bundle alignment for group comparisons&#8221;, ISMRM,
+2014.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.StreamlineLinearRegistration.optimize">
+<code class="descname">optimize</code><span class="sig-paren">(</span><em>static</em>, <em>moving</em>, <em>mat=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/streamlinear.html#StreamlineLinearRegistration.optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.StreamlineLinearRegistration.optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the minimum of the provided metric.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>static</strong> : streamlines</p>
+<blockquote>
+<div><p>Reference or fixed set of streamlines.</p>
+</div></blockquote>
+<p><strong>moving</strong> : streamlines</p>
+<blockquote>
+<div><p>Moving set of streamlines.</p>
+</div></blockquote>
+<p><strong>mat</strong> : array</p>
+<blockquote>
+<div><p>Transformation (4, 4) matrix to start the registration. <code class="docutils literal"><span class="pre">mat</span></code>
+is applied to moving. Default value None which means that initial
+transformation will be generated by shifting the centers of moving
+and static sets of streamlines to the origin.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>map</strong> : StreamlineRegistrationMap</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="symmetricdiffeomorphicregistration">
+<h2><a class="reference internal" href="#AFQ.registration.SymmetricDiffeomorphicRegistration" title="AFQ.registration.SymmetricDiffeomorphicRegistration"><code class="xref py py-class docutils literal"><span class="pre">SymmetricDiffeomorphicRegistration</span></code></a><a class="headerlink" href="#symmetricdiffeomorphicregistration" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.registration.SymmetricDiffeomorphicRegistration">
+<em class="property">class </em><code class="descclassname">AFQ.registration.</code><code class="descname">SymmetricDiffeomorphicRegistration</code><span class="sig-paren">(</span><em>metric</em>, <em>level_iters=None</em>, <em>step_length=0.25</em>, <em>ss_sigma_factor=0.2</em>, <em>opt_tol=1e-05</em>, <em>inv_iter=20</em>, <em>inv_tol=0.001</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#SymmetricDiffeomorphicRegistration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.SymmetricDiffeomorphicRegistration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">dipy.align.imwarp.DiffeomorphicRegistration</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.registration.SymmetricDiffeomorphicRegistration.get_map" title="AFQ.registration.SymmetricDiffeomorphicRegistration.get_map"><code class="xref py py-obj docutils literal"><span class="pre">get_map</span></code></a>()</td>
+<td>Returns the resulting diffeomorphic map Returns the DiffeomorphicMap registering the moving image towards the static image.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.SymmetricDiffeomorphicRegistration.optimize" title="AFQ.registration.SymmetricDiffeomorphicRegistration.optimize"><code class="xref py py-obj docutils literal"><span class="pre">optimize</span></code></a>(static,&nbsp;moving[,&nbsp;...])</td>
+<td>Starts the optimization</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_level_iters</span></code>(level_iters)</td>
+<td>Sets the number of iterations at each pyramid level</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.registration.SymmetricDiffeomorphicRegistration.update" title="AFQ.registration.SymmetricDiffeomorphicRegistration.update"><code class="xref py py-obj docutils literal"><span class="pre">update</span></code></a>(current_displacement,&nbsp;...)</td>
+<td>Composition of the current displacement field with the given field</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.registration.SymmetricDiffeomorphicRegistration.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>metric</em>, <em>level_iters=None</em>, <em>step_length=0.25</em>, <em>ss_sigma_factor=0.2</em>, <em>opt_tol=1e-05</em>, <em>inv_iter=20</em>, <em>inv_tol=0.001</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#SymmetricDiffeomorphicRegistration.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.SymmetricDiffeomorphicRegistration.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Symmetric Diffeomorphic Registration (SyN) Algorithm</p>
+<p>Performs the multi-resolution optimization algorithm for non-linear
+registration using a given similarity metric.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>metric</strong> : SimilarityMetric object</p>
+<blockquote>
+<div><p>the metric to be optimized</p>
+</div></blockquote>
+<p><strong>level_iters</strong> : list of int</p>
+<blockquote>
+<div><p>the number of iterations at each level of the Gaussian Pyramid (the
+length of the list defines the number of pyramid levels to be
+used)</p>
+</div></blockquote>
+<p><strong>opt_tol</strong> : float</p>
+<blockquote>
+<div><p>the optimization will stop when the estimated derivative of the
+energy profile w.r.t. time falls below this threshold</p>
+</div></blockquote>
+<p><strong>inv_iter</strong> : int</p>
+<blockquote>
+<div><p>the number of iterations to be performed by the displacement field
+inversion algorithm</p>
+</div></blockquote>
+<p><strong>step_length</strong> : float</p>
+<blockquote>
+<div><p>the length of the maximum displacement vector of the update
+displacement field at each iteration</p>
+</div></blockquote>
+<p><strong>ss_sigma_factor</strong> : float</p>
+<blockquote>
+<div><p>parameter of the scale-space smoothing kernel. For example, the
+std. dev. of the kernel will be factor*(2^i) in the isotropic case
+where i = 0, 1, ..., n_scales is the scale</p>
+</div></blockquote>
+<p><strong>inv_tol</strong> : float</p>
+<blockquote>
+<div><p>the displacement field inversion algorithm will stop iterating
+when the inversion error falls below this threshold</p>
+</div></blockquote>
+<p><strong>callback</strong> : function(SymmetricDiffeomorphicRegistration)</p>
+<blockquote class="last">
+<div><p>a function receiving a SymmetricDiffeomorphicRegistration object
+to be called after each iteration (this optimizer will call this
+function passing self as parameter)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.SymmetricDiffeomorphicRegistration.get_map">
+<code class="descname">get_map</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#SymmetricDiffeomorphicRegistration.get_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.SymmetricDiffeomorphicRegistration.get_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the resulting diffeomorphic map
+Returns the DiffeomorphicMap registering the moving image towards
+the static image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.SymmetricDiffeomorphicRegistration.optimize">
+<code class="descname">optimize</code><span class="sig-paren">(</span><em>static</em>, <em>moving</em>, <em>static_grid2world=None</em>, <em>moving_grid2world=None</em>, <em>prealign=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#SymmetricDiffeomorphicRegistration.optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.SymmetricDiffeomorphicRegistration.optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the optimization</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>static</strong> : array, shape (S, R, C) or (R, C)</p>
+<blockquote>
+<div><p>the image to be used as reference during optimization. The
+displacement fields will have the same discretization as the static
+image.</p>
+</div></blockquote>
+<p><strong>moving</strong> : array, shape (S, R, C) or (R, C)</p>
+<blockquote>
+<div><p>the image to be used as &#8220;moving&#8221; during optimization. Since the
+deformation fields&#8217; discretization is the same as the static image,
+it is necessary to pre-align the moving image to ensure its domain
+lies inside the domain of the deformation fields. This is assumed
+to be accomplished by &#8220;pre-aligning&#8221; the moving image towards the
+static using an affine transformation given by the &#8216;prealign&#8217;
+matrix</p>
+</div></blockquote>
+<p><strong>static_grid2world</strong> : array, shape (dim+1, dim+1)</p>
+<blockquote>
+<div><p>the voxel-to-space transformation associated to the static image</p>
+</div></blockquote>
+<p><strong>moving_grid2world</strong> : array, shape (dim+1, dim+1)</p>
+<blockquote>
+<div><p>the voxel-to-space transformation associated to the moving image</p>
+</div></blockquote>
+<p><strong>prealign</strong> : array, shape (dim+1, dim+1)</p>
+<blockquote>
+<div><p>the affine transformation (operating on the physical space)
+pre-aligning the moving image towards the static</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>static_to_ref</strong> : DiffeomorphicMap object</p>
+<blockquote class="last">
+<div><p>the diffeomorphic map that brings the moving image towards the
+static one in the forward direction (i.e. by calling
+static_to_ref.transform) and the static image towards the
+moving one in the backward direction (i.e. by calling
+static_to_ref.transform_inverse).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.registration.SymmetricDiffeomorphicRegistration.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>current_displacement</em>, <em>new_displacement</em>, <em>disp_world2grid</em>, <em>time_scaling</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imwarp.html#SymmetricDiffeomorphicRegistration.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.SymmetricDiffeomorphicRegistration.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Composition of the current displacement field with the given field</p>
+<p>Interpolates new displacement at the locations defined by
+current_displacement. Equivalently, computes the composition C of the
+given displacement fields as C(x) = B(A(x)), where A is
+current_displacement and B is new_displacement. This function is
+intended to be used with deformation fields of the same sampling
+(e.g. to be called by a registration algorithm).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>current_displacement</strong> : array, shape (R&#8217;, C&#8217;, 2) or (S&#8217;, R&#8217;, C&#8217;, 3)</p>
+<blockquote>
+<div><p>the displacement field defining where to interpolate
+new_displacement</p>
+</div></blockquote>
+<p><strong>new_displacement</strong> : array, shape (R, C, 2) or (S, R, C, 3)</p>
+<blockquote>
+<div><p>the displacement field to be warped by current_displacement</p>
+</div></blockquote>
+<p><strong>disp_world2grid</strong> : array, shape (dim+1, dim+1)</p>
+<blockquote>
+<div><p>the space-to-grid transform associated with the displacements&#8217;
+grid (we assume that both displacements are discretized over the
+same grid)</p>
+</div></blockquote>
+<p><strong>time_scaling</strong> : float</p>
+<blockquote>
+<div><p>scaling factor applied to d2. The effect may be interpreted as
+moving d1 displacements along a factor (<cite>time_scaling</cite>) of d2.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>updated</strong> : array, shape (the same as new_displacement)</p>
+<blockquote>
+<div><p>the warped displacement field</p>
+</div></blockquote>
+<p class="last"><strong>mean_norm</strong> : the mean norm of all vectors in current_displacement</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="translationtransform3d">
+<h2><a class="reference internal" href="#AFQ.registration.TranslationTransform3D" title="AFQ.registration.TranslationTransform3D"><code class="xref py py-class docutils literal"><span class="pre">TranslationTransform3D</span></code></a><a class="headerlink" href="#translationtransform3d" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.registration.TranslationTransform3D">
+<em class="property">class </em><code class="descclassname">AFQ.registration.</code><code class="descname">TranslationTransform3D</code><a class="headerlink" href="#AFQ.registration.TranslationTransform3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">dipy.align.transforms.Transform</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_dim</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_identity_parameters</span></code></td>
+<td>Parameter values corresponding to the identity transform</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_number_of_parameters</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">jacobian</span></code></td>
+<td>Jacobian function of this transform</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">param_to_matrix</span></code></td>
+<td>Matrix representation of this transform with the given parameters</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.registration.TranslationTransform3D.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AFQ.registration.TranslationTransform3D.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translation transform in 3D</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="affine">
+<h2>affine<a class="headerlink" href="#affine" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.registration.affine">
+<code class="descclassname">AFQ.registration.</code><code class="descname">affine</code><span class="sig-paren">(</span><em>moving</em>, <em>static</em>, <em>static_affine</em>, <em>moving_affine</em>, <em>reg</em>, <em>starting_affine</em>, <em>params0=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#affine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.affine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="affine-registration">
+<h2>affine_registration<a class="headerlink" href="#affine-registration" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.registration.affine_registration">
+<code class="descclassname">AFQ.registration.</code><code class="descname">affine_registration</code><span class="sig-paren">(</span><em>moving, static, moving_affine=None, static_affine=None, nbins=32, sampling_prop=None, metric='MI', pipeline=[&lt;function c_of_mass&gt;, &lt;function translation&gt;, &lt;function rigid&gt;, &lt;function affine&gt;], level_iters=[10000, 1000, 100], sigmas=[5.0, 2.5, 0.0], factors=[4, 2, 1], params0=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#affine_registration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.affine_registration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the affine transformation between two 3D images.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="c-of-mass">
+<h2>c_of_mass<a class="headerlink" href="#c-of-mass" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.registration.c_of_mass">
+<code class="descclassname">AFQ.registration.</code><code class="descname">c_of_mass</code><span class="sig-paren">(</span><em>moving</em>, <em>static</em>, <em>static_affine</em>, <em>moving_affine</em>, <em>reg</em>, <em>starting_affine</em>, <em>params0=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#c_of_mass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.c_of_mass" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="move-streamlines">
+<h2>move_streamlines<a class="headerlink" href="#move-streamlines" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.registration.move_streamlines">
+<code class="descclassname">AFQ.registration.</code><code class="descname">move_streamlines</code><span class="sig-paren">(</span><em>streamlines</em>, <em>output_space</em>, <em>input_space=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/tracking/utils.html#move_streamlines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.move_streamlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies a linear transformation, given by affine, to streamlines.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>streamlines</strong> : sequence</p>
+<blockquote>
+<div><p>A set of streamlines to be transformed.</p>
+</div></blockquote>
+<p><strong>output_space</strong> : array (4, 4)</p>
+<blockquote>
+<div><p>An affine matrix describing the target space to which the streamlines
+will be transformed.</p>
+</div></blockquote>
+<p><strong>input_space</strong> : array (4, 4), optional</p>
+<blockquote>
+<div><p>An affine matrix describing the current space of the streamlines, if no
+<code class="docutils literal"><span class="pre">input_space</span></code> is specified, it&#8217;s assumed the streamlines are in the
+reference space. The reference space is the same as the space
+associated with the affine matrix <code class="docutils literal"><span class="pre">np.eye(4)</span></code>.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>streamlines</strong> : generator</p>
+<blockquote class="last">
+<div><p>A sequence of transformed streamlines.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="read-mapping">
+<h2>read_mapping<a class="headerlink" href="#read-mapping" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.registration.read_mapping">
+<code class="descclassname">AFQ.registration.</code><code class="descname">read_mapping</code><span class="sig-paren">(</span><em>disp</em>, <em>domain_img</em>, <em>codomain_img</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#read_mapping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.read_mapping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a syn registration mapping from a nifti file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>disp</strong> : str or Nifti1Image</p>
+<blockquote>
+<div><p>A file of image containing the mapping displacement field in each voxel
+Shape (x, y, z, 3, 2)</p>
+</div></blockquote>
+<p><strong>domain_img</strong> : str or Nifti1Image</p>
+<p><strong>codomain_img</strong> : str or Nifti1Image</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="#AFQ.registration.DiffeomorphicMap" title="AFQ.registration.DiffeomorphicMap"><code class="xref py py-class docutils literal"><span class="pre">DiffeomorphicMap</span></code></a> object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="register-dwi">
+<h2>register_dwi<a class="headerlink" href="#register-dwi" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.registration.register_dwi">
+<code class="descclassname">AFQ.registration.</code><code class="descname">register_dwi</code><span class="sig-paren">(</span><em>data_files, bval_files, bvec_files, b0_ref=0, pipeline=[&lt;function c_of_mass&gt;, &lt;function translation&gt;, &lt;function rigid&gt;, &lt;function affine&gt;], out_dir=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#register_dwi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.register_dwi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a DWI data-set</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data_files</strong> : str or list</p>
+<blockquote>
+<div><p>Files containing DWI data. If this is a str, that&#8217;s the full path to a
+single file. If it&#8217;s a list, each entry is a full path.</p>
+</div></blockquote>
+<p><strong>bval_files</strong> : str or list</p>
+<blockquote>
+<div><p>Equivalent to <cite>data_files</cite>.</p>
+</div></blockquote>
+<p><strong>bvec_files</strong> : str or list</p>
+<blockquote class="last">
+<div><p>Equivalent to <cite>data_files</cite>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="register-series">
+<h2>register_series<a class="headerlink" href="#register-series" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.registration.register_series">
+<code class="descclassname">AFQ.registration.</code><code class="descname">register_series</code><span class="sig-paren">(</span><em>series</em>, <em>ref</em>, <em>pipeline</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#register_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.register_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a series to a reference image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>series</strong> : Nifti1Image object</p>
+<blockquote>
+<div><p>The data is 4D with the last dimension separating different 3D volumes</p>
+</div></blockquote>
+<p><strong>ref</strong> : Nifti1Image or integer or iterable</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">transformed_list, affine_list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="resample">
+<h2>resample<a class="headerlink" href="#resample" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.registration.resample">
+<code class="descclassname">AFQ.registration.</code><code class="descname">resample</code><span class="sig-paren">(</span><em>moving</em>, <em>static</em>, <em>moving_affine</em>, <em>static_affine</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#resample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.resample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resample an image from one space to another.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>moving</strong> : array</p>
+<blockquote>
+<div><p>The image to be resampled</p>
+</div></blockquote>
+<p><strong>static</strong> : array</p>
+<p><strong>moving_affine</strong></p>
+<p><strong>static_affine</strong></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>resampled</strong> : the moving array resampled into the static array&#8217;s space.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="rigid">
+<h2>rigid<a class="headerlink" href="#rigid" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.registration.rigid">
+<code class="descclassname">AFQ.registration.</code><code class="descname">rigid</code><span class="sig-paren">(</span><em>moving</em>, <em>static</em>, <em>static_affine</em>, <em>moving_affine</em>, <em>reg</em>, <em>starting_affine</em>, <em>params0=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#rigid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.rigid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="set-number-of-points">
+<h2>set_number_of_points<a class="headerlink" href="#set-number-of-points" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.registration.set_number_of_points">
+<code class="descclassname">AFQ.registration.</code><code class="descname">set_number_of_points</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AFQ.registration.set_number_of_points" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Change the number of points of streamlines</dt>
+<dd>(either by downsampling or upsampling)</dd>
+</dl>
+<p>Change the number of points of streamlines in order to obtain
+<cite>nb_points</cite>-1 segments of equal length. Points of streamlines will be
+modified along the curve.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>streamlines</strong> : one or a list of array-like shape (N,3)</p>
+<blockquote>
+<div><p>array representing x,y,z of N points in a streamline</p>
+</div></blockquote>
+<p><strong>nb_points</strong> : int</p>
+<blockquote>
+<div><p>integer representing number of points wanted along the curve.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>modified_streamlines</strong> : one or a list of array-like shape (<cite>nb_points</cite>,3)</p>
+<blockquote class="last">
+<div><p>array representing x,y,z of <cite>nb_points</cite> points that were interpolated.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dipy.tracking.streamline</span> <span class="k">import</span> <span class="n">set_number_of_points</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># One streamline: a semi-circle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">streamline</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">modified_streamline</span> <span class="o">=</span> <span class="n">set_number_of_points</span><span class="p">(</span><span class="n">streamline</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">modified_streamline</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Multiple streamlines</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">streamlines</span> <span class="o">=</span> <span class="p">[</span><span class="n">streamline</span><span class="p">,</span> <span class="n">streamline</span><span class="p">[::</span><span class="mi">2</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">modified_streamlines</span> <span class="o">=</span> <span class="n">set_number_of_points</span><span class="p">(</span><span class="n">streamlines</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">streamlines</span><span class="p">]</span>
+<span class="go">[100, 50]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">modified_streamlines</span><span class="p">]</span>
+<span class="go">[10, 10]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="streamline-registration">
+<h2>streamline_registration<a class="headerlink" href="#streamline-registration" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.registration.streamline_registration">
+<code class="descclassname">AFQ.registration.</code><code class="descname">streamline_registration</code><span class="sig-paren">(</span><em>moving</em>, <em>static</em>, <em>n_points=100</em>, <em>native_resampled=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#streamline_registration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.streamline_registration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register two collections of streamlines (&#8216;bundles&#8217;) to each other</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>moving, static</strong> : lists of 3 by n, or str</p>
+<blockquote>
+<div><p>The two bundles to be registered. Given either as lists of arrays with
+3D coordinates, or strings containing full paths to these files.</p>
+</div></blockquote>
+<p><strong>n_points</strong> : int, optional</p>
+<blockquote>
+<div><p>How many points to resample to. Default: 100.</p>
+</div></blockquote>
+<p><strong>native_resampled</strong> : bool, optional</p>
+<blockquote>
+<div><p>Whether to return the moving bundle in the original space, but
+resampled in the static space to n_points.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>aligned</strong> : list</p>
+<blockquote>
+<div><p>Streamlines from the moving group, moved to be closely matched to
+the static group.</p>
+</div></blockquote>
+<p><strong>matrix</strong> : array (4, 4)</p>
+<blockquote class="last">
+<div><p>The affine transformation that takes us from &#8216;moving&#8217; to &#8216;static&#8217;</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="syn-register-dwi">
+<h2>syn_register_dwi<a class="headerlink" href="#syn-register-dwi" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.registration.syn_register_dwi">
+<code class="descclassname">AFQ.registration.</code><code class="descname">syn_register_dwi</code><span class="sig-paren">(</span><em>dwi</em>, <em>gtab</em>, <em>template=None</em>, <em>**syn_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#syn_register_dwi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.syn_register_dwi" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dwi</strong> : nifti image or str</p>
+<blockquote>
+<div><p>Image containing DWI data, or full path to a nifti file with DWI.</p>
+</div></blockquote>
+<p><strong>gtab</strong> : GradientTable or list of strings</p>
+<blockquote>
+<div><p>The gradients associated with the DWI data, or a string with [fbcal, ]</p>
+</div></blockquote>
+<p><strong>template</strong> : nifti image or str, optional</p>
+<p><strong>syn_kwargs</strong> : key-word arguments for <a class="reference internal" href="#AFQ.registration.syn_registration" title="AFQ.registration.syn_registration"><code class="xref py py-func docutils literal"><span class="pre">syn_registration()</span></code></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">DiffeomorphicMap object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="syn-registration">
+<h2>syn_registration<a class="headerlink" href="#syn-registration" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.registration.syn_registration">
+<code class="descclassname">AFQ.registration.</code><code class="descname">syn_registration</code><span class="sig-paren">(</span><em>moving, static, moving_affine=None, static_affine=None, step_length=0.25, metric='CC', dim=3, level_iters=[10, 10, 5], sigma_diff=2.0, prealign=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#syn_registration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.syn_registration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a source image (moving) to a target image (static).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>moving</strong> : ndarray</p>
+<blockquote>
+<div><p>The source image data to be registered</p>
+</div></blockquote>
+<p><strong>moving_affine</strong> : array, shape (4,4)</p>
+<blockquote>
+<div><p>The affine matrix associated with the moving (source) data.</p>
+</div></blockquote>
+<p><strong>static</strong> : ndarray</p>
+<blockquote>
+<div><p>The target image data for registration</p>
+</div></blockquote>
+<p><strong>static_affine</strong> : array, shape (4,4)</p>
+<blockquote>
+<div><p>The affine matrix associated with the static (target) data</p>
+</div></blockquote>
+<p><strong>metric</strong> : string, optional</p>
+<blockquote>
+<div><p>The metric to be optimized. One of <cite>CC</cite>, <cite>EM</cite>, <cite>SSD</cite>,
+Default: CCMetric.</p>
+</div></blockquote>
+<p><strong>dim: int (either 2 or 3), optional</strong></p>
+<blockquote>
+<div><p>The dimensions of the image domain. Default: 3</p>
+</div></blockquote>
+<p><strong>level_iters</strong> : list of int, optional</p>
+<blockquote>
+<div><p>the number of iterations at each level of the Gaussian Pyramid (the
+length of the list defines the number of pyramid levels to be
+used).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>warped_moving</strong> : ndarray</p>
+<blockquote>
+<div><p>The data in <cite>moving</cite>, warped towards the <cite>static</cite> data.</p>
+</div></blockquote>
+<p><strong>forward</strong> : ndarray (..., 3)</p>
+<blockquote>
+<div><p>The vector field describing the forward warping from the source to the
+target.</p>
+</div></blockquote>
+<p><strong>backward</strong> : ndarray (..., 3)</p>
+<blockquote class="last">
+<div><p>The vector field describing the backward warping from the target to the
+source.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="transform-centers-of-mass">
+<h2>transform_centers_of_mass<a class="headerlink" href="#transform-centers-of-mass" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.registration.transform_centers_of_mass">
+<code class="descclassname">AFQ.registration.</code><code class="descname">transform_centers_of_mass</code><span class="sig-paren">(</span><em>static</em>, <em>static_grid2world</em>, <em>moving</em>, <em>moving_grid2world</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/align/imaffine.html#transform_centers_of_mass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.transform_centers_of_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transformation to align the center of mass of the input images</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>static</strong> : array, shape (S, R, C)</p>
+<blockquote>
+<div><p>static image</p>
+</div></blockquote>
+<p><strong>static_grid2world</strong> : array, shape (dim+1, dim+1)</p>
+<blockquote>
+<div><p>the voxel-to-space transformation of the static image</p>
+</div></blockquote>
+<p><strong>moving</strong> : array, shape (S, R, C)</p>
+<blockquote>
+<div><p>moving image</p>
+</div></blockquote>
+<p><strong>moving_grid2world</strong> : array, shape (dim+1, dim+1)</p>
+<blockquote>
+<div><p>the voxel-to-space transformation of the moving image</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>affine_map</strong> : instance of AffineMap</p>
+<blockquote class="last">
+<div><p>the affine transformation (translation only, in this case) aligning
+the center of mass of the moving image towards the one of the static
+image</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="translation">
+<h2>translation<a class="headerlink" href="#translation" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.registration.translation">
+<code class="descclassname">AFQ.registration.</code><code class="descname">translation</code><span class="sig-paren">(</span><em>moving</em>, <em>static</em>, <em>static_affine</em>, <em>moving_affine</em>, <em>reg</em>, <em>starting_affine</em>, <em>params0=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#translation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.translation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="write-mapping">
+<h2>write_mapping<a class="headerlink" href="#write-mapping" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.registration.write_mapping">
+<code class="descclassname">AFQ.registration.</code><code class="descname">write_mapping</code><span class="sig-paren">(</span><em>mapping</em>, <em>fname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/registration.html#write_mapping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.registration.write_mapping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write out a syn registration mapping to file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>mapping</strong> : a DiffeomorphicMap object derived from <a class="reference internal" href="#AFQ.registration.syn_registration" title="AFQ.registration.syn_registration"><code class="xref py py-func docutils literal"><span class="pre">syn_registration()</span></code></a></p>
+<p><strong>fname</strong> : str</p>
+<blockquote class="last">
+<div><p>Full path to the nifti file storing the mapping</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="AFQ.dti.html" class="btn btn-neutral" title="dti"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

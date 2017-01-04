@@ -1,0 +1,25 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`_fixes`
+=============
+.. automodule:: AFQ._fixes
+
+.. currentmodule:: AFQ._fixes
+.. autosummary::
+
+   dki_prediction
+   spherical_harmonics
+
+
+.. currentmodule:: AFQ._fixes
+
+dki_prediction
+~~~~~~~~~~~~~~
+
+.. autofunction:: dki_prediction
+
+spherical_harmonics
+~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: spherical_harmonics
+

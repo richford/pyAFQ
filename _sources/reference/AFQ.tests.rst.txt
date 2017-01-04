@@ -1,0 +1,394 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+Module: :mod:`tests.test_api`
+-----------------------------
+.. automodule:: AFQ.tests.test_api
+
+.. currentmodule:: AFQ.tests.test_api
+.. autosummary::
+
+   create_dummy_preproc_path
+   test_AFQ_init
+   touch
+
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+Module: :mod:`tests.test_csd`
+-----------------------------
+.. automodule:: AFQ.tests.test_csd
+
+.. currentmodule:: AFQ.tests.test_csd
+.. autosummary::
+
+   calculate_max_order
+   test_fit_csd
+
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+Module: :mod:`tests.test_dki`
+-----------------------------
+.. automodule:: AFQ.tests.test_dki
+
+.. currentmodule:: AFQ.tests.test_dki
+.. autosummary::
+
+   make_dki_data
+   test_fit_dki
+   test_fit_dki_inputs
+   test_predict_dki
+
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+Module: :mod:`tests.test_dti`
+-----------------------------
+.. automodule:: AFQ.tests.test_dti
+
+.. currentmodule:: AFQ.tests.test_dti
+.. autosummary::
+
+   make_dti_data
+   test_fit_dti
+   test_predict_dti
+
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+Module: :mod:`tests.test_registration`
+--------------------------------------
+.. automodule:: AFQ.tests.test_registration
+
+.. currentmodule:: AFQ.tests.test_registration
+.. autosummary::
+
+   DiffeomorphicMap
+   affine
+   c_of_mass
+   move_streamlines
+   read_mapping
+   register_dwi
+   register_series
+   rigid
+   streamline_registration
+   syn_register_dwi
+   syn_registration
+   test_register_dwi
+   test_register_series
+   test_streamline_registration
+   test_syn_register_dwi
+   test_syn_registration
+   translation
+   write_mapping
+   write_trk
+
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+Module: :mod:`tests.test_scripts`
+---------------------------------
+.. automodule:: AFQ.tests.test_scripts
+
+.. currentmodule:: AFQ.tests.test_scripts
+.. autosummary::
+
+   ScriptRunner
+   assert_image_shape_affine
+   make_dki_data
+   make_dti_data
+   test_fit_dki
+   test_fit_dti
+   test_predict_dki
+   test_predict_dti
+
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+Module: :mod:`tests.test_segmentation`
+--------------------------------------
+.. automodule:: AFQ.tests.test_segmentation
+
+.. currentmodule:: AFQ.tests.test_segmentation
+.. autosummary::
+
+   test_segment
+
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+Module: :mod:`tests.test_tractography`
+--------------------------------------
+.. automodule:: AFQ.tests.test_tractography
+
+.. currentmodule:: AFQ.tests.test_tractography
+.. autosummary::
+
+   fit_csd
+   fit_dti
+   make_tracking_data
+   test_csd_tracking
+   test_dti_tracking
+   track
+
+
+.. currentmodule:: AFQ.tests.test_api
+
+create_dummy_preproc_path
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: create_dummy_preproc_path
+
+test_AFQ_init
+~~~~~~~~~~~~~
+
+.. autofunction:: test_AFQ_init
+
+touch
+~~~~~
+
+.. autofunction:: touch
+
+
+.. currentmodule:: AFQ.tests.test_csd
+
+calculate_max_order
+~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: calculate_max_order
+
+test_fit_csd
+~~~~~~~~~~~~
+
+.. autofunction:: test_fit_csd
+
+
+.. currentmodule:: AFQ.tests.test_dki
+
+make_dki_data
+~~~~~~~~~~~~~
+
+.. autofunction:: make_dki_data
+
+test_fit_dki
+~~~~~~~~~~~~
+
+.. autofunction:: test_fit_dki
+
+test_fit_dki_inputs
+~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: test_fit_dki_inputs
+
+test_predict_dki
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: test_predict_dki
+
+
+.. currentmodule:: AFQ.tests.test_dti
+
+make_dti_data
+~~~~~~~~~~~~~
+
+.. autofunction:: make_dti_data
+
+test_fit_dti
+~~~~~~~~~~~~
+
+.. autofunction:: test_fit_dti
+
+test_predict_dti
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: test_predict_dti
+
+
+.. currentmodule:: AFQ.tests.test_registration
+
+
+:class:`DiffeomorphicMap`
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: DiffeomorphicMap
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+affine
+~~~~~~
+
+.. autofunction:: affine
+
+c_of_mass
+~~~~~~~~~
+
+.. autofunction:: c_of_mass
+
+move_streamlines
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: move_streamlines
+
+read_mapping
+~~~~~~~~~~~~
+
+.. autofunction:: read_mapping
+
+register_dwi
+~~~~~~~~~~~~
+
+.. autofunction:: register_dwi
+
+register_series
+~~~~~~~~~~~~~~~
+
+.. autofunction:: register_series
+
+rigid
+~~~~~
+
+.. autofunction:: rigid
+
+streamline_registration
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: streamline_registration
+
+syn_register_dwi
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: syn_register_dwi
+
+syn_registration
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: syn_registration
+
+test_register_dwi
+~~~~~~~~~~~~~~~~~
+
+.. autofunction:: test_register_dwi
+
+test_register_series
+~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: test_register_series
+
+test_streamline_registration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: test_streamline_registration
+
+test_syn_register_dwi
+~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: test_syn_register_dwi
+
+test_syn_registration
+~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: test_syn_registration
+
+translation
+~~~~~~~~~~~
+
+.. autofunction:: translation
+
+write_mapping
+~~~~~~~~~~~~~
+
+.. autofunction:: write_mapping
+
+write_trk
+~~~~~~~~~
+
+.. autofunction:: write_trk
+
+
+.. currentmodule:: AFQ.tests.test_scripts
+
+
+:class:`ScriptRunner`
+~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: ScriptRunner
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+assert_image_shape_affine
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: assert_image_shape_affine
+
+make_dki_data
+~~~~~~~~~~~~~
+
+.. autofunction:: make_dki_data
+
+make_dti_data
+~~~~~~~~~~~~~
+
+.. autofunction:: make_dti_data
+
+test_fit_dki
+~~~~~~~~~~~~
+
+.. autofunction:: test_fit_dki
+
+test_fit_dti
+~~~~~~~~~~~~
+
+.. autofunction:: test_fit_dti
+
+test_predict_dki
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: test_predict_dki
+
+test_predict_dti
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: test_predict_dti
+
+
+.. currentmodule:: AFQ.tests.test_segmentation
+
+test_segment
+~~~~~~~~~~~~
+
+.. autofunction:: test_segment
+
+
+.. currentmodule:: AFQ.tests.test_tractography
+
+fit_csd
+~~~~~~~
+
+.. autofunction:: fit_csd
+
+fit_dti
+~~~~~~~
+
+.. autofunction:: fit_dti
+
+make_tracking_data
+~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: make_tracking_data
+
+test_csd_tracking
+~~~~~~~~~~~~~~~~~
+
+.. autofunction:: test_csd_tracking
+
+test_dti_tracking
+~~~~~~~~~~~~~~~~~
+
+.. autofunction:: test_dti_tracking
+
+track
+~~~~~
+
+.. autofunction:: track
+

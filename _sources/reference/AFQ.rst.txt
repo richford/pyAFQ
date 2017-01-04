@@ -1,0 +1,98 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`AFQ`
+==========
+.. automodule:: AFQ
+
+.. currentmodule:: AFQ
+.. autosummary::
+
+   AFQ
+   do_preprocessing
+   dti_fit
+   fetch_callosum_templates
+   fetch_hcp
+   fetch_stanford_hardi_tractography
+   fetch_templates
+   make_bundle_dict
+   median_otsu
+   organize_stanford_data
+   read_callosum_templates
+   read_stanford_hardi_tractography
+   read_templates
+
+
+.. currentmodule:: AFQ
+
+
+:class:`AFQ`
+~~~~~~~~~~~~
+
+
+.. autoclass:: AFQ
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+do_preprocessing
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: do_preprocessing
+
+dti_fit
+~~~~~~~
+
+.. autofunction:: dti_fit
+
+fetch_callosum_templates
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: fetch_callosum_templates
+
+fetch_hcp
+~~~~~~~~~
+
+.. autofunction:: fetch_hcp
+
+fetch_stanford_hardi_tractography
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: fetch_stanford_hardi_tractography
+
+fetch_templates
+~~~~~~~~~~~~~~~
+
+.. autofunction:: fetch_templates
+
+make_bundle_dict
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: make_bundle_dict
+
+median_otsu
+~~~~~~~~~~~
+
+.. autofunction:: median_otsu
+
+organize_stanford_data
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: organize_stanford_data
+
+read_callosum_templates
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: read_callosum_templates
+
+read_stanford_hardi_tractography
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: read_stanford_hardi_tractography
+
+read_templates
+~~~~~~~~~~~~~~
+
+.. autofunction:: read_templates
+

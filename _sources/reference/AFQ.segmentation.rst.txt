@@ -1,0 +1,56 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`segmentation`
+===================
+.. automodule:: AFQ.segmentation
+
+.. currentmodule:: AFQ.segmentation
+.. autosummary::
+
+   LooseVersion
+   calculate_tract_profile
+   gaussian_weights
+   mahalanobis
+   patch_up_roi
+   segment
+
+
+.. currentmodule:: AFQ.segmentation
+
+
+:class:`LooseVersion`
+~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: LooseVersion
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+calculate_tract_profile
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: calculate_tract_profile
+
+gaussian_weights
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: gaussian_weights
+
+mahalanobis
+~~~~~~~~~~~
+
+.. autofunction:: mahalanobis
+
+patch_up_roi
+~~~~~~~~~~~~
+
+.. autofunction:: patch_up_roi
+
+segment
+~~~~~~~
+
+.. autofunction:: segment
+

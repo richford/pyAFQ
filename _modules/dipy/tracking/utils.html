@@ -1,0 +1,1343 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dipy.tracking.utils &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>dipy.tracking.utils</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for dipy.tracking.utils</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;Various tools related to creating and working with streamlines</span>
+
+<span class="sd">This module provides tools for targeting streamlines using ROIs, for making</span>
+<span class="sd">connectivity matrices from whole brain fiber tracking and some other tools that</span>
+<span class="sd">allow streamlines to interact with image data.</span>
+
+<span class="sd">Important Note:</span>
+<span class="sd">---------------</span>
+<span class="sd">Dipy uses affine matrices to represent the relationship between streamline</span>
+<span class="sd">points, which are defined as points in a continuous 3d space, and image voxels,</span>
+<span class="sd">which are typically arranged in a discrete 3d grid. Dipy uses a convention</span>
+<span class="sd">similar to nifti files to interpret these affine matrices. This convention is</span>
+<span class="sd">that the point at the center of voxel ``[i, j, k]`` is represented by the point</span>
+<span class="sd">``[x, y, z]`` where ``[x, y, z, 1] = affine * [i, j, k, 1]``.  Also when the</span>
+<span class="sd">phrase &quot;voxel coordinates&quot; is used, it is understood to be the same as ``affine</span>
+<span class="sd">= eye(4)``.</span>
+
+<span class="sd">As an example, lets take a 2d image where the affine is::</span>
+
+<span class="sd">    [[1., 0., 0.],</span>
+<span class="sd">     [0., 2., 0.],</span>
+<span class="sd">     [0., 0., 1.]]</span>
+
+<span class="sd">The pixels of an image with this affine would look something like:</span>
+
+<span class="sd">    A------------</span>
+<span class="sd">    |   |   |   |</span>
+<span class="sd">    | C |   |   |</span>
+<span class="sd">    |   |   |   |</span>
+<span class="sd">    ----B--------</span>
+<span class="sd">    |   |   |   |</span>
+<span class="sd">    |   |   |   |</span>
+<span class="sd">    |   |   |   |</span>
+<span class="sd">    -------------</span>
+<span class="sd">    |   |   |   |</span>
+<span class="sd">    |   |   |   |</span>
+<span class="sd">    |   |   |   |</span>
+<span class="sd">    ------------D</span>
+
+<span class="sd">And the letters A-D represent the following points in</span>
+<span class="sd">&quot;real world coordinates&quot;::</span>
+
+<span class="sd">    A = [-.5, -1.]</span>
+<span class="sd">    B = [ .5,  1.]</span>
+<span class="sd">    C = [ 0.,  0.]</span>
+<span class="sd">    D = [ 2.5,  5.]</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="k">import</span> <span class="n">warn</span>
+
+<span class="kn">from</span> <span class="nn">nibabel.affines</span> <span class="k">import</span> <span class="n">apply_affine</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="k">import</span> <span class="n">cdist</span>
+
+<span class="kn">from</span> <span class="nn">dipy.core.geometry</span> <span class="k">import</span> <span class="n">dist_to_corner</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">..utils.six.moves</span> <span class="k">import</span> <span class="n">xrange</span><span class="p">,</span> <span class="nb">map</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="p">(</span><span class="n">asarray</span><span class="p">,</span> <span class="n">ceil</span><span class="p">,</span> <span class="n">dot</span><span class="p">,</span> <span class="n">empty</span><span class="p">,</span> <span class="n">eye</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dipy.io.bvectxt</span> <span class="k">import</span> <span class="n">ornt_mapping</span>
+<span class="kn">from</span> <span class="nn">dipy.tracking</span> <span class="k">import</span> <span class="n">metrics</span>
+<span class="kn">from</span> <span class="nn">.vox2track</span> <span class="k">import</span> <span class="n">_streamlines_in_mask</span>
+
+<span class="c"># Import helper functions shared with vox2track</span>
+<span class="kn">from</span> <span class="nn">._utils</span> <span class="k">import</span> <span class="p">(</span><span class="n">_mapping_to_voxel</span><span class="p">,</span> <span class="n">_to_voxel_coordinates</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dipy.io.bvectxt</span> <span class="k">import</span> <span class="n">orientation_from_string</span>
+<span class="kn">import</span> <span class="nn">nibabel</span> <span class="k">as</span> <span class="nn">nib</span>
+
+
+<span class="k">def</span> <span class="nf">_rmi</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">dims</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An alternate implementation of numpy.ravel_multi_index for older</span>
+<span class="sd">    versions of numpy.</span>
+
+<span class="sd">    Assumes array layout is C contiguous</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Upcast to integer type capable of holding largest array index</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">intp</span><span class="p">)</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Index should be 1 or 2-D&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">index</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">dims</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Index exceeds dimensions&quot;</span><span class="p">)</span>
+    <span class="n">strides</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">dims</span><span class="p">[:</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cumprod</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">strides</span> <span class="o">*</span> <span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">ravel_multi_index</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">ravel_multi_index</span> <span class="o">=</span> <span class="n">_rmi</span>
+
+
+<span class="k">def</span> <span class="nf">density_map</span><span class="p">(</span><span class="n">streamlines</span><span class="p">,</span> <span class="n">vol_dims</span><span class="p">,</span> <span class="n">voxel_size</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">affine</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Counts the number of unique streamlines that pass through each voxel.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    streamlines : iterable</span>
+<span class="sd">        A sequence of streamlines.</span>
+
+<span class="sd">    vol_dims : 3 ints</span>
+<span class="sd">        The shape of the volume to be returned containing the streamlines</span>
+<span class="sd">        counts</span>
+<span class="sd">    voxel_size :</span>
+<span class="sd">        This argument is deprecated.</span>
+<span class="sd">    affine : array_like (4, 4)</span>
+<span class="sd">        The mapping from voxel coordinates to streamline points.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    image_volume : ndarray, shape=vol_dims</span>
+<span class="sd">        The number of streamline points in each voxel of volume.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    IndexError</span>
+<span class="sd">        When the points of the streamlines lie outside of the return volume.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    A streamline can pass through a voxel even if one of the points of the</span>
+<span class="sd">    streamline does not lie in the voxel. For example a step from [0,0,0] to</span>
+<span class="sd">    [0,0,2] passes through [0,0,1]. Consider subsegmenting the streamlines when</span>
+<span class="sd">    the edges of the voxels are smaller than the steps of the streamlines.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lin_T</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">_mapping_to_voxel</span><span class="p">(</span><span class="n">affine</span><span class="p">,</span> <span class="n">voxel_size</span><span class="p">)</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">vol_dims</span><span class="p">,</span> <span class="s">&#39;int&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sl</span> <span class="ow">in</span> <span class="n">streamlines</span><span class="p">:</span>
+        <span class="n">inds</span> <span class="o">=</span> <span class="n">_to_voxel_coordinates</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span> <span class="n">lin_T</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">inds</span><span class="o">.</span><span class="n">T</span>
+        <span class="c"># this takes advantage of the fact that numpy&#39;s += operator only</span>
+        <span class="c"># acts once even if there are repeats in inds</span>
+        <span class="n">counts</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">counts</span>
+
+
+<span class="k">def</span> <span class="nf">connectivity_matrix</span><span class="p">(</span><span class="n">streamlines</span><span class="p">,</span> <span class="n">label_volume</span><span class="p">,</span> <span class="n">voxel_size</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                        <span class="n">affine</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">symmetric</span><span class="o">=</span><span class="k">True</span><span class="p">,</span> <span class="n">return_mapping</span><span class="o">=</span><span class="k">False</span><span class="p">,</span>
+                        <span class="n">mapping_as_streamlines</span><span class="o">=</span><span class="k">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Counts the streamlines that start and end at each label pair.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    streamlines : sequence</span>
+<span class="sd">        A sequence of streamlines.</span>
+<span class="sd">    label_volume : ndarray</span>
+<span class="sd">        An image volume with an integer data type, where the intensities in the</span>
+<span class="sd">        volume map to anatomical structures.</span>
+<span class="sd">    voxel_size :</span>
+<span class="sd">        This argument is deprecated.</span>
+<span class="sd">    affine : array_like (4, 4)</span>
+<span class="sd">        The mapping from voxel coordinates to streamline coordinates.</span>
+<span class="sd">    symmetric : bool, False by default</span>
+<span class="sd">        Symmetric means we don&#39;t distinguish between start and end points. If</span>
+<span class="sd">        symmetric is True, ``matrix[i, j] == matrix[j, i]``.</span>
+<span class="sd">    return_mapping : bool, False by default</span>
+<span class="sd">        If True, a mapping is returned which maps matrix indices to</span>
+<span class="sd">        streamlines.</span>
+<span class="sd">    mapping_as_streamlines : bool, False by default</span>
+<span class="sd">        If True voxel indices map to lists of streamline objects. Otherwise</span>
+<span class="sd">        voxel indices map to lists of integers.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    matrix : ndarray</span>
+<span class="sd">        The number of connection between each pair of regions in</span>
+<span class="sd">        `label_volume`.</span>
+<span class="sd">    mapping : defaultdict(list)</span>
+<span class="sd">        ``mapping[i, j]`` returns all the streamlines that connect region `i`</span>
+<span class="sd">        to region `j`. If `symmetric` is True mapping will only have one key</span>
+<span class="sd">        for each start end pair such that if ``i &lt; j`` mapping will have key</span>
+<span class="sd">        ``(i, j)`` but not key ``(j, i)``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Error checking on label_volume</span>
+    <span class="n">kind</span> <span class="o">=</span> <span class="n">label_volume</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span>
+    <span class="n">labels_positive</span> <span class="o">=</span> <span class="p">((</span><span class="n">kind</span> <span class="o">==</span> <span class="s">&#39;u&#39;</span><span class="p">)</span> <span class="ow">or</span>
+                       <span class="p">((</span><span class="n">kind</span> <span class="o">==</span> <span class="s">&#39;i&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">label_volume</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)))</span>
+    <span class="n">valid_label_volume</span> <span class="o">=</span> <span class="p">(</span><span class="n">labels_positive</span> <span class="ow">and</span> <span class="n">label_volume</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_label_volume</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;label_volume must be a 3d integer array with&quot;</span>
+                         <span class="s">&quot;non-negative label values&quot;</span><span class="p">)</span>
+
+    <span class="c"># If streamlines is an iterators</span>
+    <span class="k">if</span> <span class="n">return_mapping</span> <span class="ow">and</span> <span class="n">mapping_as_streamlines</span><span class="p">:</span>
+        <span class="n">streamlines</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">streamlines</span><span class="p">)</span>
+    <span class="c"># take the first and last point of each streamline</span>
+    <span class="n">endpoints</span> <span class="o">=</span> <span class="p">[</span><span class="n">sl</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="nb">len</span><span class="p">(</span><span class="n">sl</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">sl</span> <span class="ow">in</span> <span class="n">streamlines</span><span class="p">]</span>
+
+    <span class="c"># Map the streamlines coordinates to voxel coordinates</span>
+    <span class="n">lin_T</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">_mapping_to_voxel</span><span class="p">(</span><span class="n">affine</span><span class="p">,</span> <span class="n">voxel_size</span><span class="p">)</span>
+    <span class="n">endpoints</span> <span class="o">=</span> <span class="n">_to_voxel_coordinates</span><span class="p">(</span><span class="n">endpoints</span><span class="p">,</span> <span class="n">lin_T</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+
+    <span class="c"># get labels for label_volume</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">endpoints</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">endlabels</span> <span class="o">=</span> <span class="n">label_volume</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">symmetric</span><span class="p">:</span>
+        <span class="n">endlabels</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">mx</span> <span class="o">=</span> <span class="n">label_volume</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">ndbincount</span><span class="p">(</span><span class="n">endlabels</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span> <span class="n">mx</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">symmetric</span><span class="p">:</span>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_mapping</span><span class="p">:</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">endlabels</span><span class="o">.</span><span class="n">T</span><span class="p">):</span>
+            <span class="n">mapping</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="c"># Replace each list of indices with the streamlines they index</span>
+        <span class="k">if</span> <span class="n">mapping_as_streamlines</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mapping</span><span class="p">:</span>
+                <span class="n">mapping</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">streamlines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mapping</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span>
+
+        <span class="c"># Return the mapping matrix and the mapping</span>
+        <span class="k">return</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">mapping</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">matrix</span>
+
+
+<span class="k">def</span> <span class="nf">ndbincount</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Like bincount, but for nd-indicies.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array_like (N, M)</span>
+<span class="sd">        M indices to a an Nd-array</span>
+<span class="sd">    weights : array_like (M,), optional</span>
+<span class="sd">        Weights associated with indices</span>
+<span class="sd">    shape : optional</span>
+<span class="sd">        the shape of the output</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">ravel_multi_index</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+    <span class="c"># out = np.bincount(x, weights, minlength=np.prod(shape))</span>
+    <span class="c"># out.shape = shape</span>
+    <span class="c"># Use resize to be compatible with numpy &lt; 1.6, minlength new in 1.6</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span> <span class="nf">reduce_labels</span><span class="p">(</span><span class="n">label_volume</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reduces an array of labels to the integers from 0 to n with smallest</span>
+<span class="sd">    possible n.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; labels = np.array([[1, 3, 9],</span>
+<span class="sd">    ...                    [1, 3, 8],</span>
+<span class="sd">    ...                    [1, 3, 7]])</span>
+<span class="sd">    &gt;&gt;&gt; new_labels, lookup = reduce_labels(labels)</span>
+<span class="sd">    &gt;&gt;&gt; lookup</span>
+<span class="sd">    array([1, 3, 7, 8, 9])</span>
+<span class="sd">    &gt;&gt;&gt; new_labels #doctest: +ELLIPSIS</span>
+<span class="sd">    array([[0, 1, 4],</span>
+<span class="sd">           [0, 1, 3],</span>
+<span class="sd">           [0, 1, 2]]...)</span>
+<span class="sd">    &gt;&gt;&gt; (lookup[new_labels] == labels).all()</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lookup_table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">label_volume</span><span class="p">)</span>
+    <span class="n">label_volume</span> <span class="o">=</span> <span class="n">lookup_table</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">label_volume</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">label_volume</span><span class="p">,</span> <span class="n">lookup_table</span>
+
+
+<span class="k">def</span> <span class="nf">subsegment</span><span class="p">(</span><span class="n">streamlines</span><span class="p">,</span> <span class="n">max_segment_length</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Splits the segments of the streamlines into small segments.</span>
+
+<span class="sd">    Replaces each segment of each of the streamlines with the smallest possible</span>
+<span class="sd">    number of equally sized smaller segments such that no segment is longer</span>
+<span class="sd">    than max_segment_length. Among other things, this can useful for getting</span>
+<span class="sd">    streamline counts on a grid that is smaller than the length of the</span>
+<span class="sd">    streamline segments.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    streamlines : sequence of ndarrays</span>
+<span class="sd">        The streamlines to be subsegmented.</span>
+<span class="sd">    max_segment_length : float</span>
+<span class="sd">        The longest allowable segment length.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    output_streamlines : generator</span>
+<span class="sd">        A set of streamlines.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Segments of 0 length are removed. If unchanged</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; streamlines = [np.array([[0,0,0],[2,0,0],[5,0,0]])]</span>
+<span class="sd">    &gt;&gt;&gt; list(subsegment(streamlines, 3.))</span>
+<span class="sd">    [array([[ 0.,  0.,  0.],</span>
+<span class="sd">           [ 2.,  0.,  0.],</span>
+<span class="sd">           [ 5.,  0.,  0.]])]</span>
+<span class="sd">    &gt;&gt;&gt; list(subsegment(streamlines, 1))</span>
+<span class="sd">    [array([[ 0.,  0.,  0.],</span>
+<span class="sd">           [ 1.,  0.,  0.],</span>
+<span class="sd">           [ 2.,  0.,  0.],</span>
+<span class="sd">           [ 3.,  0.,  0.],</span>
+<span class="sd">           [ 4.,  0.,  0.],</span>
+<span class="sd">           [ 5.,  0.,  0.]])]</span>
+<span class="sd">    &gt;&gt;&gt; list(subsegment(streamlines, 1.6))</span>
+<span class="sd">    [array([[ 0. ,  0. ,  0. ],</span>
+<span class="sd">           [ 1. ,  0. ,  0. ],</span>
+<span class="sd">           [ 2. ,  0. ,  0. ],</span>
+<span class="sd">           [ 3.5,  0. ,  0. ],</span>
+<span class="sd">           [ 5. ,  0. ,  0. ]])]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">sl</span> <span class="ow">in</span> <span class="n">streamlines</span><span class="p">:</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="p">(</span><span class="n">sl</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">sl</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">((</span><span class="n">diff</span><span class="o">*</span><span class="n">diff</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">num_segments</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="n">length</span><span class="o">/</span><span class="n">max_segment_length</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int&#39;</span><span class="p">)</span>
+
+        <span class="n">output_sl</span> <span class="o">=</span> <span class="n">empty</span><span class="p">((</span><span class="n">num_segments</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="s">&#39;float&#39;</span><span class="p">)</span>
+        <span class="n">output_sl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">num_segments</span><span class="p">)):</span>
+            <span class="n">ns</span> <span class="o">=</span> <span class="n">num_segments</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">ns</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">output_sl</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">sl</span><span class="p">[</span><span class="n">ii</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">ns</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">small_d</span> <span class="o">=</span> <span class="n">diff</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">/</span><span class="n">ns</span>
+                <span class="n">point</span> <span class="o">=</span> <span class="n">sl</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="n">ns</span><span class="p">):</span>
+                    <span class="n">point</span> <span class="o">=</span> <span class="n">point</span> <span class="o">+</span> <span class="n">small_d</span>
+                    <span class="n">output_sl</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">point</span>
+                    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">ns</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">pass</span>
+                <span class="c"># repeated point</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># this should never happen because ns should be a positive</span>
+                <span class="c"># int</span>
+                <span class="k">assert</span><span class="p">(</span><span class="n">ns</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">output_sl</span>
+
+
+<span class="k">def</span> <span class="nf">seeds_from_mask</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">voxel_size</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">affine</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates seeds for fiber tracking from a binary mask.</span>
+
+<span class="sd">    Seeds points are placed evenly distributed in all voxels of ``mask`` which</span>
+<span class="sd">    are ``True``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mask : binary 3d array_like</span>
+<span class="sd">        A binary array specifying where to place the seeds for fiber tracking.</span>
+<span class="sd">    density : int or array_like (3,)</span>
+<span class="sd">        Specifies the number of seeds to place along each dimension. A</span>
+<span class="sd">        ``density`` of `2` is the same as ``[2, 2, 2]`` and will result in a</span>
+<span class="sd">        total of 8 seeds per voxel.</span>
+<span class="sd">    voxel_size :</span>
+<span class="sd">        This argument is deprecated.</span>
+<span class="sd">    affine : array, (4, 4)</span>
+<span class="sd">        The mapping between voxel indices and the point space for seeds. A</span>
+<span class="sd">        seed point at the center the voxel ``[i, j, k]`` will be represented as</span>
+<span class="sd">        ``[x, y, z]`` where ``[x, y, z, 1] == np.dot(affine, [i, j, k , 1])``.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    random_seeds_from_mask</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        When ``mask`` is not a three-dimensional array</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; mask = np.zeros((3,3,3), &#39;bool&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; mask[0,0,0] = 1</span>
+<span class="sd">    &gt;&gt;&gt; seeds_from_mask(mask, [1,1,1], [1,1,1])</span>
+<span class="sd">    array([[ 0.5,  0.5,  0.5]])</span>
+
+<span class="sd">    &gt;&gt;&gt; seeds_from_mask(mask, [1,2,3], [1,1,1])</span>
+<span class="sd">    array([[ 0.5       ,  0.25      ,  0.16666667],</span>
+<span class="sd">           [ 0.5       ,  0.75      ,  0.16666667],</span>
+<span class="sd">           [ 0.5       ,  0.25      ,  0.5       ],</span>
+<span class="sd">           [ 0.5       ,  0.75      ,  0.5       ],</span>
+<span class="sd">           [ 0.5       ,  0.25      ,  0.83333333],</span>
+<span class="sd">           [ 0.5       ,  0.75      ,  0.83333333]])</span>
+<span class="sd">    &gt;&gt;&gt; mask[0,1,2] = 1</span>
+<span class="sd">    &gt;&gt;&gt; seeds_from_mask(mask, [1,1,2], [1.1,1.1,2.5])</span>
+<span class="sd">    array([[ 0.55 ,  0.55 ,  0.625],</span>
+<span class="sd">           [ 0.55 ,  0.55 ,  1.875],</span>
+<span class="sd">           [ 0.55 ,  1.65 ,  5.625],</span>
+<span class="sd">           [ 0.55 ,  1.65 ,  6.875]])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="k">False</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;mask cannot be more than 3d&#39;</span><span class="p">)</span>
+
+    <span class="n">density</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">density</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">density</span>
+        <span class="n">density</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">density</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">density</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;density should be in integer array of shape (3,)&quot;</span><span class="p">)</span>
+
+    <span class="c"># Grid of points between -.5 and .5, centered at 0, with given density</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">density</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">:</span><span class="n">density</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">:</span><span class="n">density</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span> <span class="o">/</span> <span class="n">density</span>
+    <span class="n">grid</span> <span class="o">+=</span> <span class="p">(</span><span class="o">.</span><span class="mi">5</span> <span class="o">/</span> <span class="n">density</span> <span class="o">-</span> <span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="n">where</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+
+    <span class="c"># Add the grid of points to each voxel in mask</span>
+    <span class="n">seeds</span> <span class="o">=</span> <span class="n">where</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">grid</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+    <span class="n">seeds</span> <span class="o">=</span> <span class="n">seeds</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+    <span class="c"># Apply the spatial transform</span>
+    <span class="k">if</span> <span class="n">affine</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+        <span class="c"># Use affine to move seeds into real world coordinates</span>
+        <span class="n">seeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">seeds</span><span class="p">,</span> <span class="n">affine</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">seeds</span> <span class="o">+=</span> <span class="n">affine</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">voxel_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+        <span class="c"># Use voxel_size to move seeds into trackvis space</span>
+        <span class="n">seeds</span> <span class="o">+=</span> <span class="o">.</span><span class="mi">5</span>
+        <span class="n">seeds</span> <span class="o">*=</span> <span class="n">voxel_size</span>
+
+    <span class="k">return</span> <span class="n">seeds</span>
+
+
+<span class="k">def</span> <span class="nf">random_seeds_from_mask</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">seeds_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seed_count_per_voxel</span><span class="o">=</span><span class="k">True</span><span class="p">,</span>
+                           <span class="n">affine</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates randomly placed seeds for fiber tracking from a binary mask.</span>
+
+<span class="sd">    Seeds points are placed randomly distributed in voxels of ``mask``</span>
+<span class="sd">    which are ``True``.</span>
+<span class="sd">    If ``seed_count_per_voxel`` is ``True``, this function is</span>
+<span class="sd">    similar to ``seeds_from_mask()``, with the difference that instead of</span>
+<span class="sd">    evenly distributing the seeds, it randomly places the seeds within the</span>
+<span class="sd">    voxels specified by the ``mask``. The initial random conditions can be set</span>
+<span class="sd">    using ``numpy.random.seed(...)``, prior to calling this function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mask : binary 3d array_like</span>
+<span class="sd">        A binary array specifying where to place the seeds for fiber tracking.</span>
+<span class="sd">    seeds_count : int</span>
+<span class="sd">        The number of seeds to generate. If ``seed_count_per_voxel`` is True,</span>
+<span class="sd">        specifies the number of seeds to place in each voxel. Otherwise,</span>
+<span class="sd">        specifies the total number of seeds to place in the mask.</span>
+<span class="sd">    seed_count_per_voxel: bool</span>
+<span class="sd">        If True, seeds_count is per voxel, else seeds_count is the total number</span>
+<span class="sd">        of seeds.</span>
+<span class="sd">    affine : array, (4, 4)</span>
+<span class="sd">        The mapping between voxel indices and the point space for seeds. A</span>
+<span class="sd">        seed point at the center the voxel ``[i, j, k]`` will be represented as</span>
+<span class="sd">        ``[x, y, z]`` where ``[x, y, z, 1] == np.dot(affine, [i, j, k , 1])``.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    seeds_from_mask</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        When ``mask`` is not a three-dimensional array</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; mask = np.zeros((3,3,3), &#39;bool&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; mask[0,0,0] = 1</span>
+
+<span class="sd">    &gt;&gt;&gt; np.random.seed(1)</span>
+<span class="sd">    &gt;&gt;&gt; random_seeds_from_mask(mask, seeds_count=1, seed_count_per_voxel=True)</span>
+<span class="sd">    array([[-0.082978  ,  0.22032449, -0.49988563]])</span>
+
+<span class="sd">    &gt;&gt;&gt; random_seeds_from_mask(mask, seeds_count=6, seed_count_per_voxel=True)</span>
+<span class="sd">    array([[-0.19766743, -0.35324411, -0.40766141],</span>
+<span class="sd">           [-0.31373979, -0.15443927, -0.10323253],</span>
+<span class="sd">           [ 0.03881673, -0.08080549,  0.1852195 ],</span>
+<span class="sd">           [-0.29554775,  0.37811744, -0.47261241],</span>
+<span class="sd">           [ 0.17046751, -0.0826952 ,  0.05868983],</span>
+<span class="sd">           [-0.35961306, -0.30189851,  0.30074457]])</span>
+<span class="sd">    &gt;&gt;&gt; mask[0,1,2] = 1</span>
+<span class="sd">    &gt;&gt;&gt; random_seeds_from_mask(mask, seeds_count=2, seed_count_per_voxel=True)</span>
+<span class="sd">    array([[ 0.46826158, -0.18657582,  0.19232262],</span>
+<span class="sd">           [ 0.37638915,  0.39460666, -0.41495579],</span>
+<span class="sd">           [-0.46094522,  0.66983042,  2.3781425 ],</span>
+<span class="sd">           [-0.40165317,  0.92110763,  2.45788953]])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="k">False</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;mask cannot be more than 3d&#39;</span><span class="p">)</span>
+
+    <span class="n">where</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+    <span class="n">num_voxels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">where</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">seed_count_per_voxel</span><span class="p">:</span>
+        <span class="c"># Generate enough seeds per voxel</span>
+        <span class="n">seeds_per_voxel</span> <span class="o">=</span> <span class="n">seeds_count</span> <span class="o">//</span> <span class="n">num_voxels</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">seeds_per_voxel</span> <span class="o">=</span> <span class="n">seeds_count</span>
+
+    <span class="c"># Generate as many random triplets as the number of seeds needed</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">([</span><span class="n">seeds_per_voxel</span> <span class="o">*</span> <span class="n">num_voxels</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+    <span class="c"># Repeat elements of &#39;where&#39; so that it can be added to grid</span>
+    <span class="n">where</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">seeds_per_voxel</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">seeds</span> <span class="o">=</span> <span class="n">where</span> <span class="o">+</span> <span class="n">grid</span> <span class="o">-</span> <span class="o">.</span><span class="mi">5</span>
+    <span class="n">seeds</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">seeds</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">seed_count_per_voxel</span><span class="p">:</span>
+        <span class="c"># Randomize the seeds and select the requested amount</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">seeds</span><span class="p">)</span>
+        <span class="n">seeds</span> <span class="o">=</span> <span class="n">seeds</span><span class="p">[:</span><span class="n">seeds_count</span><span class="p">]</span>
+
+    <span class="c"># Apply the spatial transform</span>
+    <span class="k">if</span> <span class="n">affine</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+        <span class="c"># Use affine to move seeds into real world coordinates</span>
+        <span class="n">seeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">seeds</span><span class="p">,</span> <span class="n">affine</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">seeds</span> <span class="o">+=</span> <span class="n">affine</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">seeds</span>
+
+
+<span class="k">def</span> <span class="nf">_with_initialize</span><span class="p">(</span><span class="n">generator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Allows one to write a generator with initialization code.</span>
+
+<span class="sd">    All code up to the first yield is run as soon as the generator function is</span>
+<span class="sd">    called and the first yield value is ignored.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">generator</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">helper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">gen</span> <span class="o">=</span> <span class="n">generator</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">next</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gen</span>
+
+    <span class="k">return</span> <span class="n">helper</span>
+
+
+<span class="nd">@_with_initialize</span>
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="n">streamlines</span><span class="p">,</span> <span class="n">target_mask</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="k">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Filters streamlines based on whether or not they pass through an ROI.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    streamlines : iterable</span>
+<span class="sd">        A sequence of streamlines. Each streamline should be a (N, 3) array,</span>
+<span class="sd">        where N is the length of the streamline.</span>
+<span class="sd">    target_mask : array-like</span>
+<span class="sd">        A mask used as a target. Non-zero values are considered to be within</span>
+<span class="sd">        the target region.</span>
+<span class="sd">    affine : array (4, 4)</span>
+<span class="sd">        The affine transform from voxel indices to streamline points.</span>
+<span class="sd">    include : bool, default True</span>
+<span class="sd">        If True, streamlines passing through `target_mask` are kept. If False,</span>
+<span class="sd">        the streamlines not passing through `target_mask` are kept.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    streamlines : generator</span>
+<span class="sd">        A sequence of streamlines that pass through `target_mask`.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        When the points of the streamlines lie outside of the `target_mask`.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    density_map</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">target_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">target_mask</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+    <span class="n">lin_T</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">_mapping_to_voxel</span><span class="p">(</span><span class="n">affine</span><span class="p">,</span> <span class="n">voxel_size</span><span class="o">=</span><span class="k">None</span><span class="p">)</span>
+    <span class="k">yield</span>
+    <span class="c"># End of initialization</span>
+
+    <span class="k">for</span> <span class="n">sl</span> <span class="ow">in</span> <span class="n">streamlines</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="n">_to_voxel_coordinates</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span> <span class="n">lin_T</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">ind</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">target_mask</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;streamlines points are outside of target_mask&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="o">==</span> <span class="n">include</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">sl</span>
+
+
+<span class="nd">@_with_initialize</span>
+<span class="k">def</span> <span class="nf">target_line_based</span><span class="p">(</span><span class="n">streamlines</span><span class="p">,</span> <span class="n">target_mask</span><span class="p">,</span> <span class="n">affine</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="k">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Filters streamlines based on whether or not they pass through a ROI,</span>
+<span class="sd">    using a line-based algorithm. Mostly used as a remplacement of `target`</span>
+<span class="sd">    for compressed streamlines.</span>
+
+<span class="sd">    This function never returns single-point streamlines, wathever the</span>
+<span class="sd">    value of `include`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    streamlines : iterable</span>
+<span class="sd">        A sequence of streamlines. Each streamline should be a (N, 3) array,</span>
+<span class="sd">        where N is the length of the streamline.</span>
+<span class="sd">    target_mask : array-like</span>
+<span class="sd">        A mask used as a target. Non-zero values are considered to be within</span>
+<span class="sd">        the target region.</span>
+<span class="sd">    affine : array (4, 4)</span>
+<span class="sd">        The affine transform from voxel indices to streamline points.</span>
+<span class="sd">    include : bool, default True</span>
+<span class="sd">        If True, streamlines passing through `target_mask` are kept. If False,</span>
+<span class="sd">        the streamlines not passing through `target_mask` are kept.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    streamlines : generator</span>
+<span class="sd">        A sequence of streamlines that pass through `target_mask`.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Bresenham5] Bresenham, Jack Elton. &quot;Algorithm for computer control of a</span>
+<span class="sd">                 digital plotter&quot;, IBM Systems Journal, vol 4, no. 1, 1965.</span>
+<span class="sd">    [Houde15] Houde et al. How to avoid biased streamlines-based metrics for</span>
+<span class="sd">              streamlines with variable step sizes, ISMRM 2015.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    dipy.tracking.utils.density_map</span>
+<span class="sd">    dipy.tracking.streamline.compress_streamlines</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">target_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">target_mask</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+    <span class="n">lin_T</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">_mapping_to_voxel</span><span class="p">(</span><span class="n">affine</span><span class="p">,</span> <span class="n">voxel_size</span><span class="o">=</span><span class="k">None</span><span class="p">)</span>
+    <span class="n">streamline_index</span> <span class="o">=</span> <span class="n">_streamlines_in_mask</span><span class="p">(</span>
+        <span class="n">streamlines</span><span class="p">,</span> <span class="n">target_mask</span><span class="p">,</span> <span class="n">lin_T</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+    <span class="k">yield</span>
+    <span class="c"># End of initialization</span>
+
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">streamline_index</span> <span class="o">==</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">][</span><span class="n">include</span><span class="p">])[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">yield</span> <span class="n">streamlines</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">streamline_near_roi</span><span class="p">(</span><span class="n">streamline</span><span class="p">,</span> <span class="n">roi_coords</span><span class="p">,</span> <span class="n">tol</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;any&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Is a streamline near an ROI.</span>
+
+<span class="sd">    Implements the inner loops of the :func:`near_roi` function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    streamline : array, shape (N, 3)</span>
+<span class="sd">        A single streamline</span>
+<span class="sd">    roi_coords : array, shape (M, 3)</span>
+<span class="sd">        ROI coordinates transformed to the streamline coordinate frame.</span>
+<span class="sd">    tol : float</span>
+<span class="sd">        Distance (in the units of the streamlines, usually mm). If any</span>
+<span class="sd">        coordinate in the streamline is within this distance from the center</span>
+<span class="sd">        of any voxel in the ROI, this function returns True.</span>
+<span class="sd">    mode : string</span>
+<span class="sd">        One of {&quot;any&quot;, &quot;all&quot;, &quot;either_end&quot;, &quot;both_end&quot;}, where return True</span>
+<span class="sd">        if:</span>
+
+<span class="sd">        &quot;any&quot; : any point is within tol from ROI.</span>
+
+<span class="sd">        &quot;all&quot; : all points are within tol from ROI.</span>
+
+<span class="sd">        &quot;either_end&quot; : either of the end-points is within tol from ROI</span>
+
+<span class="sd">        &quot;both_end&quot; : both end points are within tol from ROI.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : boolean</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">roi_coords</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="k">False</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s">&quot;any&quot;</span> <span class="ow">or</span> <span class="n">mode</span> <span class="o">==</span> <span class="s">&quot;all&quot;</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">streamline</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s">&quot;either_end&quot;</span> <span class="ow">or</span> <span class="n">mode</span> <span class="o">==</span> <span class="s">&quot;both_end&quot;</span><span class="p">:</span>
+        <span class="c"># &#39;end&#39; modes, use a streamline with 2 nodes:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">streamline</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">streamline</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">e_s</span> <span class="o">=</span> <span class="s">&quot;For determining relationship to an array, you can use &quot;</span>
+        <span class="n">e_s</span> <span class="o">+=</span> <span class="s">&quot;one of the following modes: &#39;any&#39;, &#39;all&#39;, &#39;both_end&#39;,&quot;</span>
+        <span class="n">e_s</span> <span class="o">+=</span> <span class="s">&quot;&#39;either_end&#39;, but you entered: %s.&quot;</span> <span class="o">%</span> <span class="n">mode</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">e_s</span><span class="p">)</span>
+
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">roi_coords</span><span class="p">,</span> <span class="s">&#39;euclidean&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s">&quot;any&quot;</span> <span class="ow">or</span> <span class="n">mode</span> <span class="o">==</span> <span class="s">&quot;either_end&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tol</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">near_roi</span><span class="p">(</span><span class="n">streamlines</span><span class="p">,</span> <span class="n">region_of_interest</span><span class="p">,</span> <span class="n">affine</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+             <span class="n">mode</span><span class="o">=</span><span class="s">&quot;any&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Provide filtering criteria for a set of streamlines based on whether</span>
+<span class="sd">    they fall within a tolerance distance from an ROI</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    streamlines : list or generator</span>
+<span class="sd">        A sequence of streamlines. Each streamline should be a (N, 3) array,</span>
+<span class="sd">        where N is the length of the streamline.</span>
+<span class="sd">    region_of_interest : ndarray</span>
+<span class="sd">        A mask used as a target. Non-zero values are considered to be within</span>
+<span class="sd">        the target region.</span>
+<span class="sd">    affine : ndarray</span>
+<span class="sd">        Affine transformation from voxels to streamlines. Default: identity.</span>
+<span class="sd">    tol : float</span>
+<span class="sd">        Distance (in the units of the streamlines, usually mm). If any</span>
+<span class="sd">        coordinate in the streamline is within this distance from the center</span>
+<span class="sd">        of any voxel in the ROI, the filtering criterion is set to True for</span>
+<span class="sd">        this streamline, otherwise False. Defaults to the distance between</span>
+<span class="sd">        the center of each voxel and the corner of the voxel.</span>
+<span class="sd">    mode : string, optional</span>
+<span class="sd">        One of {&quot;any&quot;, &quot;all&quot;, &quot;either_end&quot;, &quot;both_end&quot;}, where return True</span>
+<span class="sd">        if:</span>
+
+<span class="sd">        &quot;any&quot; : any point is within tol from ROI. Default.</span>
+
+<span class="sd">        &quot;all&quot; : all points are within tol from ROI.</span>
+
+<span class="sd">        &quot;either_end&quot; : either of the end-points is within tol from ROI</span>
+
+<span class="sd">        &quot;both_end&quot; : both end points are within tol from ROI.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    1D array of boolean dtype, shape (len(streamlines), )</span>
+
+<span class="sd">    This contains `True` for indices corresponding to each streamline</span>
+<span class="sd">    that passes within a tolerance distance from the target ROI, `False`</span>
+<span class="sd">    otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">affine</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">affine</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">dtc</span> <span class="o">=</span> <span class="n">dist_to_corner</span><span class="p">(</span><span class="n">affine</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">tol</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="n">dtc</span>
+    <span class="k">elif</span> <span class="n">tol</span> <span class="o">&lt;</span> <span class="n">dtc</span><span class="p">:</span>
+        <span class="n">w_s</span> <span class="o">=</span> <span class="s">&quot;Tolerance input provided would create gaps in your&quot;</span>
+        <span class="n">w_s</span> <span class="o">+=</span> <span class="s">&quot; inclusion ROI. Setting to: %s&quot;</span> <span class="o">%</span> <span class="n">dtc</span>
+        <span class="n">warn</span><span class="p">(</span><span class="n">w_s</span><span class="p">)</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="n">dtc</span>
+
+    <span class="n">roi_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">region_of_interest</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">x_roi_coords</span> <span class="o">=</span> <span class="n">apply_affine</span><span class="p">(</span><span class="n">affine</span><span class="p">,</span> <span class="n">roi_coords</span><span class="p">)</span>
+
+    <span class="c"># If it&#39;s already a list, we can save time by preallocating the output</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">streamlines</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">streamlines</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">sl</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">streamlines</span><span class="p">):</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">streamline_near_roi</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span> <span class="n">x_roi_coords</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span>
+                                          <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span>
+    <span class="c"># If it&#39;s a generator, we&#39;ll need to generate the output into a list</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">sl</span> <span class="ow">in</span> <span class="n">streamlines</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">streamline_near_roi</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span> <span class="n">x_roi_coords</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span>
+                                           <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">))</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">reorder_voxels_affine</span><span class="p">(</span><span class="n">input_ornt</span><span class="p">,</span> <span class="n">output_ornt</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">voxel_size</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates a linear transformation equivalent to changing voxel order.</span>
+
+<span class="sd">    Calculates a linear tranformation A such that [a, b, c, 1] = A[x, y, z, 1].</span>
+<span class="sd">    where [x, y, z] is a point in the coordinate system defined by input_ornt</span>
+<span class="sd">    and [a, b, c] is the same point in the coordinate system defined by</span>
+<span class="sd">    output_ornt.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    input_ornt : array (n, 2)</span>
+<span class="sd">        A description of the orientation of a point in n-space. See</span>
+<span class="sd">        ``nibabel.orientation`` or ``dipy.io.bvectxt`` for more information.</span>
+<span class="sd">    output_ornt : array (n, 2)</span>
+<span class="sd">        A description of the orientation of a point in n-space.</span>
+<span class="sd">    shape : tuple of int</span>
+<span class="sd">        Shape of the image in the input orientation.</span>
+<span class="sd">        ``map = ornt_mapping(input_ornt, output_ornt)``</span>
+<span class="sd">    voxel_size : int</span>
+<span class="sd">        Voxel size of the image in the input orientation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    A : array (n+1, n+1)</span>
+<span class="sd">        Affine matrix of the transformation between input_ornt and output_ornt.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    nibabel.orientation</span>
+<span class="sd">    dipy.io.bvectxt.orientation_to_string</span>
+<span class="sd">    dipy.io.bvectxt.orientation_from_string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">map</span> <span class="o">=</span> <span class="n">ornt_mapping</span><span class="p">(</span><span class="n">input_ornt</span><span class="p">,</span> <span class="n">output_ornt</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">input_ornt</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">output_ornt</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;input_ornt and output_ornt must have the same shape&quot;</span><span class="p">)</span>
+    <span class="n">affine</span> <span class="o">=</span> <span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">input_ornt</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">affine</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">affine</span><span class="p">[</span><span class="nb">map</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]]</span>
+    <span class="n">corner</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">voxel_size</span><span class="p">)</span> <span class="o">*</span> <span class="n">shape</span>
+    <span class="n">affine</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">map</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">corner</span><span class="p">[</span><span class="nb">map</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]]</span>
+    <span class="c"># multiply the rows of affine to get right sign</span>
+    <span class="n">affine</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">*=</span> <span class="nb">map</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
+    <span class="k">return</span> <span class="n">affine</span>
+
+
+<span class="k">def</span> <span class="nf">affine_from_fsl_mat_file</span><span class="p">(</span><span class="n">mat_affine</span><span class="p">,</span> <span class="n">input_voxsz</span><span class="p">,</span> <span class="n">output_voxsz</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts an affine matrix from flirt (FSLdot) and a given voxel size for</span>
+<span class="sd">    input and output images and returns an adjusted affine matrix for trackvis.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mat_affine : array of shape (4, 4)</span>
+<span class="sd">       An FSL flirt affine.</span>
+<span class="sd">    input_voxsz : array of shape (3,)</span>
+<span class="sd">       The input image voxel dimensions.</span>
+<span class="sd">    output_voxsz : array of shape (3,)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    affine : array of shape (4, 4)</span>
+<span class="sd">      A trackvis-compatible affine.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># TODO the affine returned by this function uses a different reference than</span>
+    <span class="c"># the nifti-style index coordinates dipy has adopted as a convention. We</span>
+    <span class="c"># should either fix this function in a backward compatible way or replace</span>
+    <span class="c"># and deprecate it.</span>
+    <span class="n">input_voxsz</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">input_voxsz</span><span class="p">)</span>
+    <span class="n">output_voxsz</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">output_voxsz</span><span class="p">)</span>
+    <span class="n">shift</span> <span class="o">=</span> <span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">shift</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">input_voxsz</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="n">affine</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">mat_affine</span><span class="p">,</span> <span class="n">shift</span><span class="p">)</span>
+    <span class="n">affine</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+=</span> <span class="n">output_voxsz</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="k">return</span> <span class="n">affine</span>
+
+
+<span class="k">def</span> <span class="nf">affine_for_trackvis</span><span class="p">(</span><span class="n">voxel_size</span><span class="p">,</span> <span class="n">voxel_order</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                        <span class="n">ref_img_voxel_order</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns an affine which maps points for voxel indices to trackvis</span>
+<span class="sd">    space.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    voxel_size : array (3,)</span>
+<span class="sd">        The sizes of the voxels in the reference image.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    affine : array (4, 4)</span>
+<span class="sd">        Mapping from the voxel indices of the reference image to trackvis</span>
+<span class="sd">        space.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">voxel_order</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span> <span class="ow">or</span> <span class="n">dim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span> <span class="ow">or</span>
+         <span class="n">ref_img_voxel_order</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="bp">NotImplemented</span>
+
+    <span class="c"># Create affine</span>
+    <span class="n">voxel_size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">voxel_size</span><span class="p">)</span>
+    <span class="n">affine</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">affine</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span> <span class="o">=</span> <span class="n">voxel_size</span>
+    <span class="n">affine</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">voxel_size</span> <span class="o">/</span> <span class="mf">2.</span>
+    <span class="k">return</span> <span class="n">affine</span>
+
+
+<span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="n">streamlines</span><span class="p">,</span> <span class="n">affine</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the lengths of many streamlines in a bundle.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    streamlines : list</span>
+<span class="sd">        Each item in the list is an array with 3D coordinates of a streamline.</span>
+<span class="sd">    affine : 4 x 4 array</span>
+<span class="sd">        An affine transformation to move the fibers by, before computing their</span>
+<span class="sd">        lengths.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Iterator object which then computes the length of each</span>
+<span class="sd">    streamline in the bundle, upon iteration.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">affine</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">streamlines</span> <span class="o">=</span> <span class="n">move_streamlines</span><span class="p">(</span><span class="n">streamlines</span><span class="p">,</span> <span class="n">affine</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">streamlines</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">unique_rows</span><span class="p">(</span><span class="n">in_array</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;f4&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This (quickly) finds the unique rows in an array</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    in_array: ndarray</span>
+<span class="sd">        The array for which the unique rows should be found</span>
+
+<span class="sd">    dtype: str, optional</span>
+<span class="sd">        This determines the intermediate representation used for the</span>
+<span class="sd">        values. Should at least preserve the values of the input array.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    u_return: ndarray</span>
+<span class="sd">       Array with the unique rows of the original array.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Sort input array</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">lexsort</span><span class="p">(</span><span class="n">in_array</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="c"># Apply sort and compare neighbors</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">in_array</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
+    <span class="n">diff_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="n">diff_x</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">!=</span> <span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c"># Reverse sort and return unique rows</span>
+    <span class="n">un_order</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
+    <span class="n">diff_in_array</span> <span class="o">=</span> <span class="n">diff_x</span><span class="p">[</span><span class="n">un_order</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">in_array</span><span class="p">[</span><span class="n">diff_in_array</span><span class="p">]</span>
+
+
+<span class="nd">@_with_initialize</span>
+<div class="viewcode-block" id="move_streamlines"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.registration.move_streamlines">[docs]</a><span class="k">def</span> <span class="nf">move_streamlines</span><span class="p">(</span><span class="n">streamlines</span><span class="p">,</span> <span class="n">output_space</span><span class="p">,</span> <span class="n">input_space</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Applies a linear transformation, given by affine, to streamlines.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    streamlines : sequence</span>
+<span class="sd">        A set of streamlines to be transformed.</span>
+<span class="sd">    output_space : array (4, 4)</span>
+<span class="sd">        An affine matrix describing the target space to which the streamlines</span>
+<span class="sd">        will be transformed.</span>
+<span class="sd">    input_space : array (4, 4), optional</span>
+<span class="sd">        An affine matrix describing the current space of the streamlines, if no</span>
+<span class="sd">        ``input_space`` is specified, it&#39;s assumed the streamlines are in the</span>
+<span class="sd">        reference space. The reference space is the same as the space</span>
+<span class="sd">        associated with the affine matrix ``np.eye(4)``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    streamlines : generator</span>
+<span class="sd">        A sequence of transformed streamlines.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">input_space</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">affine</span> <span class="o">=</span> <span class="n">output_space</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">input_space</span><span class="p">)</span>
+        <span class="n">affine</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">output_space</span><span class="p">,</span> <span class="n">inv</span><span class="p">)</span>
+
+    <span class="n">lin_T</span> <span class="o">=</span> <span class="n">affine</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">offset</span> <span class="o">=</span> <span class="n">affine</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">yield</span>
+    <span class="c"># End of initialization</span>
+
+    <span class="k">for</span> <span class="n">sl</span> <span class="ow">in</span> <span class="n">streamlines</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span> <span class="n">lin_T</span><span class="p">)</span> <span class="o">+</span> <span class="n">offset</span></div>
+
+
+<span class="k">def</span> <span class="nf">reduce_rois</span><span class="p">(</span><span class="n">rois</span><span class="p">,</span> <span class="n">include</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reduce multiple ROIs to one inclusion and one exclusion ROI</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rois : list or ndarray</span>
+<span class="sd">        A list of 3D arrays, each with shape (x, y, z) corresponding to the</span>
+<span class="sd">        shape of the brain volume, or a 4D array with shape (n_rois, x, y,</span>
+<span class="sd">        z). Non-zeros in each volume are considered to be within the region.</span>
+
+<span class="sd">    include : array or list</span>
+<span class="sd">        A list or 1D array of boolean marking inclusion or exclusion</span>
+<span class="sd">        criteria.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    include_roi : boolean 3D array</span>
+<span class="sd">        An array marking the inclusion mask.</span>
+
+<span class="sd">    exclude_roi : boolean 3D array</span>
+<span class="sd">        An array marking the exclusion mask</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The include_roi and exclude_roi can be used to perfom the operation: &quot;(A</span>
+<span class="sd">    or B or ...) and not (X or Y or ...)&quot;, where A, B are inclusion regions</span>
+<span class="sd">    and X, Y are exclusion regions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">include_roi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">rois</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="n">exclude_roi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">rois</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rois</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">include</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">include_roi</span> <span class="o">|=</span> <span class="n">rois</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">exclude_roi</span> <span class="o">|=</span> <span class="n">rois</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">include_roi</span><span class="p">,</span> <span class="n">exclude_roi</span>
+
+
+<span class="k">def</span> <span class="nf">flexi_tvis_affine</span><span class="p">(</span><span class="n">sl_vox_order</span><span class="p">,</span> <span class="n">grid_affine</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">voxel_size</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Computes the mapping from voxel indices to streamline points,</span>
+<span class="sd">        reconciling streamlines and grids with different voxel orders</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sl_vox_order : string of length 3</span>
+<span class="sd">        a string that describes the voxel order of the streamlines (ex: LPS)</span>
+<span class="sd">    grid_affine : array (4, 4),</span>
+<span class="sd">        An affine matrix describing the current space of the grid in relation</span>
+<span class="sd">        to RAS+ scanner space</span>
+<span class="sd">    dim : tuple of length 3</span>
+<span class="sd">        dimension of the grid</span>
+<span class="sd">    voxel_size : array (3,0)</span>
+<span class="sd">        voxel size of the grid</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    flexi_tvis_aff : this affine maps between a grid and a trackvis space</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sl_ornt</span> <span class="o">=</span> <span class="n">orientation_from_string</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sl_vox_order</span><span class="p">))</span>
+    <span class="n">grid_ornt</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">io_orientation</span><span class="p">(</span><span class="n">grid_affine</span><span class="p">)</span>
+    <span class="n">reorder_grid</span> <span class="o">=</span> <span class="n">reorder_voxels_affine</span><span class="p">(</span>
+        <span class="n">grid_ornt</span><span class="p">,</span> <span class="n">sl_ornt</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="n">tvis_aff</span> <span class="o">=</span> <span class="n">affine_for_trackvis</span><span class="p">(</span><span class="n">voxel_size</span><span class="p">)</span>
+
+    <span class="n">flexi_tvis_aff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tvis_aff</span><span class="p">,</span> <span class="n">reorder_grid</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">flexi_tvis_aff</span>
+
+
+<span class="k">def</span> <span class="nf">get_flexi_tvis_affine</span><span class="p">(</span><span class="n">tvis_hdr</span><span class="p">,</span> <span class="n">nii_aff</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Computes the mapping from voxel indices to streamline points,</span>
+<span class="sd">        reconciling streamlines and grids with different voxel orders</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tvis_hdr : header from a trackvis file</span>
+<span class="sd">    nii_aff : array (4, 4),</span>
+<span class="sd">        An affine matrix describing the current space of the grid in relation to RAS+ scanner space</span>
+<span class="sd">    nii_data : nd array</span>
+<span class="sd">        3D array, each with shape (x, y, z) corresponding to the shape of the brain volume.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    flexi_tvis_aff : array (4,4)</span>
+<span class="sd">        this affine maps between a grid and a trackvis space</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sl_vox_order</span> <span class="o">=</span> <span class="n">tvis_hdr</span><span class="p">[</span><span class="s">&#39;voxel_order&#39;</span><span class="p">]</span>
+    <span class="n">voxel_size</span> <span class="o">=</span> <span class="n">tvis_hdr</span><span class="p">[</span><span class="s">&#39;voxel_size&#39;</span><span class="p">]</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="n">tvis_hdr</span><span class="p">[</span><span class="s">&#39;dim&#39;</span><span class="p">]</span>
+
+    <span class="n">flexi_tvis_aff</span> <span class="o">=</span> <span class="n">flexi_tvis_affine</span><span class="p">(</span><span class="n">sl_vox_order</span><span class="p">,</span> <span class="n">nii_aff</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">voxel_size</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">flexi_tvis_aff</span>
+
+
+<span class="k">def</span> <span class="nf">_min_at</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">sort_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">lexsort</span><span class="p">(</span><span class="n">sort_keys</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">[:,</span> <span class="n">order</span><span class="p">]</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
+    <span class="n">uniq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="n">uniq</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">!=</span> <span class="n">index</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">[:,</span> <span class="n">uniq</span><span class="p">]</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">uniq</span><span class="p">]</span>
+
+    <span class="n">a</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">index</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">index</span><span class="p">)],</span> <span class="n">value</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">minimum_at</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="o">.</span><span class="n">at</span>
+<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+    <span class="n">minimum_at</span> <span class="o">=</span> <span class="n">_min_at</span>
+
+
+<span class="k">def</span> <span class="nf">path_length</span><span class="p">(</span><span class="n">streamlines</span><span class="p">,</span> <span class="n">aoi</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Computes the shortest path, along any streamline, between aoi and</span>
+<span class="sd">    each voxel.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    streamlines : seq of (N, 3) arrays</span>
+<span class="sd">        A sequence of streamlines, path length is given in mm along the curve</span>
+<span class="sd">        of the streamline.</span>
+<span class="sd">    aoi : array, 3d</span>
+<span class="sd">        A mask (binary array) of voxels from which to start computing distance.</span>
+<span class="sd">    affine : array (4, 4)</span>
+<span class="sd">        The mapping from voxel indices to streamline points.</span>
+<span class="sd">    fill_value : float</span>
+<span class="sd">        The value of voxel in the path length map that are not connected to the</span>
+<span class="sd">        aoi.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    plm : array</span>
+<span class="sd">        Same shape as aoi. The minimum distance between every point and aoi</span>
+<span class="sd">        along the path of a streamline.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">aoi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">aoi</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+
+    <span class="c"># path length map</span>
+    <span class="n">plm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">aoi</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">plm</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="n">lin_T</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">_mapping_to_voxel</span><span class="p">(</span><span class="n">affine</span><span class="p">,</span> <span class="k">None</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sl</span> <span class="ow">in</span> <span class="n">streamlines</span><span class="p">:</span>
+        <span class="n">seg_ind</span> <span class="o">=</span> <span class="n">_to_voxel_coordinates</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span> <span class="n">lin_T</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">seg_ind</span><span class="o">.</span><span class="n">T</span>
+        <span class="c"># Get where streamlines passes through aoi</span>
+        <span class="n">breaks</span> <span class="o">=</span> <span class="n">aoi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
+        <span class="c"># Where streamline passes aoi, dist is zero</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">seg_ind</span><span class="p">[</span><span class="n">breaks</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">plm</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c"># If a streamline crosses aoi &gt;1, re-start counting distance for each</span>
+        <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">_as_segments</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span> <span class="n">breaks</span><span class="p">):</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">_to_voxel_coordinates</span><span class="p">(</span><span class="n">seg</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">lin_T</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+            <span class="c"># Get the distance, in mm, between streamline points</span>
+            <span class="n">segment_length</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">seg</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">seg</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="n">segment_length</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+            <span class="c"># Updates path length map with shorter distances</span>
+            <span class="n">minimum_at</span><span class="p">(</span><span class="n">plm</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span> <span class="n">dist</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fill_value</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">:</span>
+        <span class="n">plm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">plm</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">plm</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">plm</span>
+
+
+<span class="k">def</span> <span class="nf">_part_segments</span><span class="p">(</span><span class="n">streamline</span><span class="p">,</span> <span class="n">break_points</span><span class="p">):</span>
+    <span class="n">segments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">streamline</span><span class="p">,</span> <span class="n">break_points</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c"># Skip first segment, all points before first break</span>
+    <span class="c"># first segment is empty when break_points[0] == 0</span>
+    <span class="n">segments</span> <span class="o">=</span> <span class="n">segments</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">each</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">each</span>
+
+
+<span class="k">def</span> <span class="nf">_as_segments</span><span class="p">(</span><span class="n">streamline</span><span class="p">,</span> <span class="n">break_points</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">_part_segments</span><span class="p">(</span><span class="n">streamline</span><span class="p">,</span> <span class="n">break_points</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">seg</span>
+    <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">_part_segments</span><span class="p">(</span><span class="n">streamline</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">break_points</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="k">yield</span> <span class="n">seg</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

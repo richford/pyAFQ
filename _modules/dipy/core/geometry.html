@@ -1,0 +1,1210 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dipy.core.geometry &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>dipy.core.geometry</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for dipy.core.geometry</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39; Utility functions for algebra etc &#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="nn">npl</span>
+
+<span class="c"># epsilon for testing whether a number is close to zero</span>
+<span class="n">_EPS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span> <span class="o">*</span> <span class="mf">4.0</span>
+
+<span class="c"># axis sequences for Euler angles</span>
+<span class="n">_NEXT_AXIS</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="c"># map axes strings to/from tuples of inner axis, parity, repetition, frame</span>
+<span class="n">_AXES2TUPLE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;sxyz&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s">&#39;sxyx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s">&#39;sxzy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="s">&#39;sxzx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s">&#39;syzx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s">&#39;syzy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="s">&#39;syxz&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s">&#39;syxy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s">&#39;szxy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="s">&#39;szxz&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s">&#39;szyx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s">&#39;szyz&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="s">&#39;rzyx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s">&#39;rxyx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s">&#39;ryzx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="s">&#39;rxzx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s">&#39;rxzy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s">&#39;ryzy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="s">&#39;rzxy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s">&#39;ryxy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s">&#39;ryxz&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="s">&#39;rzxz&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s">&#39;rxyz&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s">&#39;rzyz&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)}</span>
+
+<span class="n">_TUPLE2AXES</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_AXES2TUPLE</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">sphere2cart</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Spherical to Cartesian coordinates</span>
+
+<span class="sd">    This is the standard physics convention where `theta` is the</span>
+<span class="sd">    inclination (polar) angle, and `phi` is the azimuth angle.</span>
+
+<span class="sd">    Imagine a sphere with center (0,0,0).  Orient it with the z axis</span>
+<span class="sd">    running south-north, the y axis running west-east and the x axis</span>
+<span class="sd">    from posterior to anterior.  `theta` (the inclination angle) is the</span>
+<span class="sd">    angle to rotate from the z-axis (the zenith) around the y-axis,</span>
+<span class="sd">    towards the x axis.  Thus the rotation is counter-clockwise from the</span>
+<span class="sd">    point of view of positive y.  `phi` (azimuth) gives the angle of</span>
+<span class="sd">    rotation around the z-axis towards the y axis.  The rotation is</span>
+<span class="sd">    counter-clockwise from the point of view of positive z.</span>
+
+<span class="sd">    Equivalently, given a point P on the sphere, with coordinates x, y,</span>
+<span class="sd">    z, `theta` is the angle between P and the z-axis, and `phi` is</span>
+<span class="sd">    the angle between the projection of P onto the XY plane, and the X</span>
+<span class="sd">    axis.</span>
+
+<span class="sd">    Geographical nomenclature designates theta as &#39;co-latitude&#39;, and phi</span>
+<span class="sd">    as &#39;longitude&#39;</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    r : array_like</span>
+<span class="sd">       radius</span>
+<span class="sd">    theta : array_like</span>
+<span class="sd">       inclination or polar angle</span>
+<span class="sd">    phi : array_like</span>
+<span class="sd">       azimuth angle</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    x : array</span>
+<span class="sd">       x coordinate(s) in Cartesion space</span>
+<span class="sd">    y : array</span>
+<span class="sd">       y coordinate(s) in Cartesian space</span>
+<span class="sd">    z : array</span>
+<span class="sd">       z coordinate</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    --------</span>
+<span class="sd">    See these pages:</span>
+
+<span class="sd">    * http://en.wikipedia.org/wiki/Spherical_coordinate_system</span>
+<span class="sd">    * http://mathworld.wolfram.com/SphericalCoordinates.html</span>
+
+<span class="sd">    for excellent discussion of the many different conventions</span>
+<span class="sd">    possible.  Here we use the physics conventions, used in the</span>
+<span class="sd">    wikipedia page.</span>
+
+<span class="sd">    Derivations of the formulae are simple. Consider a vector x, y, z of</span>
+<span class="sd">    length r (norm of x, y, z).  The inclination angle (theta) can be</span>
+<span class="sd">    found from: cos(theta) == z / r -&gt; z == r * cos(theta).  This gives</span>
+<span class="sd">    the hypotenuse of the projection onto the XY plane, which we will</span>
+<span class="sd">    call Q. Q == r*sin(theta). Now x / Q == cos(phi) -&gt; x == r *</span>
+<span class="sd">    sin(theta) * cos(phi) and so on.</span>
+
+<span class="sd">    We have deliberately named this function ``sphere2cart`` rather than</span>
+<span class="sd">    ``sph2cart`` to distinguish it from the Matlab function of that</span>
+<span class="sd">    name, because the Matlab function uses an unusual convention for the</span>
+<span class="sd">    angles that we did not want to replicate.  The Matlab function is</span>
+<span class="sd">    trivial to implement with the formulae given in the Matlab help.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">sin_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">sin_theta</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">sin_theta</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_arrays</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span>
+
+
+<span class="k">def</span> <span class="nf">cart2sphere</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="sd">r&#39;&#39;&#39; Return angles for Cartesian 3D coordinates `x`, `y`, and `z`</span>
+
+<span class="sd">    See doc for ``sphere2cart`` for angle conventions and derivation</span>
+<span class="sd">    of the formulae.</span>
+
+<span class="sd">    $0\le\theta\mathrm{(theta)}\le\pi$ and $-\pi\le\phi\mathrm{(phi)}\le\pi$</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    x : array_like</span>
+<span class="sd">       x coordinate in Cartesian space</span>
+<span class="sd">    y : array_like</span>
+<span class="sd">       y coordinate in Cartesian space</span>
+<span class="sd">    z : array_like</span>
+<span class="sd">       z coordinate</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    r : array</span>
+<span class="sd">       radius</span>
+<span class="sd">    theta : array</span>
+<span class="sd">       inclination (polar) angle</span>
+<span class="sd">    phi : array</span>
+<span class="sd">       azimuth angle</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span> <span class="o">*</span> <span class="n">z</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span class="n">r</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">r</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">r</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_arrays</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span>
+
+
+<span class="k">def</span> <span class="nf">sph2latlon</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert spherical coordinates to latitude and longitude.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    lat, lon : ndarray</span>
+<span class="sd">        Latitude and longitude.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">theta</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">phi</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">normalized_vector</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Return vector divided by its Euclidean (L2) norm</span>
+
+<span class="sd">    See :term:`unit vector` and :term:`Euclidean norm`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    vec : array_like shape (3,)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    nvec : array shape (3,)</span>
+<span class="sd">       vector divided by L2 norm</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    -----------</span>
+<span class="sd">    &gt;&gt;&gt; vec = [1, 2, 3]</span>
+<span class="sd">    &gt;&gt;&gt; l2n = np.sqrt(np.dot(vec, vec))</span>
+<span class="sd">    &gt;&gt;&gt; nvec = normalized_vector(vec)</span>
+<span class="sd">    &gt;&gt;&gt; np.allclose(np.array(vec) / l2n, nvec)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; vec = np.array([[1, 2, 3]])</span>
+<span class="sd">    &gt;&gt;&gt; vec.shape == (1, 3)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; normalized_vector(vec).shape == (1, 3)</span>
+<span class="sd">    True</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">vec</span> <span class="o">/</span> <span class="n">vector_norm</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="vector_norm"><a class="viewcode-back" href="../../../reference/AFQ.dti.html#AFQ.dti.vector_norm">[docs]</a><span class="k">def</span> <span class="nf">vector_norm</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="k">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Return vector Euclidean (L2) norm</span>
+
+<span class="sd">    See :term:`unit vector` and :term:`Euclidean norm`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -------------</span>
+<span class="sd">    vec : array_like</span>
+<span class="sd">        Vectors to norm.</span>
+<span class="sd">    axis : int</span>
+<span class="sd">        Axis over which to norm. By default norm over last axis. If `axis` is</span>
+<span class="sd">        None, `vec` is flattened then normed.</span>
+<span class="sd">    keepdims : bool</span>
+<span class="sd">        If True, the output will have the same number of dimensions as `vec`,</span>
+<span class="sd">        with shape 1 on `axis`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    norm : array</span>
+<span class="sd">        Euclidean norms of vectors.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; vec = [[8, 15, 0], [0, 36, 77]]</span>
+<span class="sd">    &gt;&gt;&gt; vector_norm(vec)</span>
+<span class="sd">    array([ 17.,  85.])</span>
+<span class="sd">    &gt;&gt;&gt; vector_norm(vec, keepdims=True)</span>
+<span class="sd">    array([[ 17.],</span>
+<span class="sd">           [ 85.]])</span>
+<span class="sd">    &gt;&gt;&gt; vector_norm(vec, axis=0)</span>
+<span class="sd">    array([  8.,  39.,  77.])</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span>
+    <span class="n">vec_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">vec</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">keepdims</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">vec</span><span class="o">.</span><span class="n">ndim</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">vec_norm</span> <span class="o">=</span> <span class="n">vec_norm</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">vec_norm</span></div>
+
+
+<span class="k">def</span> <span class="nf">rodrigues_axis_rotation</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Rodrigues formula</span>
+
+<span class="sd">    Rotation matrix for rotation around axis r for angle theta.</span>
+
+<span class="sd">    The rotation matrix is given by the Rodrigues formula:</span>
+
+<span class="sd">    R = Id + sin(theta)*Sn + (1-cos(theta))*Sn^2</span>
+
+<span class="sd">    with::</span>
+
+<span class="sd">             0  -nz  ny</span>
+<span class="sd">      Sn =   nz   0 -nx</span>
+<span class="sd">            -ny  nx   0</span>
+
+<span class="sd">    where n = r / ||r||</span>
+
+<span class="sd">    In case the angle ||r|| is very small, the above formula may lead</span>
+<span class="sd">    to numerical instabilities. We instead use a Taylor expansion</span>
+<span class="sd">    around theta=0:</span>
+
+<span class="sd">    R = I + sin(theta)/tetha Sr + (1-cos(theta))/teta2 Sr^2</span>
+
+<span class="sd">    leading to:</span>
+
+<span class="sd">    R = I + (1-theta2/6)*Sr + (1/2-theta2/24)*Sr^2</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    r :  array_like shape (3,), axis</span>
+<span class="sd">    theta : float, angle in degrees</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    R : array, shape (3,3), rotation matrix</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ---------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from dipy.core.geometry import rodrigues_axis_rotation</span>
+<span class="sd">    &gt;&gt;&gt; v=np.array([0,0,1])</span>
+<span class="sd">    &gt;&gt;&gt; u=np.array([1,0,0])</span>
+<span class="sd">    &gt;&gt;&gt; R=rodrigues_axis_rotation(v,40)</span>
+<span class="sd">    &gt;&gt;&gt; ur=np.dot(R,u)</span>
+<span class="sd">    &gt;&gt;&gt; np.round(np.rad2deg(np.arccos(np.dot(ur,u))))</span>
+<span class="sd">    40.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">theta</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">30</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">r</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="n">Sn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="o">-</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">]])</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">Sn</span> <span class="o">+</span> \
+            <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Sn</span><span class="p">,</span> <span class="n">Sn</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">Sr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">]])</span>
+        <span class="n">theta2</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">*</span> <span class="n">theta</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">theta2</span> <span class="o">/</span> <span class="mf">6.</span><span class="p">)</span> <span class="o">*</span> \
+            <span class="n">Sr</span> <span class="o">+</span> <span class="p">(</span><span class="o">.</span><span class="mi">5</span> <span class="o">-</span> <span class="n">theta2</span> <span class="o">/</span> <span class="mf">24.</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Sr</span><span class="p">,</span> <span class="n">Sr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">R</span>
+
+
+<span class="k">def</span> <span class="nf">nearest_pos_semi_def</span><span class="p">(</span><span class="n">B</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Least squares positive semi-definite tensor estimation</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    B : (3,3) array_like</span>
+<span class="sd">       B matrix - symmetric. We do not check the symmetry.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    npds : (3,3) array</span>
+<span class="sd">       Estimated nearest positive semi-definite array to matrix `B`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; B = np.diag([1, 1, -1])</span>
+<span class="sd">    &gt;&gt;&gt; nearest_pos_semi_def(B)</span>
+<span class="sd">    array([[ 0.75,  0.  ,  0.  ],</span>
+<span class="sd">           [ 0.  ,  0.75,  0.  ],</span>
+<span class="sd">           [ 0.  ,  0.  ,  0.  ]])</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Niethammer M, San Jose Estepar R, Bouix S, Shenton M, Westin CF.</span>
+<span class="sd">           On diffusion tensor estimation. Conf Proc IEEE Eng Med Biol Soc.</span>
+<span class="sd">           2006;1:2622-5. PubMed PMID: 17946125; PubMed Central PMCID:</span>
+<span class="sd">           PMC2791793.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+    <span class="n">vals</span><span class="p">,</span> <span class="n">vecs</span> <span class="o">=</span> <span class="n">npl</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+    <span class="c"># indices of eigenvalues in descending order</span>
+    <span class="n">inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">vals</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="n">inds</span><span class="p">]</span>
+    <span class="n">cardneg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">vals</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cardneg</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">B</span>
+    <span class="k">if</span> <span class="n">cardneg</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">lam1a</span><span class="p">,</span> <span class="n">lam2a</span><span class="p">,</span> <span class="n">lam3a</span> <span class="o">=</span> <span class="n">vals</span>
+    <span class="n">scalers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,))</span>
+    <span class="k">if</span> <span class="n">cardneg</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">b112</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">lam1a</span> <span class="o">+</span> <span class="p">(</span><span class="n">lam2a</span> <span class="o">+</span> <span class="n">lam3a</span><span class="p">)</span> <span class="o">/</span> <span class="mf">3.</span><span class="p">])</span>
+        <span class="n">scalers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">b112</span>
+    <span class="k">elif</span> <span class="n">cardneg</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">lam1b</span> <span class="o">=</span> <span class="n">lam1a</span> <span class="o">+</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">lam3a</span>
+        <span class="n">lam2b</span> <span class="o">=</span> <span class="n">lam2a</span> <span class="o">+</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">lam3a</span>
+        <span class="k">if</span> <span class="n">lam1b</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">lam2b</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">scalers</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">lam1b</span><span class="p">,</span> <span class="n">lam2b</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c"># one of the lam1b, lam2b is &lt; 0</span>
+            <span class="k">if</span> <span class="n">lam2b</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">b111</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">lam1a</span> <span class="o">+</span> <span class="p">(</span><span class="n">lam2a</span> <span class="o">+</span> <span class="n">lam3a</span><span class="p">)</span> <span class="o">/</span> <span class="mf">3.</span><span class="p">])</span>
+                <span class="n">scalers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">b111</span>
+            <span class="k">if</span> <span class="n">lam1b</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">b221</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">lam2a</span> <span class="o">+</span> <span class="p">(</span><span class="n">lam1a</span> <span class="o">+</span> <span class="n">lam3a</span><span class="p">)</span> <span class="o">/</span> <span class="mf">3.</span><span class="p">])</span>
+                <span class="n">scalers</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">b221</span>
+    <span class="c"># resort the scalers to match the original vecs</span>
+    <span class="n">scalers</span> <span class="o">=</span> <span class="n">scalers</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">inds</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vecs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">scalers</span><span class="p">),</span> <span class="n">vecs</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">sphere_distance</span><span class="p">(</span><span class="n">pts1</span><span class="p">,</span> <span class="n">pts2</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">check_radius</span><span class="o">=</span><span class="k">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Distance across sphere surface between `pts1` and `pts2`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    pts1 : (N,R) or (R,) array_like</span>
+<span class="sd">       where N is the number of points and R is the number of</span>
+<span class="sd">       coordinates defining a point (``R==3`` for 3D)</span>
+<span class="sd">    pts2 : (N,R) or (R,) array_like</span>
+<span class="sd">       where N is the number of points and R is the number of</span>
+<span class="sd">       coordinates defining a point (``R==3`` for 3D).  It should be</span>
+<span class="sd">       possible to broadcast `pts1` against `pts2`</span>
+<span class="sd">    radius : None or float, optional</span>
+<span class="sd">       Radius of sphere.  Default is to work out radius from mean of the</span>
+<span class="sd">       length of each point vector</span>
+<span class="sd">    check_radius : bool, optional</span>
+<span class="sd">       If True, check if the points are on the sphere surface - i.e</span>
+<span class="sd">       check if the vector lengths in `pts1` and `pts2` are close to</span>
+<span class="sd">       `radius`.  Default is True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    d : (N,) or (0,) array</span>
+<span class="sd">       Distances between corresponding points in `pts1` and `pts2`</span>
+<span class="sd">       across the spherical surface, i.e. the great circle distance</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cart_distance : cartesian distance between points</span>
+<span class="sd">    vector_cosine : cosine of angle between vectors</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; print(&#39;%.4f&#39; % sphere_distance([0,1],[1,0]))</span>
+<span class="sd">    1.5708</span>
+<span class="sd">    &gt;&gt;&gt; print(&#39;%.4f&#39; % sphere_distance([0,3],[3,0]))</span>
+<span class="sd">    4.7124</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pts1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">pts1</span><span class="p">)</span>
+    <span class="n">pts2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">pts2</span><span class="p">)</span>
+    <span class="n">lens1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pts1</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">lens2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pts2</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">radius</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">lens1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">lens2</span><span class="p">))</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="k">if</span> <span class="n">check_radius</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">lens1</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">lens2</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Radii do not match sphere surface&#39;</span><span class="p">)</span>
+    <span class="c"># Get angle with vector cosine</span>
+    <span class="n">dots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">pts1</span><span class="p">,</span> <span class="n">pts2</span><span class="p">)</span>
+    <span class="n">lens</span> <span class="o">=</span> <span class="n">lens1</span> <span class="o">*</span> <span class="n">lens2</span>
+    <span class="n">angle_cos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">dots</span> <span class="o">/</span> <span class="n">lens</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">angle_cos</span> <span class="o">*</span> <span class="n">radius</span>
+
+
+<span class="k">def</span> <span class="nf">cart_distance</span><span class="p">(</span><span class="n">pts1</span><span class="p">,</span> <span class="n">pts2</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Cartesian distance between `pts1` and `pts2`</span>
+
+<span class="sd">    If either of `pts1` or `pts2` is 2D, then we take the first</span>
+<span class="sd">    dimension to index points, and the second indexes coordinate.  More</span>
+<span class="sd">    generally, we take the last dimension to be the coordinate</span>
+<span class="sd">    dimension.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pts1 : (N,R) or (R,) array_like</span>
+<span class="sd">       where N is the number of points and R is the number of</span>
+<span class="sd">       coordinates defining a point (``R==3`` for 3D)</span>
+<span class="sd">    pts2 : (N,R) or (R,) array_like</span>
+<span class="sd">       where N is the number of points and R is the number of</span>
+<span class="sd">       coordinates defining a point (``R==3`` for 3D).  It should be</span>
+<span class="sd">       possible to broadcast `pts1` against `pts2`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    d : (N,) or (0,) array</span>
+<span class="sd">       Cartesian distances between corresponding points in `pts1` and</span>
+<span class="sd">       `pts2`</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    sphere_distance : distance between points on sphere surface</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; cart_distance([0,0,0], [0,0,3])</span>
+<span class="sd">    3.0</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">sqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">pts1</span><span class="p">,</span> <span class="n">pts2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sqs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">vector_cosine</span><span class="p">(</span><span class="n">vecs1</span><span class="p">,</span> <span class="n">vecs2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Cosine of angle between two (sets of) vectors</span>
+
+<span class="sd">    The cosine of the angle between two vectors ``v1`` and ``v2`` is</span>
+<span class="sd">    given by the inner product of ``v1`` and ``v2`` divided by the</span>
+<span class="sd">    product of the vector lengths::</span>
+
+<span class="sd">       v_cos = np.inner(v1, v2) / (np.sqrt(np.sum(v1**2)) *</span>
+<span class="sd">                                   np.sqrt(np.sum(v2**2)))</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -------------</span>
+<span class="sd">    vecs1 : (N, R) or (R,) array_like</span>
+<span class="sd">       N vectors (as rows) or single vector.  Vectors have R elements.</span>
+<span class="sd">    vecs1 : (N, R) or (R,) array_like</span>
+<span class="sd">       N vectors (as rows) or single vector.  Vectors have R elements.</span>
+<span class="sd">       It should be possible to broadcast `vecs1` against `vecs2`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vcos : (N,) or (0,) array</span>
+<span class="sd">       Vector cosines.  To get the angles you will need ``np.arccos``</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    --------</span>
+<span class="sd">    The vector cosine will be the same as the correlation only if all</span>
+<span class="sd">    the input vectors have zero mean.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vecs1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vecs1</span><span class="p">)</span>
+    <span class="n">vecs2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vecs2</span><span class="p">)</span>
+    <span class="n">lens1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">vecs1</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">lens2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">vecs2</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">dots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">vecs1</span><span class="p">,</span> <span class="n">vecs2</span><span class="p">)</span>
+    <span class="n">lens</span> <span class="o">=</span> <span class="n">lens1</span> <span class="o">*</span> <span class="n">lens2</span>
+    <span class="k">return</span> <span class="n">dots</span> <span class="o">/</span> <span class="n">lens</span>
+
+
+<span class="k">def</span> <span class="nf">lambert_equal_area_projection_polar</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot; Lambert Equal Area Projection from polar sphere to plane</span>
+
+<span class="sd">    Return positions in (y1,y2) plane corresponding to the points</span>
+<span class="sd">    with polar coordinates (theta, phi) on the unit sphere, under the</span>
+<span class="sd">    Lambert Equal Area Projection mapping (see Mardia and Jupp (2000),</span>
+<span class="sd">    Directional Statistics, p. 161).</span>
+
+<span class="sd">    See doc for ``sphere2cart`` for angle conventions</span>
+
+<span class="sd">    - $0 \le \theta \le \pi$ and $0 \le \phi \le 2 \pi$</span>
+<span class="sd">    - $|(y_1,y_2)| \le 2$</span>
+
+<span class="sd">    The Lambert EAP maps the upper hemisphere to the planar disc of radius 1</span>
+<span class="sd">    and the lower hemisphere to the planar annulus between radii 1 and 2,</span>
+<span class="sd">    and *vice versa*.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    theta : array_like</span>
+<span class="sd">       theta spherical coordinates</span>
+<span class="sd">    phi : array_like</span>
+<span class="sd">       phi spherical coordinates</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    y : (N,2) array</span>
+<span class="sd">       planar coordinates of points following mapping by Lambert&#39;s EAP.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">theta</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> \
+        <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)))</span>
+
+
+<span class="k">def</span> <span class="nf">lambert_equal_area_projection_cart</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="sd">r&#39;&#39;&#39; Lambert Equal Area Projection from cartesian vector to plane</span>
+
+<span class="sd">    Return positions in $(y_1,y_2)$ plane corresponding to the</span>
+<span class="sd">    directions of the vectors with cartesian coordinates xyz under the</span>
+<span class="sd">    Lambert Equal Area Projection mapping (see Mardia and Jupp (2000),</span>
+<span class="sd">    Directional Statistics, p. 161).</span>
+
+<span class="sd">    The Lambert EAP maps the upper hemisphere to the planar disc of radius 1</span>
+<span class="sd">    and the lower hemisphere to the planar annulus between radii 1 and 2,</span>
+<span class="sd">    The Lambert EAP maps the upper hemisphere to the planar disc of radius 1</span>
+<span class="sd">    and the lower hemisphere to the planar annulus between radii 1 and 2.</span>
+<span class="sd">    and *vice versa*.</span>
+
+<span class="sd">    See doc for ``sphere2cart`` for angle conventions</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    x : array_like</span>
+<span class="sd">       x coordinate in Cartesion space</span>
+<span class="sd">    y : array_like</span>
+<span class="sd">       y coordinate in Cartesian space</span>
+<span class="sd">    z : array_like</span>
+<span class="sd">       z coordinate</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y : (N,2) array</span>
+<span class="sd">       planar coordinates of points following mapping by Lambert&#39;s EAP.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span> <span class="o">=</span> <span class="n">cart2sphere</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lambert_equal_area_projection_polar</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">euler_matrix</span><span class="p">(</span><span class="n">ai</span><span class="p">,</span> <span class="n">aj</span><span class="p">,</span> <span class="n">ak</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s">&#39;sxyz&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return homogeneous rotation matrix from Euler angles and axis sequence.</span>
+
+<span class="sd">    Code modified from the work of Christoph Gohlke link provided here</span>
+<span class="sd">    http://www.lfd.uci.edu/~gohlke/code/transformations.py.html</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    ai, aj, ak : Euler&#39;s roll, pitch and yaw angles</span>
+<span class="sd">    axes : One of 24 axis sequences as string or encoded tuple</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    matrix : ndarray (4, 4)</span>
+
+<span class="sd">    Code modified from the work of Christoph Gohlke link provided here</span>
+<span class="sd">    http://www.lfd.uci.edu/~gohlke/code/transformations.py.html</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy</span>
+<span class="sd">    &gt;&gt;&gt; R = euler_matrix(1, 2, 3, &#39;syxz&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; numpy.allclose(numpy.sum(R[0]), -1.34786452)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; R = euler_matrix(1, 2, 3, (0, 1, 0, 1))</span>
+<span class="sd">    &gt;&gt;&gt; numpy.allclose(numpy.sum(R[0]), -0.383436184)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; ai, aj, ak = (4.0*math.pi) * (numpy.random.random(3) - 0.5)</span>
+<span class="sd">    &gt;&gt;&gt; for axes in _AXES2TUPLE.keys():</span>
+<span class="sd">    ...    R = euler_matrix(ai, aj, ak, axes)</span>
+<span class="sd">    &gt;&gt;&gt; for axes in _TUPLE2AXES.keys():</span>
+<span class="sd">    ...    R = euler_matrix(ai, aj, ak, axes)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">firstaxis</span><span class="p">,</span> <span class="n">parity</span><span class="p">,</span> <span class="n">repetition</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">_AXES2TUPLE</span><span class="p">[</span><span class="n">axes</span><span class="p">]</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+        <span class="n">firstaxis</span><span class="p">,</span> <span class="n">parity</span><span class="p">,</span> <span class="n">repetition</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">axes</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="n">firstaxis</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">_NEXT_AXIS</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">parity</span><span class="p">]</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">_NEXT_AXIS</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">parity</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">frame</span><span class="p">:</span>
+        <span class="n">ai</span><span class="p">,</span> <span class="n">ak</span> <span class="o">=</span> <span class="n">ak</span><span class="p">,</span> <span class="n">ai</span>
+    <span class="k">if</span> <span class="n">parity</span><span class="p">:</span>
+        <span class="n">ai</span><span class="p">,</span> <span class="n">aj</span><span class="p">,</span> <span class="n">ak</span> <span class="o">=</span> <span class="o">-</span><span class="n">ai</span><span class="p">,</span> <span class="o">-</span><span class="n">aj</span><span class="p">,</span> <span class="o">-</span><span class="n">ak</span>
+
+    <span class="n">si</span><span class="p">,</span> <span class="n">sj</span><span class="p">,</span> <span class="n">sk</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ai</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">aj</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ak</span><span class="p">)</span>
+    <span class="n">ci</span><span class="p">,</span> <span class="n">cj</span><span class="p">,</span> <span class="n">ck</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ai</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">aj</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ak</span><span class="p">)</span>
+    <span class="n">cc</span><span class="p">,</span> <span class="n">cs</span> <span class="o">=</span> <span class="n">ci</span> <span class="o">*</span> <span class="n">ck</span><span class="p">,</span> <span class="n">ci</span> <span class="o">*</span> <span class="n">sk</span>
+    <span class="n">sc</span><span class="p">,</span> <span class="n">ss</span> <span class="o">=</span> <span class="n">si</span> <span class="o">*</span> <span class="n">ck</span><span class="p">,</span> <span class="n">si</span> <span class="o">*</span> <span class="n">sk</span>
+
+    <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">repetition</span><span class="p">:</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cj</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">sj</span> <span class="o">*</span> <span class="n">si</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">sj</span> <span class="o">*</span> <span class="n">ci</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sj</span> <span class="o">*</span> <span class="n">sk</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">cj</span> <span class="o">*</span> <span class="n">ss</span> <span class="o">+</span> <span class="n">cc</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">cj</span> <span class="o">*</span> <span class="n">cs</span> <span class="o">-</span> <span class="n">sc</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">sj</span> <span class="o">*</span> <span class="n">ck</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">cj</span> <span class="o">*</span> <span class="n">sc</span> <span class="o">+</span> <span class="n">cs</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">cj</span> <span class="o">*</span> <span class="n">cc</span> <span class="o">-</span> <span class="n">ss</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cj</span> <span class="o">*</span> <span class="n">ck</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">sj</span> <span class="o">*</span> <span class="n">sc</span> <span class="o">-</span> <span class="n">cs</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">sj</span> <span class="o">*</span> <span class="n">cc</span> <span class="o">+</span> <span class="n">ss</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cj</span> <span class="o">*</span> <span class="n">sk</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">sj</span> <span class="o">*</span> <span class="n">ss</span> <span class="o">+</span> <span class="n">cc</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">sj</span> <span class="o">*</span> <span class="n">cs</span> <span class="o">-</span> <span class="n">sc</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">sj</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">cj</span> <span class="o">*</span> <span class="n">si</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">cj</span> <span class="o">*</span> <span class="n">ci</span>
+    <span class="k">return</span> <span class="n">M</span>
+
+
+<span class="k">def</span> <span class="nf">compose_matrix</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">shear</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">angles</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">translate</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                   <span class="n">perspective</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return 4x4 transformation matrix from sequence of</span>
+<span class="sd">    transformations.</span>
+
+<span class="sd">    Code modified from the work of Christoph Gohlke link provided here</span>
+<span class="sd">    http://www.lfd.uci.edu/~gohlke/code/transformations.py.html</span>
+
+<span class="sd">    This is the inverse of the ``decompose_matrix`` function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -------------</span>
+<span class="sd">    scale : (3,) array_like</span>
+<span class="sd">        Scaling factors.</span>
+<span class="sd">    shear : array_like</span>
+<span class="sd">        Shear factors for x-y, x-z, y-z axes.</span>
+<span class="sd">    angles : array_like</span>
+<span class="sd">        Euler angles about static x, y, z axes.</span>
+<span class="sd">    translate : array_like</span>
+<span class="sd">        Translation vector along x, y, z axes.</span>
+<span class="sd">    perspective : array_like</span>
+<span class="sd">        Perspective partition of matrix.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    matrix : 4x4 array</span>
+
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; import math</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; import dipy.core.geometry as gm</span>
+<span class="sd">    &gt;&gt;&gt; scale = np.random.random(3) - 0.5</span>
+<span class="sd">    &gt;&gt;&gt; shear = np.random.random(3) - 0.5</span>
+<span class="sd">    &gt;&gt;&gt; angles = (np.random.random(3) - 0.5) * (2*math.pi)</span>
+<span class="sd">    &gt;&gt;&gt; trans = np.random.random(3) - 0.5</span>
+<span class="sd">    &gt;&gt;&gt; persp = np.random.random(4) - 0.5</span>
+<span class="sd">    &gt;&gt;&gt; M0 = gm.compose_matrix(scale, shear, angles, trans, persp)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">perspective</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">P</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">perspective</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">translate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">T</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">translate</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">angles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">euler_matrix</span><span class="p">(</span><span class="n">angles</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">angles</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">angles</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s">&#39;sxyz&#39;</span><span class="p">)</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">shear</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">Z</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">shear</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">shear</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">shear</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
+    <span class="n">M</span> <span class="o">/=</span> <span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">M</span>
+
+
+<span class="k">def</span> <span class="nf">decompose_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return sequence of transformations from transformation matrix.</span>
+
+<span class="sd">    Code modified from the excellent work of Christoph Gohlke link provided</span>
+<span class="sd">    here: http://www.lfd.uci.edu/~gohlke/code/transformations.py.html</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    matrix : array_like</span>
+<span class="sd">        Non-degenerative homogeneous transformation matrix</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    scale : (3,) ndarray</span>
+<span class="sd">        Three scaling factors.</span>
+<span class="sd">    shear : (3,) ndarray</span>
+<span class="sd">        Shear factors for x-y, x-z, y-z axes.</span>
+<span class="sd">    angles : (3,) ndarray</span>
+<span class="sd">        Euler angles about static x, y, z axes.</span>
+<span class="sd">    translate : (3,) ndarray</span>
+<span class="sd">        Translation vector along x, y, z axes.</span>
+<span class="sd">    perspective : ndarray</span>
+<span class="sd">        Perspective partition of matrix.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If matrix is of wrong type or degenerative.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    -----------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; T0=np.diag([2,1,1,1])</span>
+<span class="sd">    &gt;&gt;&gt; scale, shear, angles, trans, persp = decompose_matrix(T0)</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="k">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">_EPS</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;M[3, 3] is zero&quot;</span><span class="p">)</span>
+    <span class="n">M</span> <span class="o">/=</span> <span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">P</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">P</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;matrix is singular&quot;</span><span class="p">)</span>
+
+    <span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">shear</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">angles</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">M</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">_EPS</span><span class="p">):</span>
+        <span class="n">perspective</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+        <span class="n">M</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">perspective</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="n">translate</span> <span class="o">=</span> <span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">row</span> <span class="o">=</span> <span class="n">M</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">scale</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">vector_norm</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/=</span> <span class="n">scale</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">shear</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">shear</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">vector_norm</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/=</span> <span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">shear</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/=</span> <span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">shear</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">shear</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">shear</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-=</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">shear</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">scale</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">vector_norm</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/=</span> <span class="n">scale</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">shear</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">/=</span> <span class="n">scale</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">scale</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">row</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="n">angles</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span><span class="o">-</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angles</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">angles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+        <span class="n">angles</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># angles[0] = math.atan2(row[1, 0], row[1, 1])</span>
+        <span class="n">angles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="o">-</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">angles</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="k">return</span> <span class="n">scale</span><span class="p">,</span> <span class="n">shear</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">translate</span><span class="p">,</span> <span class="n">perspective</span>
+
+
+<span class="k">def</span> <span class="nf">circumradius</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; a, b and c are 3-dimensional vectors which are the vertices of a</span>
+<span class="sd">    triangle. The function returns the circumradius of the triangle, i.e</span>
+<span class="sd">    the radius of the smallest circle that can contain the triangle. In</span>
+<span class="sd">    the degenerate case when the 3 points are collinear it returns</span>
+<span class="sd">    half the distance between the furthest apart points.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a, b, c : (3,) array_like</span>
+<span class="sd">       the three vertices of the triangle</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    circumradius : float</span>
+<span class="sd">        the desired circumradius</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">c</span>
+    <span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">c</span>
+    <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="c"># test for collinearity</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+                              <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)))</span> <span class="o">/</span> <span class="mf">2.</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xx</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">,</span> <span class="n">yy</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span>
+
+
+<span class="k">def</span> <span class="nf">vec2vec_rotmat</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot; rotation matrix from 2 unit vectors</span>
+
+<span class="sd">    u, v being unit 3d vectors return a 3x3 rotation matrix R than aligns u to</span>
+<span class="sd">    v.</span>
+
+<span class="sd">    In general there are many rotations that will map u to v. If S is any</span>
+<span class="sd">    rotation using v as an axis then R.S will also map u to v since (S.R)u =</span>
+<span class="sd">    S(Ru) = Sv = v.  The rotation R returned by vec2vec_rotmat leaves fixed the</span>
+<span class="sd">    perpendicular to the plane spanned by u and v.</span>
+
+<span class="sd">    The transpose of R will align v to u.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    u : array, shape(3,)</span>
+<span class="sd">    v : array, shape(3,)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    R : array, shape(3,3)</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ---------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from dipy.core.geometry import vec2vec_rotmat</span>
+<span class="sd">    &gt;&gt;&gt; u=np.array([1,0,0])</span>
+<span class="sd">    &gt;&gt;&gt; v=np.array([0,1,0])</span>
+<span class="sd">    &gt;&gt;&gt; R=vec2vec_rotmat(u,v)</span>
+<span class="sd">    &gt;&gt;&gt; np.dot(R,u)</span>
+<span class="sd">    array([ 0.,  1.,  0.])</span>
+<span class="sd">    &gt;&gt;&gt; np.dot(R.T,v)</span>
+<span class="sd">    array([ 1.,  0.,  0.])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># Cross product is the first step to find R</span>
+    <span class="c"># Rely on numpy instead of manual checking for failing</span>
+    <span class="c"># cases</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    <span class="n">wn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+    <span class="c"># Check that cross product is OK and vectors</span>
+    <span class="c"># u, v are not collinear (norm(w)&gt;0.0)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">wn</span><span class="p">)</span> <span class="ow">or</span> <span class="n">wn</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">:</span>
+        <span class="n">norm_u_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u</span> <span class="o">-</span> <span class="n">v</span><span class="p">)</span>
+        <span class="c"># This is the case of two antipodal vectors:</span>
+        <span class="c"># ** former checking assumed norm(u) == norm(v)</span>
+        <span class="k">if</span> <span class="n">norm_u_v</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+            <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="c"># if everything ok, normalize w</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">w</span> <span class="o">/</span> <span class="n">wn</span>
+
+    <span class="c"># vp is in plane of u,v,  perpendicular to u</span>
+    <span class="n">vp</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="p">))</span>
+    <span class="n">vp</span> <span class="o">=</span> <span class="n">vp</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vp</span><span class="p">)</span>
+
+    <span class="c"># (u vp w) is an orthonormal basis</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">u</span><span class="p">,</span> <span class="n">vp</span><span class="p">,</span> <span class="n">w</span><span class="p">])</span>
+    <span class="n">Pt</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">cosa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    <span class="n">sina</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cosa</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">cosa</span><span class="p">,</span> <span class="o">-</span><span class="n">sina</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="n">sina</span><span class="p">,</span> <span class="n">cosa</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+    <span class="n">Rp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Pt</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">P</span><span class="p">))</span>
+
+    <span class="c"># make sure that you don&#39;t return any Nans</span>
+    <span class="c"># check using the appropriate tool in numpy</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">Rp</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Rp</span>
+
+
+<span class="k">def</span> <span class="nf">compose_transformations</span><span class="p">(</span><span class="o">*</span><span class="n">mats</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Compose multiple 4x4 affine transformations in one 4x4 matrix</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+
+<span class="sd">    mat1 : array, (4, 4)</span>
+<span class="sd">    mat2 : array, (4, 4)</span>
+<span class="sd">    ...</span>
+<span class="sd">    matN : array, (4, 4)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    matN x ... x mat2 x mat1 : array, (4, 4)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">prev</span> <span class="o">=</span> <span class="n">mats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mats</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;At least two or more matrices are needed&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">mat</span> <span class="ow">in</span> <span class="n">mats</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">prev</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">prev</span>
+
+
+<span class="k">def</span> <span class="nf">perpendicular_directions</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">half</span><span class="o">=</span><span class="k">False</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot; Computes n evenly spaced perpendicular directions relative to a given</span>
+<span class="sd">    vector v</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    v : array (3,)</span>
+<span class="sd">        Array containing the three cartesian coordinates of vector v</span>
+<span class="sd">    num : int, optional</span>
+<span class="sd">        Number of perpendicular directions to generate</span>
+<span class="sd">    half : bool, optional</span>
+<span class="sd">        If half is True, perpendicular directions are sampled on half of the</span>
+<span class="sd">        unit circumference perpendicular to v, otherwive perpendicular</span>
+<span class="sd">        directions are sampled on the full circumference. Default of half is</span>
+<span class="sd">        False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    psamples : array (n, 3)</span>
+<span class="sd">        array of vectors perpendicular to v</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    --------</span>
+<span class="sd">    Perpendicular directions are estimated using the following two step</span>
+<span class="sd">    procedure:</span>
+
+<span class="sd">        1) the perpendicular directions are first sampled in a unit</span>
+<span class="sd">        circumference parallel to the plane normal to the x-axis.</span>
+
+<span class="sd">        2) Samples are then rotated and aligned to the plane normal to vector</span>
+<span class="sd">        v. The rotational matrix for this rotation is constructed as reference</span>
+<span class="sd">        frame basis which axis are the following:</span>
+<span class="sd">            - The first axis is vector v</span>
+<span class="sd">            - The second axis is defined as the normalized vector given by the</span>
+<span class="sd">            cross product between vector v and the unit vector aligned to the</span>
+<span class="sd">            x-axis</span>
+<span class="sd">            - The third axis is defined as the cross product between the</span>
+<span class="sd">            previous computed vector and vector v.</span>
+
+<span class="sd">    Following this two steps, coordinates of the final perpendicular directions</span>
+<span class="sd">    are given as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \left [ -\sin(a_{i}) \sqrt{{v_{y}}^{2}+{v_{z}}^{2}}</span>
+<span class="sd">        \; , \;</span>
+<span class="sd">        \frac{v_{x}v_{y}\sin(a_{i})-v_{z}\cos(a_{i})}</span>
+<span class="sd">        {\sqrt{{v_{y}}^{2}+{v_{z}}^{2}}}</span>
+<span class="sd">        \; , \;</span>
+<span class="sd">        \frac{v_{x}v_{z}\sin(a_{i})-v_{y}\cos(a_{i})}</span>
+<span class="sd">        {\sqrt{{v_{y}}^{2}+{v_{z}}^{2}}} \right  ]</span>
+
+<span class="sd">    This procedure has a singularity when vector v is aligned to the x-axis. To</span>
+<span class="sd">    solve this singularity, perpendicular directions in procedure&#39;s step 1 are</span>
+<span class="sd">    defined in the plane normal to y-axis and the second axis of the rotated</span>
+<span class="sd">    frame of reference is computed as the normalized vector given by the cross</span>
+<span class="sd">    product between vector v and the unit vector aligned to the y-axis.</span>
+<span class="sd">    Following this, the coordinates of the perpendicular directions are given</span>
+<span class="sd">    as:</span>
+
+<span class="sd">        \left [ -\frac{\left (v_{x}v_{y}\sin(a_{i})+v_{z}\cos(a_{i}) \right )}</span>
+<span class="sd">        {\sqrt{{v_{x}}^{2}+{v_{z}}^{2}}}</span>
+<span class="sd">        \; , \;</span>
+<span class="sd">        \sin(a_{i}) \sqrt{{v_{x}}^{2}+{v_{z}}^{2}}</span>
+<span class="sd">        \; , \;</span>
+<span class="sd">        \frac{v_{y}v_{z}\sin(a_{i})+v_{x}\cos(a_{i})}</span>
+<span class="sd">        {\sqrt{{v_{x}}^{2}+{v_{z}}^{2}}} \right  ]</span>
+
+<span class="sd">    For more details on this calculation, see ` here &lt;http://gsoc2015dipydki.blogspot.it/2015/07/rnh-post-8-computing-perpendicular.html&gt;`_.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="c"># Float error used for floats comparison</span>
+    <span class="n">er</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">eps</span> <span class="o">*</span> <span class="mi">1</span><span class="n">e3</span>
+
+    <span class="c"># Define circumference or semi-circumference</span>
+    <span class="k">if</span> <span class="n">half</span> <span class="ow">is</span> <span class="k">True</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">num</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">num</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
+
+    <span class="n">cosa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">sina</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="c"># Check if vector is not aligned to the x axis</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">1.</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">er</span><span class="p">:</span>
+        <span class="n">sq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">psamples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span> <span class="n">sq</span><span class="o">*</span><span class="n">sina</span><span class="p">,</span> <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">sina</span> <span class="o">-</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">cosa</span><span class="p">)</span> <span class="o">/</span> <span class="n">sq</span><span class="p">,</span>
+                             <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">sina</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">cosa</span><span class="p">)</span> <span class="o">/</span> <span class="n">sq</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">psamples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span> <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">cosa</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">sina</span><span class="p">)</span> <span class="o">/</span> <span class="n">sq</span><span class="p">,</span> <span class="n">sina</span><span class="o">*</span><span class="n">sq</span><span class="p">,</span>
+                             <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">cosa</span> <span class="o">-</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">sina</span><span class="p">)</span> <span class="o">/</span> <span class="n">sq</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">psamples</span><span class="o">.</span><span class="n">T</span>
+
+
+<span class="k">def</span> <span class="nf">dist_to_corner</span><span class="p">(</span><span class="n">affine</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the maximal distance from the center to a corner of a voxel,</span>
+<span class="sd">    given an affine</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    affine : 4 by 4 array.</span>
+<span class="sd">        The spatial transformation from the measurement to the scanner space.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dist: float</span>
+<span class="sd">        The maximal distance to the corner of a voxel, given voxel size encoded</span>
+<span class="sd">        in the affine.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">affine</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">vox_dim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">vox_dim</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

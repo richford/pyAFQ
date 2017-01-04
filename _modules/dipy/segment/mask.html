@@ -1,0 +1,482 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dipy.segment.mask &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>dipy.segment.mask</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for dipy.segment.mask</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span>
+
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="k">import</span> <span class="n">warn</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">dipy.reconst.dti</span> <span class="k">import</span> <span class="n">fractional_anisotropy</span><span class="p">,</span> <span class="n">color_fa</span>
+
+<span class="kn">from</span> <span class="nn">scipy.ndimage.filters</span> <span class="k">import</span> <span class="n">median_filter</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="k">import</span> <span class="n">threshold_otsu</span> <span class="k">as</span> <span class="n">otsu</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">dipy.segment.threshold</span> <span class="k">import</span> <span class="n">otsu</span>
+
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="k">import</span> <span class="n">binary_dilation</span><span class="p">,</span> <span class="n">generate_binary_structure</span>
+
+
+<span class="k">def</span> <span class="nf">multi_median</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">median_radius</span><span class="p">,</span> <span class="n">numpass</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Applies median filter multiple times on input data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    input : ndarray</span>
+<span class="sd">        The input volume to apply filter on.</span>
+<span class="sd">    median_radius : int</span>
+<span class="sd">        Radius (in voxels) of the applied median filter</span>
+<span class="sd">    numpass: int</span>
+<span class="sd">        Number of pass of the median filter</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    input : ndarray</span>
+<span class="sd">        Filtered input volume.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Array representing the size of the median window in each dimension.</span>
+    <span class="n">medarr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">median_radius</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c"># Multi pass</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">numpass</span><span class="p">):</span>
+        <span class="n">median_filter</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">medarr</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="nb">input</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">input</span>
+
+
+<span class="k">def</span> <span class="nf">applymask</span><span class="p">(</span><span class="n">vol</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Mask vol with mask.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vol : ndarray</span>
+<span class="sd">        Array with $V$ dimensions</span>
+<span class="sd">    mask : ndarray</span>
+<span class="sd">        Binary mask.  Has $M$ dimensions where $M &lt;= V$. When $M &lt; V$, we</span>
+<span class="sd">        append $V - M$ dimensions with axis length 1 to `mask` so that `mask`</span>
+<span class="sd">        will broadcast against `vol`.  In the typical case `vol` can be 4D,</span>
+<span class="sd">        `mask` can be 3D, and we append a 1 to the mask shape which (via numpy</span>
+<span class="sd">        broadcasting) has the effect of appling the 3D mask to each 3D slice in</span>
+<span class="sd">        `vol` (``vol[..., 0]`` to ``vol[..., -1``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    masked_vol : ndarray</span>
+<span class="sd">        `vol` multiplied by `mask` where `mask` may have been extended to match</span>
+<span class="sd">        extra dimensions in `vol`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">mask</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="n">vol</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="n">mask</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+    <span class="k">return</span> <span class="n">vol</span> <span class="o">*</span> <span class="n">mask</span>
+
+
+<span class="k">def</span> <span class="nf">bounding_box</span><span class="p">(</span><span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the bounding box of nonzero intensity voxels in the volume.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vol : ndarray</span>
+<span class="sd">        Volume to compute bounding box on.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    npmins : list</span>
+<span class="sd">        Array containg minimum index of each dimension</span>
+<span class="sd">    npmaxs : list</span>
+<span class="sd">        Array containg maximum index of each dimension</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Find bounds on first dimension</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">vol</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">vol</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">mins</span> <span class="o">=</span> <span class="p">[</span><span class="n">temp</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span>
+    <span class="n">maxs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span> <span class="o">-</span> <span class="n">temp</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span>
+    <span class="c"># Check that vol is not all 0</span>
+    <span class="k">if</span> <span class="n">mins</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span><span class="s">&#39;No data found in volume to bound. Returning empty bounding box.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">vol</span><span class="o">.</span><span class="n">ndim</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">vol</span><span class="o">.</span><span class="n">ndim</span>
+    <span class="c"># Find bounds on remaining dimensions</span>
+    <span class="k">if</span> <span class="n">vol</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">bounding_box</span><span class="p">(</span><span class="n">vol</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">mins</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">maxs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mins</span><span class="p">,</span> <span class="n">maxs</span>
+
+
+<span class="k">def</span> <span class="nf">crop</span><span class="p">(</span><span class="n">vol</span><span class="p">,</span> <span class="n">mins</span><span class="p">,</span> <span class="n">maxs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Crops the input volume.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vol : ndarray</span>
+<span class="sd">        Volume to crop.</span>
+<span class="sd">    mins : array</span>
+<span class="sd">        Array containg minimum index of each dimension.</span>
+<span class="sd">    maxs : array</span>
+<span class="sd">        Array containg maximum index of each dimension.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    vol : ndarray</span>
+<span class="sd">        The cropped volume.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">vol</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">mins</span><span class="p">,</span> <span class="n">maxs</span><span class="p">))]</span>
+
+
+<div class="viewcode-block" id="median_otsu"><a class="viewcode-back" href="../../../reference/AFQ.api.html#AFQ.median_otsu">[docs]</a><span class="k">def</span> <span class="nf">median_otsu</span><span class="p">(</span><span class="n">input_volume</span><span class="p">,</span> <span class="n">median_radius</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">numpass</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                <span class="n">autocrop</span><span class="o">=</span><span class="k">False</span><span class="p">,</span> <span class="n">vol_idx</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">dilate</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simple brain extraction tool method for images from DWI data.</span>
+
+<span class="sd">    It uses a median filter smoothing of the input_volumes `vol_idx` and an</span>
+<span class="sd">    automatic histogram Otsu thresholding technique, hence the name</span>
+<span class="sd">    *median_otsu*.</span>
+
+<span class="sd">    This function is inspired from Mrtrix&#39;s bet which has default values</span>
+<span class="sd">    ``median_radius=3``, ``numpass=2``. However, from tests on multiple 1.5T</span>
+<span class="sd">    and 3T data     from GE, Philips, Siemens, the most robust choice is</span>
+<span class="sd">    ``median_radius=4``, ``numpass=4``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    input_volume : ndarray</span>
+<span class="sd">        ndarray of the brain volume</span>
+<span class="sd">    median_radius : int</span>
+<span class="sd">        Radius (in voxels) of the applied median filter (default: 4).</span>
+<span class="sd">    numpass: int</span>
+<span class="sd">        Number of pass of the median filter (default: 4).</span>
+<span class="sd">    autocrop: bool, optional</span>
+<span class="sd">        if True, the masked input_volume will also be cropped using the</span>
+<span class="sd">        bounding box defined by the masked data. Should be on if DWI is</span>
+<span class="sd">        upsampled to 1x1x1 resolution. (default: False).</span>
+<span class="sd">    vol_idx : None or array, optional</span>
+<span class="sd">        1D array representing indices of ``axis=3`` of a 4D `input_volume` None</span>
+<span class="sd">        (the default) corresponds to ``(0,)`` (assumes first volume in</span>
+<span class="sd">        4D array).</span>
+
+<span class="sd">    dilate : None or int, optional</span>
+<span class="sd">        number of iterations for binary dilation</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    maskedvolume : ndarray</span>
+<span class="sd">        Masked input_volume</span>
+<span class="sd">    mask : 3D ndarray</span>
+<span class="sd">        The binary brain mask</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Copyright (C) 2011, the scikit-image team</span>
+<span class="sd">    All rights reserved.</span>
+
+<span class="sd">    Redistribution and use in source and binary forms, with or without</span>
+<span class="sd">    modification, are permitted provided that the following conditions are</span>
+<span class="sd">    met:</span>
+
+<span class="sd">     1. Redistributions of source code must retain the above copyright</span>
+<span class="sd">        notice, this list of conditions and the following disclaimer.</span>
+<span class="sd">     2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="sd">        notice, this list of conditions and the following disclaimer in</span>
+<span class="sd">        the documentation and/or other materials provided with the</span>
+<span class="sd">        distribution.</span>
+<span class="sd">     3. Neither the name of skimage nor the names of its contributors may be</span>
+<span class="sd">        used to endorse or promote products derived from this software without</span>
+<span class="sd">        specific prior written permission.</span>
+
+<span class="sd">    THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="sd">    IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="sd">    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="sd">    DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,</span>
+<span class="sd">    INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="sd">    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR</span>
+<span class="sd">    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</span>
+<span class="sd">    HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,</span>
+<span class="sd">    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING</span>
+<span class="sd">    IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE</span>
+<span class="sd">    POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_volume</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">vol_idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">b0vol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">input_volume</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">vol_idx</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">b0vol</span> <span class="o">=</span> <span class="n">input_volume</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">b0vol</span> <span class="o">=</span> <span class="n">input_volume</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="c"># Make a mask using a multiple pass median filter and histogram</span>
+    <span class="c"># thresholding.</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">multi_median</span><span class="p">(</span><span class="n">b0vol</span><span class="p">,</span> <span class="n">median_radius</span><span class="p">,</span> <span class="n">numpass</span><span class="p">)</span>
+    <span class="n">thresh</span> <span class="o">=</span> <span class="n">otsu</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">&gt;</span> <span class="n">thresh</span>
+
+    <span class="k">if</span> <span class="n">dilate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">cross</span> <span class="o">=</span> <span class="n">generate_binary_structure</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">binary_dilation</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">cross</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="n">dilate</span><span class="p">)</span>
+
+    <span class="c"># Auto crop the volumes using the mask as input_volume for bounding box</span>
+    <span class="c"># computing.</span>
+    <span class="k">if</span> <span class="n">autocrop</span><span class="p">:</span>
+        <span class="n">mins</span><span class="p">,</span> <span class="n">maxs</span> <span class="o">=</span> <span class="n">bounding_box</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">crop</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">mins</span><span class="p">,</span> <span class="n">maxs</span><span class="p">)</span>
+        <span class="n">croppedvolume</span> <span class="o">=</span> <span class="n">crop</span><span class="p">(</span><span class="n">input_volume</span><span class="p">,</span> <span class="n">mins</span><span class="p">,</span> <span class="n">maxs</span><span class="p">)</span>
+        <span class="n">maskedvolume</span> <span class="o">=</span> <span class="n">applymask</span><span class="p">(</span><span class="n">croppedvolume</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">maskedvolume</span> <span class="o">=</span> <span class="n">applymask</span><span class="p">(</span><span class="n">input_volume</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">maskedvolume</span><span class="p">,</span> <span class="n">mask</span></div>
+
+
+<span class="k">def</span> <span class="nf">segment_from_cfa</span><span class="p">(</span><span class="n">tensor_fit</span><span class="p">,</span> <span class="n">roi</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">return_cfa</span><span class="o">=</span><span class="k">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Segment the cfa inside roi using the values from threshold as bounds.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -------------</span>
+<span class="sd">    tensor_fit : TensorFit object</span>
+<span class="sd">        TensorFit object</span>
+
+<span class="sd">    roi : ndarray</span>
+<span class="sd">        A binary mask, which contains the bounding box for the segmentation.</span>
+
+<span class="sd">    threshold : array-like</span>
+<span class="sd">        An iterable that defines the min and max values to use for the</span>
+<span class="sd">        thresholding.</span>
+<span class="sd">        The values are specified as (R_min, R_max, G_min, G_max, B_min, B_max)</span>
+
+<span class="sd">    return_cfa : bool, optional</span>
+<span class="sd">        If True, the cfa is also returned.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mask : ndarray</span>
+<span class="sd">        Binary mask of the segmentation.</span>
+
+<span class="sd">    cfa : ndarray, optional</span>
+<span class="sd">        Array with shape = (..., 3), where ... is the shape of tensor_fit.</span>
+<span class="sd">        The color fractional anisotropy, ordered as a nd array with the last</span>
+<span class="sd">        dimension of size 3 for the R, G and B channels.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">FA</span> <span class="o">=</span> <span class="n">fractional_anisotropy</span><span class="p">(</span><span class="n">tensor_fit</span><span class="o">.</span><span class="n">evals</span><span class="p">)</span>
+    <span class="n">FA</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">FA</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">FA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">FA</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c"># Clamp the FA to remove degenerate tensors</span>
+
+    <span class="n">cfa</span> <span class="o">=</span> <span class="n">color_fa</span><span class="p">(</span><span class="n">FA</span><span class="p">,</span> <span class="n">tensor_fit</span><span class="o">.</span><span class="n">evecs</span><span class="p">)</span>
+    <span class="n">roi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">roi</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+
+    <span class="n">include</span> <span class="o">=</span> <span class="p">((</span><span class="n">cfa</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;</span>
+               <span class="p">(</span><span class="n">cfa</span> <span class="o">&lt;=</span> <span class="n">threshold</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;</span>
+               <span class="n">roi</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="k">None</span><span class="p">])</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">include</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_cfa</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mask</span><span class="p">,</span> <span class="n">cfa</span>
+
+    <span class="k">return</span> <span class="n">mask</span>
+
+
+<span class="k">def</span> <span class="nf">clean_cc_mask</span><span class="p">(</span><span class="n">mask</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cleans a segmentation of the corpus callosum so no random pixels</span>
+<span class="sd">    are included.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mask : ndarray</span>
+<span class="sd">        Binary mask of the coarse segmentation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    new_cc_mask : ndarray</span>
+<span class="sd">        Binary mask of the cleaned segmentation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">scipy.ndimage.measurements</span> <span class="k">import</span> <span class="n">label</span>
+
+    <span class="n">new_cc_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="c"># Flood fill algorithm to find contiguous regions.</span>
+    <span class="n">labels</span><span class="p">,</span> <span class="n">numL</span> <span class="o">=</span> <span class="n">label</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+
+    <span class="n">volumes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="n">l_idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span>
+               <span class="k">for</span> <span class="n">l_idx</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">numL</span><span class="p">)]</span>
+    <span class="n">biggest_vol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">numL</span><span class="p">)[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">volumes</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">volumes</span><span class="p">))]</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">new_cc_mask</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="n">biggest_vol</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">new_cc_mask</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`dti`
+==========
+.. automodule:: AFQ.dti
+
+.. currentmodule:: AFQ.dti
+.. autosummary::
+
+   fit_dti
+   predict
+   tensor_odf
+   vector_norm
+
+
+.. currentmodule:: AFQ.dti
+
+fit_dti
+~~~~~~~
+
+.. autofunction:: fit_dti
+
+predict
+~~~~~~~
+
+.. autofunction:: predict
+
+tensor_odf
+~~~~~~~~~~
+
+.. autofunction:: tensor_odf
+
+vector_norm
+~~~~~~~~~~~
+
+.. autofunction:: vector_norm
+

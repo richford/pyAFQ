@@ -1,0 +1,760 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tractography &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../index.html"/>
+        <link rel="up" title="API Reference" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">API Reference</a> &raquo;</li>
+      
+    <li><code class="docutils literal"><span class="pre">tractography</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/reference/AFQ.tractography.rst.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="module-AFQ.tractography">
+<span id="tractography"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">tractography</span></code><a class="headerlink" href="#module-AFQ.tractography" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tractography.DeterministicMaximumDirectionGetter" title="AFQ.tractography.DeterministicMaximumDirectionGetter"><code class="xref py py-obj docutils literal"><span class="pre">DeterministicMaximumDirectionGetter</span></code></a>(pmf_gen,&nbsp;...)</td>
+<td>Return direction of a sphere with the highest probability mass function (pmf).</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tractography.LocalTracking" title="AFQ.tractography.LocalTracking"><code class="xref py py-obj docutils literal"><span class="pre">LocalTracking</span></code></a>(direction_getter,&nbsp;...[,&nbsp;...])</td>
+<td>A streamline generator for local tracking methods</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tractography.ProbabilisticDirectionGetter" title="AFQ.tractography.ProbabilisticDirectionGetter"><code class="xref py py-obj docutils literal"><span class="pre">ProbabilisticDirectionGetter</span></code></a>(pmf_gen,&nbsp;max_angle)</td>
+<td>Randomly samples direction of a sphere based on probability mass function (pmf).</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tractography.ThresholdTissueClassifier" title="AFQ.tractography.ThresholdTissueClassifier"><code class="xref py py-obj docutils literal"><span class="pre">ThresholdTissueClassifier</span></code></a></td>
+<td># Declarations from tissue_classifier.pxd bellow</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tractography.tensor_odf" title="AFQ.tractography.tensor_odf"><code class="xref py py-obj docutils literal"><span class="pre">tensor_odf</span></code></a>(evals,&nbsp;evecs,&nbsp;sphere)</td>
+<td>Calculate the tensor Orientation Distribution Function</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tractography.track" title="AFQ.tractography.track"><code class="xref py py-obj docutils literal"><span class="pre">track</span></code></a>(params_file[,&nbsp;directions,&nbsp;max_angle,&nbsp;...])</td>
+<td>Tractography</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="deterministicmaximumdirectiongetter">
+<h2><a class="reference internal" href="#AFQ.tractography.DeterministicMaximumDirectionGetter" title="AFQ.tractography.DeterministicMaximumDirectionGetter"><code class="xref py py-class docutils literal"><span class="pre">DeterministicMaximumDirectionGetter</span></code></a><a class="headerlink" href="#deterministicmaximumdirectiongetter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.tractography.DeterministicMaximumDirectionGetter">
+<em class="property">class </em><code class="descclassname">AFQ.tractography.</code><code class="descname">DeterministicMaximumDirectionGetter</code><span class="sig-paren">(</span><em>pmf_gen</em>, <em>max_angle</em>, <em>sphere=None</em>, <em>pmf_threshold=0.1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/direction/probabilistic_direction_getter.html#DeterministicMaximumDirectionGetter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tractography.DeterministicMaximumDirectionGetter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">dipy.direction.probabilistic_direction_getter.ProbabilisticDirectionGetter</span></code></p>
+<p>Return direction of a sphere with the highest probability mass
+function (pmf).</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">from_pmf</span></code>(klass,&nbsp;pmf,&nbsp;max_angle,&nbsp;sphere[,&nbsp;...])</td>
+<td>Constructor for making a DirectionGetter from an array of Pmfs</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">from_shcoeff</span></code>(klass,&nbsp;shcoeff,&nbsp;max_angle,&nbsp;sphere)</td>
+<td>Probabilistic direction getter from a distribution of directions on the sphere.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tractography.DeterministicMaximumDirectionGetter.get_direction" title="AFQ.tractography.DeterministicMaximumDirectionGetter.get_direction"><code class="xref py py-obj docutils literal"><span class="pre">get_direction</span></code></a>(point,&nbsp;direction)</td>
+<td>Find direction with the highest pmf to updates <code class="docutils literal"><span class="pre">direction</span></code> array with a new direction.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">initial_direction</span></code>(point)</td>
+<td>Returns best directions at seed location to start tracking.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.tractography.DeterministicMaximumDirectionGetter.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>pmf_gen</em>, <em>max_angle</em>, <em>sphere=None</em>, <em>pmf_threshold=0.1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#AFQ.tractography.DeterministicMaximumDirectionGetter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Direction getter from a pmf generator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pmf_gen</strong> : PmfGen</p>
+<blockquote>
+<div><p>Used to get probability mass function for selecting tracking
+directions.</p>
+</div></blockquote>
+<p><strong>max_angle</strong> : float, [0, 90]</p>
+<blockquote>
+<div><p>The maximum allowed angle between incoming direction and new
+direction.</p>
+</div></blockquote>
+<p><strong>sphere</strong> : Sphere</p>
+<blockquote>
+<div><p>The set of directions to be used for tracking.</p>
+</div></blockquote>
+<p><strong>pmf_threshold</strong> : float [0., 1.]</p>
+<blockquote>
+<div><p>Used to remove direction from the probability mass function for
+selecting the tracking direction.</p>
+</div></blockquote>
+<p><strong>relative_peak_threshold</strong> : float in [0., 1.]</p>
+<blockquote>
+<div><p>Used for extracting initial tracking directions. Passed to
+peak_directions.</p>
+</div></blockquote>
+<p><strong>min_separation_angle</strong> : float in [0, 90]</p>
+<blockquote class="last">
+<div><p>Used for extracting initial tracking directions. Passed to
+peak_directions.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="xref py py-obj docutils literal"><span class="pre">dipy.direction.peaks.peak_directions</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tractography.DeterministicMaximumDirectionGetter.get_direction">
+<code class="descname">get_direction</code><span class="sig-paren">(</span><em>point</em>, <em>direction</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/direction/probabilistic_direction_getter.html#DeterministicMaximumDirectionGetter.get_direction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tractography.DeterministicMaximumDirectionGetter.get_direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find direction with the highest pmf to updates <code class="docutils literal"><span class="pre">direction</span></code> array
+with a new direction.
+Parameters
+&#8212;&#8212;&#8212;-
+point : memory-view (or ndarray), shape (3,)</p>
+<blockquote>
+<div>The point in an image at which to lookup tracking directions.</div></blockquote>
+<dl class="docutils">
+<dt>direction</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">memory-view (or ndarray), shape (3,)</span><dd>Previous tracking direction.</dd>
+</dl>
+<dl class="docutils">
+<dt>status</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd>Returns 0 <cite>direction</cite> was updated with a new tracking direction, or
+1 otherwise.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="localtracking">
+<h2><a class="reference internal" href="#AFQ.tractography.LocalTracking" title="AFQ.tractography.LocalTracking"><code class="xref py py-class docutils literal"><span class="pre">LocalTracking</span></code></a><a class="headerlink" href="#localtracking" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.tractography.LocalTracking">
+<em class="property">class </em><code class="descclassname">AFQ.tractography.</code><code class="descname">LocalTracking</code><span class="sig-paren">(</span><em>direction_getter</em>, <em>tissue_classifier</em>, <em>seeds</em>, <em>affine</em>, <em>step_size</em>, <em>max_cross=None</em>, <em>maxlen=500</em>, <em>fixedstep=True</em>, <em>return_all=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/tracking/local/localtracking.html#LocalTracking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tractography.LocalTracking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A streamline generator for local tracking methods</p>
+<dl class="method">
+<dt id="AFQ.tractography.LocalTracking.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>direction_getter</em>, <em>tissue_classifier</em>, <em>seeds</em>, <em>affine</em>, <em>step_size</em>, <em>max_cross=None</em>, <em>maxlen=500</em>, <em>fixedstep=True</em>, <em>return_all=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/tracking/local/localtracking.html#LocalTracking.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tractography.LocalTracking.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates streamlines by using local fiber-tracking.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>direction_getter</strong> : instance of DirectionGetter</p>
+<blockquote>
+<div><p>Used to get directions for fiber tracking.</p>
+</div></blockquote>
+<p><strong>tissue_classifier</strong> : instance of TissueClassifier</p>
+<blockquote>
+<div><p>Identifies endpoints and invalid points to inform tracking.</p>
+</div></blockquote>
+<p><strong>seeds</strong> : array (N, 3)</p>
+<blockquote>
+<div><p>Points to seed the tracking. Seed points should be given in point
+space of the track (see <code class="docutils literal"><span class="pre">affine</span></code>).</p>
+</div></blockquote>
+<p><strong>affine</strong> : array (4, 4)</p>
+<blockquote>
+<div><p>Coordinate space for the streamline point with respect to voxel
+indices of input data. This affine can contain scaling, rotational,
+and translational components but should not contain any shearing.
+An identity matrix can be used to generate streamlines in &#8220;voxel
+coordinates&#8221; as long as isotropic voxels were used to acquire the
+data.</p>
+</div></blockquote>
+<p><strong>step_size</strong> : float</p>
+<blockquote>
+<div><p>Step size used for tracking.</p>
+</div></blockquote>
+<p><strong>max_cross</strong> : int or None</p>
+<blockquote>
+<div><p>The maximum number of direction to track from each seed in crossing
+voxels. By default all initial directions are tracked.</p>
+</div></blockquote>
+<p><strong>maxlen</strong> : int</p>
+<blockquote>
+<div><p>Maximum number of steps to track from seed. Used to prevent
+infinite loops.</p>
+</div></blockquote>
+<p><strong>fixedstep</strong> : bool</p>
+<blockquote>
+<div><p>If true, a fixed stepsize is used, otherwise a variable step size
+is used.</p>
+</div></blockquote>
+<p><strong>return_all</strong> : bool</p>
+<blockquote class="last">
+<div><p>If true, return all generated streamlines, otherwise only
+streamlines reaching end points or exiting the image.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="probabilisticdirectiongetter">
+<h2><a class="reference internal" href="#AFQ.tractography.ProbabilisticDirectionGetter" title="AFQ.tractography.ProbabilisticDirectionGetter"><code class="xref py py-class docutils literal"><span class="pre">ProbabilisticDirectionGetter</span></code></a><a class="headerlink" href="#probabilisticdirectiongetter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.tractography.ProbabilisticDirectionGetter">
+<em class="property">class </em><code class="descclassname">AFQ.tractography.</code><code class="descname">ProbabilisticDirectionGetter</code><span class="sig-paren">(</span><em>pmf_gen</em>, <em>max_angle</em>, <em>sphere=None</em>, <em>pmf_threshold=0.1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/direction/probabilistic_direction_getter.html#ProbabilisticDirectionGetter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tractography.ProbabilisticDirectionGetter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">dipy.direction.probabilistic_direction_getter.PeakDirectionGetter</span></code></p>
+<p>Randomly samples direction of a sphere based on probability mass
+function (pmf).</p>
+<p>The main constructors for this class are current from_pmf and from_shcoeff.
+The pmf gives the probability that each direction on the sphere should be
+chosen as the next direction. To get the true pmf from the &#8220;raw pmf&#8221;
+directions more than <code class="docutils literal"><span class="pre">max_angle</span></code> degrees from the incoming direction are
+set to 0 and the result is normalized.</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tractography.ProbabilisticDirectionGetter.from_pmf" title="AFQ.tractography.ProbabilisticDirectionGetter.from_pmf"><code class="xref py py-obj docutils literal"><span class="pre">from_pmf</span></code></a>(klass,&nbsp;pmf,&nbsp;max_angle,&nbsp;sphere[,&nbsp;...])</td>
+<td>Constructor for making a DirectionGetter from an array of Pmfs</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tractography.ProbabilisticDirectionGetter.from_shcoeff" title="AFQ.tractography.ProbabilisticDirectionGetter.from_shcoeff"><code class="xref py py-obj docutils literal"><span class="pre">from_shcoeff</span></code></a>(klass,&nbsp;shcoeff,&nbsp;max_angle,&nbsp;sphere)</td>
+<td>Probabilistic direction getter from a distribution of directions on the sphere.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tractography.ProbabilisticDirectionGetter.get_direction" title="AFQ.tractography.ProbabilisticDirectionGetter.get_direction"><code class="xref py py-obj docutils literal"><span class="pre">get_direction</span></code></a>(point,&nbsp;direction)</td>
+<td>Samples a pmf to updates <code class="docutils literal"><span class="pre">direction</span></code> array with a new direction.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.tractography.ProbabilisticDirectionGetter.initial_direction" title="AFQ.tractography.ProbabilisticDirectionGetter.initial_direction"><code class="xref py py-obj docutils literal"><span class="pre">initial_direction</span></code></a>(point)</td>
+<td>Returns best directions at seed location to start tracking.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.tractography.ProbabilisticDirectionGetter.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>pmf_gen</em>, <em>max_angle</em>, <em>sphere=None</em>, <em>pmf_threshold=0.1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/direction/probabilistic_direction_getter.html#ProbabilisticDirectionGetter.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tractography.ProbabilisticDirectionGetter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Direction getter from a pmf generator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pmf_gen</strong> : PmfGen</p>
+<blockquote>
+<div><p>Used to get probability mass function for selecting tracking
+directions.</p>
+</div></blockquote>
+<p><strong>max_angle</strong> : float, [0, 90]</p>
+<blockquote>
+<div><p>The maximum allowed angle between incoming direction and new
+direction.</p>
+</div></blockquote>
+<p><strong>sphere</strong> : Sphere</p>
+<blockquote>
+<div><p>The set of directions to be used for tracking.</p>
+</div></blockquote>
+<p><strong>pmf_threshold</strong> : float [0., 1.]</p>
+<blockquote>
+<div><p>Used to remove direction from the probability mass function for
+selecting the tracking direction.</p>
+</div></blockquote>
+<p><strong>relative_peak_threshold</strong> : float in [0., 1.]</p>
+<blockquote>
+<div><p>Used for extracting initial tracking directions. Passed to
+peak_directions.</p>
+</div></blockquote>
+<p><strong>min_separation_angle</strong> : float in [0, 90]</p>
+<blockquote class="last">
+<div><p>Used for extracting initial tracking directions. Passed to
+peak_directions.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="xref py py-obj docutils literal"><span class="pre">dipy.direction.peaks.peak_directions</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="AFQ.tractography.ProbabilisticDirectionGetter.from_pmf">
+<em class="property">classmethod </em><code class="descname">from_pmf</code><span class="sig-paren">(</span><em>klass</em>, <em>pmf</em>, <em>max_angle</em>, <em>sphere</em>, <em>pmf_threshold=0.1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/direction/probabilistic_direction_getter.html#ProbabilisticDirectionGetter.from_pmf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tractography.ProbabilisticDirectionGetter.from_pmf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor for making a DirectionGetter from an array of Pmfs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pmf</strong> : array, 4d</p>
+<blockquote>
+<div><p>The pmf to be used for tracking at each voxel.</p>
+</div></blockquote>
+<p><strong>max_angle</strong> : float, [0, 90]</p>
+<blockquote>
+<div><p>The maximum allowed angle between incoming direction and new
+direction.</p>
+</div></blockquote>
+<p><strong>sphere</strong> : Sphere</p>
+<blockquote>
+<div><p>The set of directions to be used for tracking.</p>
+</div></blockquote>
+<p><strong>pmf_threshold</strong> : float [0., 1.]</p>
+<blockquote>
+<div><p>Used to remove direction from the probability mass function for
+selecting the tracking direction.</p>
+</div></blockquote>
+<p><strong>relative_peak_threshold</strong> : float in [0., 1.]</p>
+<blockquote>
+<div><p>Used for extracting initial tracking directions. Passed to
+peak_directions.</p>
+</div></blockquote>
+<p><strong>min_separation_angle</strong> : float in [0, 90]</p>
+<blockquote class="last">
+<div><p>Used for extracting initial tracking directions. Passed to
+peak_directions.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="xref py py-obj docutils literal"><span class="pre">dipy.direction.peaks.peak_directions</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="AFQ.tractography.ProbabilisticDirectionGetter.from_shcoeff">
+<em class="property">classmethod </em><code class="descname">from_shcoeff</code><span class="sig-paren">(</span><em>klass</em>, <em>shcoeff</em>, <em>max_angle</em>, <em>sphere</em>, <em>pmf_threshold=0.1</em>, <em>basis_type=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/direction/probabilistic_direction_getter.html#ProbabilisticDirectionGetter.from_shcoeff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tractography.ProbabilisticDirectionGetter.from_shcoeff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Probabilistic direction getter from a distribution of directions
+on the sphere.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>shcoeff</strong> : array</p>
+<blockquote>
+<div><p>The distribution of tracking directions at each voxel represented
+as a function on the sphere using the real spherical harmonic
+basis. For example the FOD of the Constrained Spherical
+Deconvolution model can be used this way. This distribution will
+be discretized using <code class="docutils literal"><span class="pre">sphere</span></code> and tracking directions will be
+chosen from the vertices of <code class="docutils literal"><span class="pre">sphere</span></code> based on the distribution.</p>
+</div></blockquote>
+<p><strong>max_angle</strong> : float, [0, 90]</p>
+<blockquote>
+<div><p>The maximum allowed angle between incoming direction and new
+direction.</p>
+</div></blockquote>
+<p><strong>sphere</strong> : Sphere</p>
+<blockquote>
+<div><p>The set of directions to be used for tracking.</p>
+</div></blockquote>
+<p><strong>pmf_threshold</strong> : float [0., 1.]</p>
+<blockquote>
+<div><p>Used to remove direction from the probability mass function for
+selecting the tracking direction.</p>
+</div></blockquote>
+<p><strong>basis_type</strong> : name of basis</p>
+<blockquote>
+<div><p>The basis that <code class="docutils literal"><span class="pre">shcoeff</span></code> are associated with.
+<code class="docutils literal"><span class="pre">dipy.reconst.shm.real_sym_sh_basis</span></code> is used by default.</p>
+</div></blockquote>
+<p><strong>relative_peak_threshold</strong> : float in [0., 1.]</p>
+<blockquote>
+<div><p>Used for extracting initial tracking directions. Passed to
+peak_directions.</p>
+</div></blockquote>
+<p><strong>min_separation_angle</strong> : float in [0, 90]</p>
+<blockquote class="last">
+<div><p>Used for extracting initial tracking directions. Passed to
+peak_directions.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="xref py py-obj docutils literal"><span class="pre">dipy.direction.peaks.peak_directions</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tractography.ProbabilisticDirectionGetter.get_direction">
+<code class="descname">get_direction</code><span class="sig-paren">(</span><em>point</em>, <em>direction</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/direction/probabilistic_direction_getter.html#ProbabilisticDirectionGetter.get_direction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tractography.ProbabilisticDirectionGetter.get_direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Samples a pmf to updates <code class="docutils literal"><span class="pre">direction</span></code> array with a new direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>point</strong> : memory-view (or ndarray), shape (3,)</p>
+<blockquote>
+<div><p>The point in an image at which to lookup tracking directions.</p>
+</div></blockquote>
+<p><strong>direction</strong> : memory-view (or ndarray), shape (3,)</p>
+<blockquote>
+<div><p>Previous tracking direction.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>status</strong> : int</p>
+<blockquote class="last">
+<div><p>Returns 0 <cite>direction</cite> was updated with a new tracking direction, or
+1 otherwise.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tractography.ProbabilisticDirectionGetter.initial_direction">
+<code class="descname">initial_direction</code><span class="sig-paren">(</span><em>point</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dipy/direction/probabilistic_direction_getter.html#ProbabilisticDirectionGetter.initial_direction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tractography.ProbabilisticDirectionGetter.initial_direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns best directions at seed location to start tracking.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>point</strong> : ndarray, shape (3,)</p>
+<blockquote>
+<div><p>The point in an image at which to lookup tracking directions.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>directions</strong> : ndarray, shape (N, 3)</p>
+<blockquote class="last">
+<div><p>Possible tracking directions from point. <code class="docutils literal"><span class="pre">N</span></code> may be 0, all
+directions should be unique.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="thresholdtissueclassifier">
+<h2><a class="reference internal" href="#AFQ.tractography.ThresholdTissueClassifier" title="AFQ.tractography.ThresholdTissueClassifier"><code class="xref py py-class docutils literal"><span class="pre">ThresholdTissueClassifier</span></code></a><a class="headerlink" href="#thresholdtissueclassifier" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="AFQ.tractography.ThresholdTissueClassifier">
+<em class="property">class </em><code class="descclassname">AFQ.tractography.</code><code class="descname">ThresholdTissueClassifier</code><a class="headerlink" href="#AFQ.tractography.ThresholdTissueClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">dipy.tracking.local.tissue_classifier.TissueClassifier</span></code></p>
+<p># Declarations from tissue_classifier.pxd bellow
+cdef:</p>
+<blockquote>
+<div>double threshold, interp_out_double[1]
+double[:]  interp_out_view = interp_out_view
+double[:, :, :] metric_map</div></blockquote>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.tractography.ThresholdTissueClassifier.check_point" title="AFQ.tractography.ThresholdTissueClassifier.check_point"><code class="xref py py-obj docutils literal"><span class="pre">check_point</span></code></a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="AFQ.tractography.ThresholdTissueClassifier.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AFQ.tractography.ThresholdTissueClassifier.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="AFQ.tractography.ThresholdTissueClassifier.check_point">
+<code class="descname">check_point</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AFQ.tractography.ThresholdTissueClassifier.check_point" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tensor-odf">
+<h2>tensor_odf<a class="headerlink" href="#tensor-odf" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tractography.tensor_odf">
+<code class="descclassname">AFQ.tractography.</code><code class="descname">tensor_odf</code><span class="sig-paren">(</span><em>evals</em>, <em>evecs</em>, <em>sphere</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/dti.html#tensor_odf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tractography.tensor_odf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the tensor Orientation Distribution Function</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>evals</strong> : array (4D)</p>
+<blockquote>
+<div><p>Eigenvalues of a tensor. Shape (x, y, z, 3).</p>
+</div></blockquote>
+<p><strong>evecs</strong> : array (5D)</p>
+<blockquote>
+<div><p>Eigenvectors of a tensor. Shape (x, y, z, 3, 3)</p>
+</div></blockquote>
+<p><strong>sphere</strong> : sphere object</p>
+<blockquote class="last">
+<div><p>The ODF will be calculated in each vertex of this sphere.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="track">
+<h2>track<a class="headerlink" href="#track" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.tractography.track">
+<code class="descclassname">AFQ.tractography.</code><code class="descname">track</code><span class="sig-paren">(</span><em>params_file</em>, <em>directions='det'</em>, <em>max_angle=30.0</em>, <em>sphere=None</em>, <em>seed_mask=None</em>, <em>seeds=1</em>, <em>stop_mask=None</em>, <em>stop_threshold=0</em>, <em>step_size=0.5</em>, <em>min_length=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/tractography.html#track"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.tractography.track" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tractography</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>params_file</strong> : str, nibabel img.</p>
+<blockquote>
+<div><p>Full path to a nifti file containing CSD spherical harmonic
+coefficients, or nibabel img with model params.</p>
+</div></blockquote>
+<p><strong>directions</strong> : str</p>
+<blockquote>
+<div><p>How tracking directions are determined.
+One of: {&#8220;deterministic&#8221; | &#8220;probablistic&#8221;}</p>
+</div></blockquote>
+<p><strong>max_angle</strong> : float, optional.</p>
+<blockquote>
+<div><p>The maximum turning angle in each step. Default: 30</p>
+</div></blockquote>
+<p><strong>sphere</strong> : Sphere object, optional.</p>
+<blockquote>
+<div><p>The discretization of direction getting. default:
+dipy.data.default_sphere.</p>
+</div></blockquote>
+<p><strong>seed_mask</strong> : array, optional.</p>
+<blockquote>
+<div><p>Binary mask describing the ROI within which we seed for tracking.
+Default to the entire volume.</p>
+</div></blockquote>
+<p><strong>seed</strong> : int or 2D array, optional.</p>
+<blockquote>
+<div><p>The seeding density: if this is an int, it is is how many seeds in each
+voxel on each dimension (for example, 2 =&gt; [2, 2, 2]). If this is a 2D
+array, these are the coordinates of the seeds.</p>
+</div></blockquote>
+<p><strong>stop_mask</strong> : array, optional.</p>
+<blockquote>
+<div><p>A floating point value that determines a stopping criterion (e.g. FA).
+Default to no stopping (all ones).</p>
+</div></blockquote>
+<p><strong>stop_threshold</strong> : float, optional.</p>
+<blockquote>
+<div><p>A value of the stop_mask below which tracking is terminated. Default to
+0 (this means that if no stop_mask is passed, we will stop only at
+the edge of the image)</p>
+</div></blockquote>
+<p><strong>step_size</strong> : float, optional.</p>
+<blockquote>
+<div><p>The size (in mm) of a step of tractography. Default: 0.5</p>
+</div></blockquote>
+<p><strong>min_length: int, optional</strong></p>
+<blockquote>
+<div><p>The miminal length (no. of nodes) in a streamline. Default: 10</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of streamlines ()</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

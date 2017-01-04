@@ -1,0 +1,50 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`api`
+==========
+.. automodule:: AFQ.api
+
+.. currentmodule:: AFQ.api
+.. autosummary::
+
+   AFQ
+   do_preprocessing
+   dti_fit
+   make_bundle_dict
+   median_otsu
+
+
+.. currentmodule:: AFQ.api
+
+
+:class:`AFQ`
+~~~~~~~~~~~~
+
+
+.. autoclass:: AFQ
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+do_preprocessing
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: do_preprocessing
+
+dti_fit
+~~~~~~~
+
+.. autofunction:: dti_fit
+
+make_bundle_dict
+~~~~~~~~~~~~~~~~
+
+.. autofunction:: make_bundle_dict
+
+median_otsu
+~~~~~~~~~~~
+
+.. autofunction:: median_otsu
+

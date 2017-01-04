@@ -1,0 +1,867 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dipy.align.streamlinear &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>dipy.align.streamlinear</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for dipy.align.streamlinear</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">dipy.utils.six</span> <span class="k">import</span> <span class="n">with_metaclass</span>
+<span class="kn">from</span> <span class="nn">dipy.core.optimize</span> <span class="k">import</span> <span class="n">Optimizer</span>
+<span class="kn">from</span> <span class="nn">dipy.align.bundlemin</span> <span class="k">import</span> <span class="p">(</span><span class="n">_bundle_minimum_distance</span><span class="p">,</span>
+                                  <span class="n">distance_matrix_mdf</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dipy.tracking.streamline</span> <span class="k">import</span> <span class="p">(</span><span class="n">transform_streamlines</span><span class="p">,</span>
+                                      <span class="n">unlist_streamlines</span><span class="p">,</span>
+                                      <span class="n">center_streamlines</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dipy.core.geometry</span> <span class="k">import</span> <span class="p">(</span><span class="n">compose_transformations</span><span class="p">,</span>
+                                <span class="n">compose_matrix</span><span class="p">,</span>
+                                <span class="n">decompose_matrix</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dipy.utils.six</span> <span class="k">import</span> <span class="n">string_types</span>
+
+<span class="n">MAX_DIST</span> <span class="o">=</span> <span class="mi">1</span><span class="n">e10</span>
+<span class="n">LOG_MAX_DIST</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">MAX_DIST</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">StreamlineDistanceMetric</span><span class="p">(</span><span class="n">with_metaclass</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">,</span> <span class="nb">object</span><span class="p">)):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_threads</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; An abstract class for the metric used for streamline registration</span>
+
+<span class="sd">        If the two sets of streamlines match exactly then method ``distance``</span>
+<span class="sd">        of this object should be minimum.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        num_threads : int</span>
+<span class="sd">            Number of threads. If None (default) then all available threads</span>
+<span class="sd">            will be used. Only metrics using OpenMP will use this variable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span> <span class="o">=</span> <span class="n">num_threads</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">moving</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xopt</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; calculate distance for current set of parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">BundleMinDistanceMetric</span><span class="p">(</span><span class="n">StreamlineDistanceMetric</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Bundle-based Minimum Distance aka BMD</span>
+
+<span class="sd">    This is the cost function used by the StreamlineLinearRegistration</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    setup(static, moving)</span>
+<span class="sd">    distance(xopt)</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [Garyfallidis14] Garyfallidis et al., &quot;Direct native-space fiber</span>
+<span class="sd">                        bundle alignment for group comparisons&quot;, ISMRM,</span>
+<span class="sd">                        2014.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">moving</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Setup static and moving sets of streamlines</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        static : streamlines</span>
+<span class="sd">            Fixed or reference set of streamlines.</span>
+<span class="sd">        moving : streamlines</span>
+<span class="sd">            Moving streamlines.</span>
+<span class="sd">        num_threads : int</span>
+<span class="sd">            Number of threads. If None (default) then all available threads</span>
+<span class="sd">            will be used.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Call this after the object is initiated and before distance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_static</span><span class="p">(</span><span class="n">static</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_moving</span><span class="p">(</span><span class="n">moving</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_static</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static</span><span class="p">):</span>
+        <span class="n">static_centered_pts</span><span class="p">,</span> <span class="n">st_idx</span> <span class="o">=</span> <span class="n">unlist_streamlines</span><span class="p">(</span><span class="n">static</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_centered_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">static_centered_pts</span><span class="p">,</span>
+                                                        <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_size</span> <span class="o">=</span> <span class="n">st_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_set_moving</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moving</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_centered_pts</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">unlist_streamlines</span><span class="p">(</span><span class="n">moving</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xopt</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Distance calculated from this Metric</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        xopt : sequence</span>
+<span class="sd">            List of affine parameters as an 1D vector,</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">bundle_min_distance_fast</span><span class="p">(</span><span class="n">xopt</span><span class="p">,</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">static_centered_pts</span><span class="p">,</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">moving_centered_pts</span><span class="p">,</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">block_size</span><span class="p">,</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">BundleMinDistanceMatrixMetric</span><span class="p">(</span><span class="n">StreamlineDistanceMetric</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Bundle-based Minimum Distance aka BMD</span>
+
+<span class="sd">    This is the cost function used by the StreamlineLinearRegistration</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    setup(static, moving)</span>
+<span class="sd">    distance(xopt)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The difference with BundleMinDistanceMetric is that this creates</span>
+<span class="sd">    the entire distance matrix and therefore requires more memory.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">moving</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Setup static and moving sets of streamlines</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        static : streamlines</span>
+<span class="sd">            Fixed or reference set of streamlines.</span>
+<span class="sd">        moving : streamlines</span>
+<span class="sd">            Moving streamlines.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Call this after the object is initiated and before distance.</span>
+
+<span class="sd">        Num_threads is not used in this class. Use ``BundleMinDistanceMetric``</span>
+<span class="sd">        for a faster, threaded and less memory hungry metric</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static</span> <span class="o">=</span> <span class="n">static</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving</span> <span class="o">=</span> <span class="n">moving</span>
+
+    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xopt</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Distance calculated from this Metric</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        xopt : sequence</span>
+<span class="sd">            List of affine parameters as an 1D vector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">bundle_min_distance</span><span class="p">(</span><span class="n">xopt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">static</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">BundleSumDistanceMatrixMetric</span><span class="p">(</span><span class="n">BundleMinDistanceMatrixMetric</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Bundle-based Sum Distance aka BMD</span>
+
+<span class="sd">    This is a cost function that can be used by the</span>
+<span class="sd">    StreamlineLinearRegistration class.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    setup(static, moving)</span>
+<span class="sd">    distance(xopt)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The difference with BundleMinDistanceMatrixMetric is that it uses</span>
+<span class="sd">    uses the sum of the distance matrix and not the sum of mins.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xopt</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Distance calculated from this Metric</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        xopt : sequence</span>
+<span class="sd">            List of affine parameters as an 1D vector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">bundle_sum_distance</span><span class="p">(</span><span class="n">xopt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">static</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="StreamlineLinearRegistration"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.StreamlineLinearRegistration">[docs]</a><span class="k">class</span> <span class="nc">StreamlineLinearRegistration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StreamlineLinearRegistration.__init__"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.StreamlineLinearRegistration.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="s">&quot;rigid&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;L-BFGS-B&#39;</span><span class="p">,</span>
+                 <span class="n">bounds</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="k">False</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">evolution</span><span class="o">=</span><span class="k">False</span><span class="p">,</span> <span class="n">num_threads</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot; Linear registration of 2 sets of streamlines [Garyfallidis14]_.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        metric : StreamlineDistanceMetric,</span>
+<span class="sd">            If None and fast is False then the BMD distance is used. If fast</span>
+<span class="sd">            is True then a faster implementation of BMD is used. Otherwise,</span>
+<span class="sd">            use the given distance metric.</span>
+
+<span class="sd">        x0 : array or int or str</span>
+<span class="sd">            Initial parametrization for the optimization.</span>
+
+<span class="sd">            If 1D array with:</span>
+<span class="sd">                a) 6 elements then only rigid registration is performed with</span>
+<span class="sd">                the 3 first elements for translation and 3 for rotation.</span>
+<span class="sd">                b) 7 elements also isotropic scaling is performed (similarity).</span>
+<span class="sd">                c) 12 elements then translation, rotation (in degrees),</span>
+<span class="sd">                scaling and shearing is performed (affine).</span>
+
+<span class="sd">                Here is an example of x0 with 12 elements:</span>
+<span class="sd">                ``x0=np.array([0, 10, 0, 40, 0, 0, 2., 1.5, 1, 0.1, -0.5, 0])``</span>
+
+<span class="sd">                This has translation (0, 10, 0), rotation (40, 0, 0) in</span>
+<span class="sd">                degrees, scaling (2., 1.5, 1) and shearing (0.1, -0.5, 0).</span>
+
+<span class="sd">            If int:</span>
+<span class="sd">                a) 6</span>
+<span class="sd">                    ``x0 = np.array([0, 0, 0, 0, 0, 0])``</span>
+<span class="sd">                b) 7</span>
+<span class="sd">                    ``x0 = np.array([0, 0, 0, 0, 0, 0, 1.])``</span>
+<span class="sd">                c) 12</span>
+<span class="sd">                    ``x0 = np.array([0, 0, 0, 0, 0, 0, 1., 1., 1, 0, 0, 0])``</span>
+
+<span class="sd">            If str:</span>
+<span class="sd">                a) &quot;rigid&quot;</span>
+<span class="sd">                    ``x0 = np.array([0, 0, 0, 0, 0, 0])``</span>
+<span class="sd">                b) &quot;similarity&quot;</span>
+<span class="sd">                    ``x0 = np.array([0, 0, 0, 0, 0, 0, 1.])``</span>
+<span class="sd">                c) &quot;affine&quot;</span>
+<span class="sd">                    ``x0 = np.array([0, 0, 0, 0, 0, 0, 1., 1., 1, 0, 0, 0])``</span>
+
+<span class="sd">        method : str,</span>
+<span class="sd">            &#39;L_BFGS_B&#39; or &#39;Powell&#39; optimizers can be used. Default is</span>
+<span class="sd">            &#39;L_BFGS_B&#39;.</span>
+
+<span class="sd">        bounds : list of tuples or None,</span>
+<span class="sd">            If method == &#39;L_BFGS_B&#39; then we can use bounded optimization.</span>
+<span class="sd">            For example for the six parameters of rigid rotation we can set</span>
+<span class="sd">            the bounds = [(-30, 30), (-30, 30), (-30, 30),</span>
+<span class="sd">                          (-45, 45), (-45, 45), (-45, 45)]</span>
+<span class="sd">            That means that we have set the bounds for the three translations</span>
+<span class="sd">            and three rotation axes (in degrees).</span>
+
+<span class="sd">        verbose : bool,</span>
+<span class="sd">            If True then information about the optimization is shown.</span>
+
+<span class="sd">        options : None or dict,</span>
+<span class="sd">            Extra options to be used with the selected method.</span>
+
+<span class="sd">        evolution : boolean</span>
+<span class="sd">            If True save the transformation for each iteration of the</span>
+<span class="sd">            optimizer. Default is False. Supported only with Scipy &gt;= 0.11.</span>
+
+<span class="sd">        num_threads : int</span>
+<span class="sd">            Number of threads. If None (default) then all available threads</span>
+<span class="sd">            will be used. Only metrics using OpenMP will use this variable.</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        .. [Garyfallidis14] Garyfallidis et al., &quot;Direct native-space fiber</span>
+<span class="sd">                            bundle alignment for group comparisons&quot;, ISMRM,</span>
+<span class="sd">                            2014.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_x0</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric</span> <span class="o">=</span> <span class="n">metric</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metric</span> <span class="o">=</span> <span class="n">BundleMinDistanceMetric</span><span class="p">(</span><span class="n">num_threads</span><span class="o">=</span><span class="n">num_threads</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;Powell&#39;</span><span class="p">,</span> <span class="s">&#39;L-BFGS-B&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Only Powell and L-BFGS-B can be used&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="n">bounds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">evolution</span> <span class="o">=</span> <span class="n">evolution</span></div>
+
+<div class="viewcode-block" id="StreamlineLinearRegistration.optimize"><a class="viewcode-back" href="../../../reference/AFQ.registration.html#AFQ.registration.StreamlineLinearRegistration.optimize">[docs]</a>    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">moving</span><span class="p">,</span> <span class="n">mat</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Find the minimum of the provided metric.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        static : streamlines</span>
+<span class="sd">            Reference or fixed set of streamlines.</span>
+<span class="sd">        moving : streamlines</span>
+<span class="sd">            Moving set of streamlines.</span>
+<span class="sd">        mat : array</span>
+<span class="sd">            Transformation (4, 4) matrix to start the registration. ``mat``</span>
+<span class="sd">            is applied to moving. Default value None which means that initial</span>
+<span class="sd">            transformation will be generated by shifting the centers of moving</span>
+<span class="sd">            and static sets of streamlines to the origin.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        map : StreamlineRegistrationMap</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;need to have the same number of points. Use &#39;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;set_number_of_points from dipy.tracking.streamline&#39;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="n">static</span><span class="p">)))</span> <span class="o">==</span> <span class="n">static</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Static streamlines &#39;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="n">moving</span><span class="p">)))</span> <span class="o">==</span> <span class="n">moving</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Moving streamlines &#39;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="n">moving</span><span class="p">)))</span> <span class="o">==</span> <span class="n">static</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Static and moving streamlines &#39;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">static_centered</span><span class="p">,</span> <span class="n">static_shift</span> <span class="o">=</span> <span class="n">center_streamlines</span><span class="p">(</span><span class="n">static</span><span class="p">)</span>
+            <span class="n">moving_centered</span><span class="p">,</span> <span class="n">moving_shift</span> <span class="o">=</span> <span class="n">center_streamlines</span><span class="p">(</span><span class="n">moving</span><span class="p">)</span>
+            <span class="n">static_mat</span> <span class="o">=</span> <span class="n">compose_matrix44</span><span class="p">([</span><span class="n">static_shift</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">static_shift</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                           <span class="n">static_shift</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+            <span class="n">moving_mat</span> <span class="o">=</span> <span class="n">compose_matrix44</span><span class="p">([</span><span class="o">-</span><span class="n">moving_shift</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="n">moving_shift</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                           <span class="o">-</span><span class="n">moving_shift</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">static_centered</span> <span class="o">=</span> <span class="n">static</span>
+            <span class="n">moving_centered</span> <span class="o">=</span> <span class="n">transform_streamlines</span><span class="p">(</span><span class="n">moving</span><span class="p">,</span> <span class="n">mat</span><span class="p">)</span>
+            <span class="n">static_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">moving_mat</span> <span class="o">=</span> <span class="n">mat</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">static_centered</span><span class="p">,</span> <span class="n">moving_centered</span><span class="p">)</span>
+
+        <span class="n">distance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">distance</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;Powell&#39;</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;xtol&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="s">&#39;ftol&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="s">&#39;maxiter&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="n">e6</span><span class="p">}</span>
+
+            <span class="n">opt</span> <span class="o">=</span> <span class="n">Optimizer</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                            <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span>
+                            <span class="n">evolution</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">evolution</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;L-BFGS-B&#39;</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;maxcor&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s">&#39;ftol&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span>
+                                <span class="s">&#39;gtol&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="s">&#39;eps&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span>
+                                <span class="s">&#39;maxiter&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">}</span>
+
+            <span class="n">opt</span> <span class="o">=</span> <span class="n">Optimizer</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                            <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
+                            <span class="n">bounds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bounds</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span>
+                            <span class="n">evolution</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">evolution</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="n">opt</span><span class="o">.</span><span class="n">print_summary</span><span class="p">()</span>
+
+        <span class="n">opt_mat</span> <span class="o">=</span> <span class="n">compose_matrix44</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">xopt</span><span class="p">)</span>
+
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">compose_transformations</span><span class="p">(</span><span class="n">moving_mat</span><span class="p">,</span> <span class="n">opt_mat</span><span class="p">,</span> <span class="n">static_mat</span><span class="p">)</span>
+
+        <span class="n">mat_history</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">evolution</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">vecs</span> <span class="ow">in</span> <span class="n">opt</span><span class="o">.</span><span class="n">evolution</span><span class="p">:</span>
+                <span class="n">mat_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">compose_transformations</span><span class="p">(</span><span class="n">moving_mat</span><span class="p">,</span>
+                                            <span class="n">compose_matrix44</span><span class="p">(</span><span class="n">vecs</span><span class="p">),</span>
+                                            <span class="n">static_mat</span><span class="p">))</span>
+
+        <span class="n">srm</span> <span class="o">=</span> <span class="n">StreamlineRegistrationMap</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">xopt</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">fopt</span><span class="p">,</span>
+                                        <span class="n">mat_history</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">nfev</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">nit</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">opt</span>
+        <span class="k">return</span> <span class="n">srm</span></div>
+
+    <span class="k">def</span> <span class="nf">_set_x0</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; check if input is of correct type&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="s">&#39;ndim&#39;</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">12</span><span class="p">]:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Only 1D arrays of 6, 7 and 12 elements are allowed&#39;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">x0</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Array should have only one dimension&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">x0</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">string_types</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">x0</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;rigid&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">x0</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;similarity&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">x0</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;affine&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">x0</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">12</span><span class="p">]:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Only 6, 7 and 12 are accepted as integers&#39;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">x0</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">x0</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">x0</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Wrong input&#39;</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">StreamlineRegistrationMap</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matopt</span><span class="p">,</span> <span class="n">xopt</span><span class="p">,</span> <span class="n">fopt</span><span class="p">,</span> <span class="n">matopt_history</span><span class="p">,</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">iterations</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot; A map holding the optimum affine matrix and some other parameters</span>
+<span class="sd">        of the optimization</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        matrix : array,</span>
+<span class="sd">            4x4 affine matrix which transforms the moving to the static</span>
+<span class="sd">            streamlines</span>
+
+<span class="sd">        xopt : array,</span>
+<span class="sd">            1d array with the parameters of the transformation after centering</span>
+
+<span class="sd">        fopt : float,</span>
+<span class="sd">            final value of the metric</span>
+
+<span class="sd">        matrix_history : array</span>
+<span class="sd">            All transformation matrices created during the optimization</span>
+
+<span class="sd">        funcs : int,</span>
+<span class="sd">            Number of function evaluations of the optimizer</span>
+
+<span class="sd">        iterations : int</span>
+<span class="sd">            Number of iterations of the optimizer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">matopt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xopt</span> <span class="o">=</span> <span class="n">xopt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fopt</span> <span class="o">=</span> <span class="n">fopt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">matrix_history</span> <span class="o">=</span> <span class="n">matopt_history</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">funcs</span> <span class="o">=</span> <span class="n">funcs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="n">iterations</span>
+
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moving</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Transform moving streamlines to the static.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        moving : streamlines</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        moved : streamlines</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+
+<span class="sd">        All this does is apply ``self.matrix`` to the input streamlines.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">transform_streamlines</span><span class="p">(</span><span class="n">moving</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">bundle_sum_distance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">moving</span><span class="p">,</span> <span class="n">num_threads</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; MDF distance optimization function (SUM)</span>
+
+<span class="sd">    We minimize the distance between moving streamlines as they align</span>
+<span class="sd">    with the static streamlines.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    t : ndarray</span>
+<span class="sd">        t is a vector of of affine transformation parameters with</span>
+<span class="sd">        size at least 6.</span>
+<span class="sd">        If size is 6, t is interpreted as translation + rotation.</span>
+<span class="sd">        If size is 7, t is interpreted as translation + rotation +</span>
+<span class="sd">        isotropic scaling.</span>
+<span class="sd">        If size is 12, t is interpreted as translation + rotation +</span>
+<span class="sd">        scaling + shearing.</span>
+
+<span class="sd">    static : list</span>
+<span class="sd">        Static streamlines</span>
+
+<span class="sd">    moving : list</span>
+<span class="sd">        Moving streamlines. These will be transform to align with</span>
+<span class="sd">        the static streamlines</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cost: float</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">aff</span> <span class="o">=</span> <span class="n">compose_matrix44</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">moving</span> <span class="o">=</span> <span class="n">transform_streamlines</span><span class="p">(</span><span class="n">moving</span><span class="p">,</span> <span class="n">aff</span><span class="p">)</span>
+    <span class="n">d01</span> <span class="o">=</span> <span class="n">distance_matrix_mdf</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="n">moving</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">d01</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">bundle_min_distance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">moving</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; MDF-based pairwise distance optimization function (MIN)</span>
+
+<span class="sd">    We minimize the distance between moving streamlines as they align</span>
+<span class="sd">    with the static streamlines.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    t : ndarray</span>
+<span class="sd">        t is a vector of of affine transformation parameters with</span>
+<span class="sd">        size at least 6.</span>
+<span class="sd">        If size is 6, t is interpreted as translation + rotation.</span>
+<span class="sd">        If size is 7, t is interpreted as translation + rotation +</span>
+<span class="sd">        isotropic scaling.</span>
+<span class="sd">        If size is 12, t is interpreted as translation + rotation +</span>
+<span class="sd">        scaling + shearing.</span>
+
+<span class="sd">    static : list</span>
+<span class="sd">        Static streamlines</span>
+
+<span class="sd">    moving : list</span>
+<span class="sd">        Moving streamlines.</span>
+
+<span class="sd">    num_threads : int</span>
+<span class="sd">        Number of threads. If None (default) then all available threads</span>
+<span class="sd">        will be used.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cost: float</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">aff</span> <span class="o">=</span> <span class="n">compose_matrix44</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">moving</span> <span class="o">=</span> <span class="n">transform_streamlines</span><span class="p">(</span><span class="n">moving</span><span class="p">,</span> <span class="n">aff</span><span class="p">)</span>
+    <span class="n">d01</span> <span class="o">=</span> <span class="n">distance_matrix_mdf</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="n">moving</span><span class="p">)</span>
+
+    <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">d01</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">return</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">d01</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span> <span class="o">+</span>
+                   <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">d01</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+
+
+<span class="k">def</span> <span class="nf">bundle_min_distance_fast</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">moving</span><span class="p">,</span> <span class="n">block_size</span><span class="p">,</span> <span class="n">num_threads</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; MDF-based pairwise distance optimization function (MIN)</span>
+
+<span class="sd">    We minimize the distance between moving streamlines as they align</span>
+<span class="sd">    with the static streamlines.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    t : array</span>
+<span class="sd">        1D array. t is a vector of of affine transformation parameters with</span>
+<span class="sd">        size at least 6.</span>
+<span class="sd">        If size is 6, t is interpreted as translation + rotation.</span>
+<span class="sd">        If size is 7, t is interpreted as translation + rotation +</span>
+<span class="sd">        isotropic scaling.</span>
+<span class="sd">        If size is 12, t is interpreted as translation + rotation +</span>
+<span class="sd">        scaling + shearing.</span>
+
+<span class="sd">    static : array</span>
+<span class="sd">        N*M x 3 array. All the points of the static streamlines. With order of</span>
+<span class="sd">        streamlines intact. Where N is the number of streamlines and M</span>
+<span class="sd">        is the number of points per streamline.</span>
+
+<span class="sd">    moving : array</span>
+<span class="sd">        K*M x 3 array. All the points of the moving streamlines. With order of</span>
+<span class="sd">        streamlines intact. Where K is the number of streamlines and M</span>
+<span class="sd">        is the number of points per streamline.</span>
+
+<span class="sd">    block_size : int</span>
+<span class="sd">        Number of points per streamline. All streamlines in static and moving</span>
+<span class="sd">        should have the same number of points M.</span>
+
+<span class="sd">    num_threads : int</span>
+<span class="sd">        Number of threads. If None (default) then all available threads</span>
+<span class="sd">        will be used.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cost: float</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This is a faster implementation of ``bundle_min_distance``, which requires</span>
+<span class="sd">    that all the points of each streamline are allocated into an ndarray</span>
+<span class="sd">    (of shape N*M by 3, with N the number of points per streamline and M the</span>
+<span class="sd">    number of streamlines). This can be done by calling</span>
+<span class="sd">    `dipy.tracking.streamlines.unlist_streamlines`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">aff</span> <span class="o">=</span> <span class="n">compose_matrix44</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">moving</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">aff</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">moving</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> <span class="o">+</span> <span class="n">aff</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">moving</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">moving</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">static</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">block_size</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="n">moving</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">block_size</span>
+
+    <span class="k">return</span> <span class="n">_bundle_minimum_distance</span><span class="p">(</span><span class="n">static</span><span class="p">,</span> <span class="n">moving</span><span class="p">,</span>
+                                    <span class="n">rows</span><span class="p">,</span>
+                                    <span class="n">cols</span><span class="p">,</span>
+                                    <span class="n">block_size</span><span class="p">,</span>
+                                    <span class="n">num_threads</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_threshold</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">th</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">th</span><span class="p">),</span> <span class="o">-</span><span class="n">th</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">compose_matrix44</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Compose a 4x4 transformation matrix</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    t : ndarray</span>
+<span class="sd">        This is a 1D vector of of affine transformation parameters with</span>
+<span class="sd">        size at least 6.</span>
+<span class="sd">        If size is 6, t is interpreted as translation + rotation.</span>
+<span class="sd">        If size is 7, t is interpreted as translation + rotation +</span>
+<span class="sd">        isotropic scaling.</span>
+<span class="sd">        If size is 12, t is interpreted as translation + rotation +</span>
+<span class="sd">        scaling + shearing.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    T : ndarray</span>
+<span class="sd">        Homogeneous transformation matrix of size 4x4.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="k">if</span> <span class="n">size</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">12</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Accepted number of parameters is 6, 7 and 12&#39;</span><span class="p">)</span>
+
+    <span class="n">scale</span><span class="p">,</span> <span class="n">shear</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">translate</span> <span class="o">=</span> <span class="p">(</span><span class="k">None</span><span class="p">,</span> <span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>
+    <span class="k">if</span> <span class="n">size</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">12</span><span class="p">]:</span>
+        <span class="n">translate</span> <span class="o">=</span> <span class="n">_threshold</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">MAX_DIST</span><span class="p">)</span>
+        <span class="n">angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">t</span><span class="p">[</span><span class="mi">6</span><span class="p">],)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span> <span class="mi">9</span><span class="p">]</span>
+        <span class="n">shear</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">9</span><span class="p">:</span> <span class="mi">12</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">compose_matrix</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span> <span class="n">shear</span><span class="o">=</span><span class="n">shear</span><span class="p">,</span>
+                          <span class="n">angles</span><span class="o">=</span><span class="n">angles</span><span class="p">,</span>
+                          <span class="n">translate</span><span class="o">=</span><span class="n">translate</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">decompose_matrix44</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Given a 4x4 homogeneous matrix return the parameter vector</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    mat : array</span>
+<span class="sd">        Homogeneous 4x4 transformation matrix</span>
+<span class="sd">    size : int</span>
+<span class="sd">        Size of output vector. 6 for rigid, 7 for similarity and 12</span>
+<span class="sd">        for affine. Default is 12.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    t : ndarray</span>
+<span class="sd">        One dimensional ndarray of 6, 7 or 12 affine parameters.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scale</span><span class="p">,</span> <span class="n">shear</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">translate</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">decompose_matrix</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">t</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">translate</span>
+    <span class="n">t</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span> <span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">t</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+        <span class="n">t</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">t</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span>
+        <span class="n">t</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span> <span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale</span>
+        <span class="n">t</span><span class="p">[</span><span class="mi">9</span><span class="p">:</span> <span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="n">shear</span>
+        <span class="k">return</span> <span class="n">t</span>
+
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Size can be 6, 7 or 12&#39;</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

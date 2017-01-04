@@ -1,0 +1,459 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>AFQ.utils.testing &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>AFQ.utils.testing</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for AFQ.utils.testing</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.testing</span> <span class="k">as</span> <span class="nn">npt</span>
+
+<span class="kn">import</span> <span class="nn">nibabel</span> <span class="k">as</span> <span class="nn">nib</span>
+<span class="kn">import</span> <span class="nn">dipy.io</span> <span class="k">as</span> <span class="nn">dio</span>
+<span class="kn">import</span> <span class="nn">dipy.data</span> <span class="k">as</span> <span class="nn">dpd</span>
+<span class="kn">import</span> <span class="nn">dipy.core.gradients</span> <span class="k">as</span> <span class="nn">dpg</span>
+<span class="kn">from</span> <span class="nn">dipy.sims.voxel</span> <span class="k">import</span> <span class="n">multi_tensor_dki</span><span class="p">,</span> <span class="n">single_tensor</span>
+
+
+<div class="viewcode-block" id="assert_image_shape_affine"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.tests.test_dki.assert_image_shape_affine">[docs]</a><span class="k">def</span> <span class="nf">assert_image_shape_affine</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">affine</span><span class="p">):</span>
+    <span class="n">npt</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">npt</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+    <span class="n">npt</span><span class="o">.</span><span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">get_affine</span><span class="p">(),</span> <span class="n">affine</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="make_dti_data"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.tests.test_dki.make_dti_data">[docs]</a><span class="k">def</span> <span class="nf">make_dti_data</span><span class="p">(</span><span class="n">out_fbval</span><span class="p">,</span> <span class="n">out_fbvec</span><span class="p">,</span> <span class="n">out_fdata</span><span class="p">,</span> <span class="n">out_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a synthetic data-set with a single shell acquisition</span>
+
+<span class="sd">    out_fbval, out_fbvec, out_fdata : str</span>
+<span class="sd">        Full paths to generated data and bval/bvec files</span>
+
+<span class="sd">    out_shape : tuple</span>
+<span class="sd">        The 3D shape of the output volum</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fimg</span><span class="p">,</span> <span class="n">fbvals</span><span class="p">,</span> <span class="n">fbvecs</span> <span class="o">=</span> <span class="n">dpd</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s">&#39;small_64D&#39;</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fimg</span><span class="p">)</span>
+    <span class="n">bvals</span><span class="p">,</span> <span class="n">bvecs</span> <span class="o">=</span> <span class="n">dio</span><span class="o">.</span><span class="n">read_bvals_bvecs</span><span class="p">(</span><span class="n">fbvals</span><span class="p">,</span> <span class="n">fbvecs</span><span class="p">)</span>
+    <span class="n">gtab</span> <span class="o">=</span> <span class="n">dpg</span><span class="o">.</span><span class="n">gradient_table</span><span class="p">(</span><span class="n">bvals</span><span class="p">,</span> <span class="n">bvecs</span><span class="p">)</span>
+
+    <span class="c"># Simulate a signal based on the DTI model:</span>
+    <span class="n">signal</span> <span class="o">=</span> <span class="n">single_tensor</span><span class="p">(</span><span class="n">gtab</span><span class="p">,</span> <span class="n">S0</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">DWI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">out_shape</span> <span class="o">+</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gtab</span><span class="o">.</span><span class="n">bvals</span><span class="p">),</span> <span class="p">))</span>
+    <span class="n">DWI</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">signal</span>
+    <span class="n">nib</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">nib</span><span class="o">.</span><span class="n">Nifti1Image</span><span class="p">(</span><span class="n">DWI</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">affine</span><span class="p">),</span> <span class="n">out_fdata</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">out_fbval</span><span class="p">,</span> <span class="n">bvals</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">out_fbvec</span><span class="p">,</span> <span class="n">bvecs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="make_dki_data"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.tests.test_dki.make_dki_data">[docs]</a><span class="k">def</span> <span class="nf">make_dki_data</span><span class="p">(</span><span class="n">out_fbval</span><span class="p">,</span> <span class="n">out_fbvec</span><span class="p">,</span> <span class="n">out_fdata</span><span class="p">,</span> <span class="n">out_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a synthetic data-set with a 2-shell acquisition</span>
+
+<span class="sd">    out_fbval, out_fbvec, out_fdata : str</span>
+<span class="sd">        Full paths to generated data and bval/bvec files</span>
+
+<span class="sd">    out_shape : tuple</span>
+<span class="sd">        The 3D shape of the output volum</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># This is one-shell (b=1000) data:</span>
+    <span class="n">fimg</span><span class="p">,</span> <span class="n">fbvals</span><span class="p">,</span> <span class="n">fbvecs</span> <span class="o">=</span> <span class="n">dpd</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s">&#39;small_64D&#39;</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fimg</span><span class="p">)</span>
+    <span class="n">bvals</span><span class="p">,</span> <span class="n">bvecs</span> <span class="o">=</span> <span class="n">dio</span><span class="o">.</span><span class="n">read_bvals_bvecs</span><span class="p">(</span><span class="n">fbvals</span><span class="p">,</span> <span class="n">fbvecs</span><span class="p">)</span>
+    <span class="c"># So  we create two shells out of it</span>
+    <span class="n">bvals_2s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">bvals</span><span class="p">,</span> <span class="n">bvals</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">bvecs_2s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">bvecs</span><span class="p">,</span> <span class="n">bvecs</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">gtab_2s</span> <span class="o">=</span> <span class="n">dpg</span><span class="o">.</span><span class="n">gradient_table</span><span class="p">(</span><span class="n">bvals_2s</span><span class="p">,</span> <span class="n">bvecs_2s</span><span class="p">)</span>
+
+    <span class="c"># Simulate a signal based on the DKI model:</span>
+    <span class="n">mevals_cross</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.00099</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.00226</span><span class="p">,</span> <span class="mf">0.00087</span><span class="p">,</span> <span class="mf">0.00087</span><span class="p">],</span>
+                             <span class="p">[</span><span class="mf">0.00099</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.00226</span><span class="p">,</span> <span class="mf">0.00087</span><span class="p">,</span> <span class="mf">0.00087</span><span class="p">]])</span>
+    <span class="n">angles_cross</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">)]</span>
+    <span class="n">fie</span> <span class="o">=</span> <span class="mf">0.49</span>
+    <span class="n">frac_cross</span> <span class="o">=</span> <span class="p">[</span><span class="n">fie</span> <span class="o">*</span> <span class="mi">50</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">fie</span><span class="p">)</span> <span class="o">*</span> <span class="mi">50</span><span class="p">,</span> <span class="n">fie</span> <span class="o">*</span> <span class="mi">50</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">fie</span><span class="p">)</span> <span class="o">*</span> <span class="mi">50</span><span class="p">]</span>
+    <span class="c"># Noise free simulates</span>
+    <span class="n">signal_cross</span><span class="p">,</span> <span class="n">dt_cross</span><span class="p">,</span> <span class="n">kt_cross</span> <span class="o">=</span> <span class="n">multi_tensor_dki</span><span class="p">(</span><span class="n">gtab_2s</span><span class="p">,</span> <span class="n">mevals_cross</span><span class="p">,</span>
+                                                        <span class="n">S0</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                                                        <span class="n">angles</span><span class="o">=</span><span class="n">angles_cross</span><span class="p">,</span>
+                                                        <span class="n">fractions</span><span class="o">=</span><span class="n">frac_cross</span><span class="p">,</span>
+                                                        <span class="n">snr</span><span class="o">=</span><span class="k">None</span><span class="p">)</span>
+    <span class="n">DWI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">out_shape</span> <span class="o">+</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gtab_2s</span><span class="o">.</span><span class="n">bvals</span><span class="p">),</span> <span class="p">))</span>
+    <span class="n">DWI</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">signal_cross</span>
+    <span class="n">nib</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">nib</span><span class="o">.</span><span class="n">Nifti1Image</span><span class="p">(</span><span class="n">DWI</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">affine</span><span class="p">),</span> <span class="n">out_fdata</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">out_fbval</span><span class="p">,</span> <span class="n">bvals_2s</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">out_fbvec</span><span class="p">,</span> <span class="n">bvecs_2s</span><span class="p">)</span></div>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">What follows is code from Dipy.</span>
+
+<span class="sd">The code is (c) Dipy developers, 2009 -- 2016, and released under a BSD license</span>
+
+<span class="sd">For details, see: https://github.com/nipy/dipy/blob/master/LICENSE</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">Module to help tests check script output</span>
+
+<span class="sd">Provides class to be instantiated in tests that check scripts.  Usually works</span>
+<span class="sd">something like this in a test module::</span>
+
+<span class="sd">    from .scriptrunner import ScriptRunner</span>
+<span class="sd">    runner = ScriptRunner()</span>
+
+<span class="sd">Then, in the tests, something like::</span>
+
+<span class="sd">    code, stdout, stderr = runner.run_command([&#39;my-script&#39;, my_arg])</span>
+<span class="sd">    assert_equal(code, 0)</span>
+<span class="sd">    assert_equal(stdout, b&#39;This script ran OK&#39;)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">sys</span>  <span class="c"># noqa</span>
+<span class="kn">import</span> <span class="nn">os</span>  <span class="c"># noqa</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">join</span> <span class="k">as</span> <span class="n">pjoin</span><span class="p">,</span> <span class="n">isfile</span><span class="p">,</span>  <span class="c"># noqa</span>
+                     <span class="n">isdir</span><span class="p">,</span> <span class="n">realpath</span><span class="p">,</span> <span class="n">pathsep</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span>  <span class="c"># noqa</span>
+
+<span class="k">try</span><span class="p">:</span>  <span class="c"># Python 2</span>
+    <span class="n">string_types</span> <span class="o">=</span> <span class="n">basestring</span><span class="p">,</span>
+<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>  <span class="c"># Python 3</span>
+    <span class="n">string_types</span> <span class="o">=</span> <span class="nb">str</span><span class="p">,</span>
+
+
+<span class="k">def</span> <span class="nf">_get_package</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Workaround for missing ``__package__`` in Python 3.2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span><span class="p">((</span><span class="s">&#39;__package__&#39;</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">())</span> <span class="ow">and</span> <span class="p">(</span><span class="n">__package__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">__package__</span>
+    <span class="k">return</span> <span class="n">__name__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="c"># Same as __package__ for Python 2.6, 2.7 and &gt;= 3.3</span>
+<span class="n">MY_PACKAGE</span> <span class="o">=</span> <span class="n">_get_package</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">local_script_dir</span><span class="p">(</span><span class="n">script_sdir</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Get local script directory if running in development dir, else None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Check for presence of scripts in development directory.  ``realpath``</span>
+    <span class="c"># allows for the situation where the development directory has been linked</span>
+    <span class="c"># into the path.</span>
+    <span class="n">package_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="nb">__import__</span><span class="p">(</span><span class="n">MY_PACKAGE</span><span class="p">)</span><span class="o">.</span><span class="n">__file__</span><span class="p">)</span>
+    <span class="n">above_us</span> <span class="o">=</span> <span class="n">realpath</span><span class="p">(</span><span class="n">pjoin</span><span class="p">(</span><span class="n">package_path</span><span class="p">,</span> <span class="s">&#39;..&#39;</span><span class="p">))</span>
+    <span class="n">devel_script_dir</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">above_us</span><span class="p">,</span> <span class="n">script_sdir</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">pjoin</span><span class="p">(</span><span class="n">above_us</span><span class="p">,</span> <span class="s">&#39;setup.py&#39;</span><span class="p">))</span> <span class="ow">and</span> <span class="n">isdir</span><span class="p">(</span><span class="n">devel_script_dir</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">devel_script_dir</span>
+    <span class="k">return</span> <span class="k">None</span>
+
+
+<span class="k">def</span> <span class="nf">local_module_dir</span><span class="p">(</span><span class="n">module_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Get local module directory if running in development dir, else None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mod</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+    <span class="n">containing_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">realpath</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">__file__</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">containing_path</span> <span class="o">==</span> <span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()):</span>
+        <span class="k">return</span> <span class="n">containing_path</span>
+    <span class="k">return</span> <span class="k">None</span>
+
+
+<div class="viewcode-block" id="ScriptRunner"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.tests.test_dki.ScriptRunner">[docs]</a><span class="k">class</span> <span class="nc">ScriptRunner</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Class to run scripts and return output</span>
+
+<span class="sd">    Finds local scripts and local modules if running in the development</span>
+<span class="sd">    directory, otherwise finds system scripts and modules.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ScriptRunner.__init__"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.tests.test_dki.ScriptRunner.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">script_sdir</span><span class="o">=</span><span class="s">&#39;scripts&#39;</span><span class="p">,</span>
+                 <span class="n">module_sdir</span><span class="o">=</span><span class="n">MY_PACKAGE</span><span class="p">,</span>
+                 <span class="n">debug_print_var</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                 <span class="n">output_processor</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Init ScriptRunner instance</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        script_sdir : str, optional</span>
+<span class="sd">            Name of subdirectory in top-level directory (directory containing</span>
+<span class="sd">            setup.py), to find scripts in development tree.  Typically</span>
+<span class="sd">            &#39;scripts&#39;, but might be &#39;bin&#39;.</span>
+<span class="sd">        module_sdir : str, optional</span>
+<span class="sd">            Name of subdirectory in top-level directory (directory containing</span>
+<span class="sd">            setup.py), to find main package directory.</span>
+<span class="sd">        debug_print_vsr : str, optional</span>
+<span class="sd">            Name of environment variable that indicates whether to do debug</span>
+<span class="sd">            printing or no.</span>
+<span class="sd">        output_processor : callable</span>
+<span class="sd">            Callable to run on the stdout, stderr outputs before returning</span>
+<span class="sd">            them.  Use this to convert bytes to unicode, strip whitespace, etc.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_script_dir</span> <span class="o">=</span> <span class="n">local_script_dir</span><span class="p">(</span><span class="n">script_sdir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_module_dir</span> <span class="o">=</span> <span class="n">local_module_dir</span><span class="p">(</span><span class="n">module_sdir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">debug_print_var</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">debug_print_var</span> <span class="o">=</span> <span class="s">&#39;{0}_DEBUG_PRINT&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">module_sdir</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug_print</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">debug_print_var</span><span class="p">,</span> <span class="k">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_processor</span> <span class="o">=</span> <span class="n">output_processor</span></div>
+
+<div class="viewcode-block" id="ScriptRunner.run_command"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.tests.test_dki.ScriptRunner.run_command">[docs]</a>    <span class="k">def</span> <span class="nf">run_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">check_code</span><span class="o">=</span><span class="k">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Run command sequence `cmd` returning exit code, stdout, stderr</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cmd : str or sequence</span>
+<span class="sd">            string with command name or sequence of strings defining command</span>
+<span class="sd">        check_code : {True, False}, optional</span>
+<span class="sd">            If True, raise error for non-zero return code</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        returncode : int</span>
+<span class="sd">            return code from execution of `cmd`</span>
+<span class="sd">        stdout : bytes (python 3) or str (python 2)</span>
+<span class="sd">            stdout from `cmd`</span>
+<span class="sd">        stderr : bytes (python 3) or str (python 2)</span>
+<span class="sd">            stderr from `cmd`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">string_types</span><span class="p">):</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmd</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_script_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="c"># Windows can&#39;t run script files without extensions</span>
+            <span class="c"># natively so we need to run local scripts (no extensions)</span>
+            <span class="c"># via the Python interpreter.  On Unix, we might have the</span>
+            <span class="c"># wrong incantation for the Python interpreter</span>
+            <span class="c"># in the hash bang first line in the source file. So, either way,</span>
+            <span class="c"># run the script through the Python interpreter</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span>
+                   <span class="n">pjoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_script_dir</span><span class="p">,</span> <span class="n">cmd</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">+</span> <span class="n">cmd</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;nt&#39;</span><span class="p">:</span>
+            <span class="c"># Need .bat file extension for windows</span>
+            <span class="n">cmd</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="s">&#39;.bat&#39;</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;nt&#39;</span><span class="p">:</span>
+            <span class="c"># Quote any arguments with spaces. The quotes delimit the arguments</span>
+            <span class="c"># on Windows, and the arguments might be files paths with spaces.</span>
+            <span class="c"># On Unix the list elements are each separate arguments.</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;&quot;{0}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">if</span> <span class="s">&#39; &#39;</span> <span class="ow">in</span> <span class="n">c</span> <span class="k">else</span> <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cmd</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug_print</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s">&quot;Running command &#39;%s&#39;&quot;</span> <span class="o">%</span> <span class="n">cmd</span><span class="p">)</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_module_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="c"># module likely comes from the current working directory.</span>
+            <span class="c"># We might need that directory on the path if we&#39;re running</span>
+            <span class="c"># the scripts from a temporary directory</span>
+            <span class="n">env</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">pypath</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;PYTHONPATH&#39;</span><span class="p">,</span> <span class="k">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pypath</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+                <span class="n">env</span><span class="p">[</span><span class="s">&#39;PYTHONPATH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_module_dir</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">env</span><span class="p">[</span><span class="s">&#39;PYTHONPATH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_module_dir</span> <span class="o">+</span> <span class="n">pathsep</span> <span class="o">+</span> <span class="n">pypath</span>
+        <span class="n">proc</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
+        <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">proc</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">check_code</span> <span class="ow">and</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sd">&quot;&quot;&quot;Command &quot;{0}&quot; failed with</span>
+<span class="sd">                stdout</span>
+<span class="sd">                ------</span>
+<span class="sd">                {1}</span>
+<span class="sd">                stderr</span>
+<span class="sd">                ------</span>
+<span class="sd">                {2}</span>
+<span class="sd">                &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">))</span>
+        <span class="n">opp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_processor</span>
+        <span class="k">return</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span> <span class="n">opp</span><span class="p">(</span><span class="n">stdout</span><span class="p">),</span> <span class="n">opp</span><span class="p">(</span><span class="n">stderr</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="make_tracking_data"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.tests.test_dki.make_tracking_data">[docs]</a><span class="k">def</span> <span class="nf">make_tracking_data</span><span class="p">(</span><span class="n">out_fbval</span><span class="p">,</span> <span class="n">out_fbvec</span><span class="p">,</span> <span class="n">out_fdata</span><span class="p">):</span>
+    <span class="n">fimg</span><span class="p">,</span> <span class="n">fbvals</span><span class="p">,</span> <span class="n">fbvecs</span> <span class="o">=</span> <span class="n">dpd</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s">&#39;small_101D&#39;</span><span class="p">)</span>
+    <span class="n">bvals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">fbvals</span><span class="p">)</span>
+    <span class="n">bvecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">fbvecs</span><span class="p">)</span>
+    <span class="c"># We simulate an affine with no shear component:</span>
+    <span class="n">affine</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">80.</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">120.</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mf">60.</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>
+
+    <span class="n">nib</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">nib</span><span class="o">.</span><span class="n">Nifti1Image</span><span class="p">(</span><span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fimg</span><span class="p">)</span><span class="o">.</span><span class="n">get_data</span><span class="p">(),</span> <span class="n">affine</span><span class="p">),</span> <span class="n">out_fdata</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">out_fbval</span><span class="p">,</span> <span class="n">bvals</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">out_fbvec</span><span class="p">,</span> <span class="n">bvecs</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

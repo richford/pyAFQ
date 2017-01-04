@@ -1,0 +1,1258 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dipy.reconst.shm &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>dipy.reconst.shm</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for dipy.reconst.shm</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot; Tools for using spherical harmonic models to fit diffusion data</span>
+
+<span class="sd">References</span>
+<span class="sd">----------</span>
+<span class="sd">Aganj, I., et. al. 2009. ODF Reconstruction in Q-Ball Imaging With Solid</span>
+<span class="sd">    Angle Consideration.</span>
+<span class="sd">Descoteaux, M., et. al. 2007. Regularized, fast, and robust analytical</span>
+<span class="sd">    Q-ball imaging.</span>
+<span class="sd">Tristan-Vega, A., et. al. 2010. A new methodology for estimation of fiber</span>
+<span class="sd">    populations in white matter of the brain with Funk-Radon transform.</span>
+<span class="sd">Tristan-Vega, A., et. al. 2009. Estimation of fiber orientation probability</span>
+<span class="sd">    density functions in high angular resolution diffusion imaging.</span>
+
+
+<span class="sd">Note about the Transpose:</span>
+<span class="sd">In the literature the matrix representation of these methods is often written</span>
+<span class="sd">as Y = Bx where B is some design matrix and Y and x are column vectors. In our</span>
+<span class="sd">case the input data, a dwi stored as a nifti file for example, is stored as row</span>
+<span class="sd">vectors (ndarrays) of the form (x, y, z, n), where n is the number of diffusion</span>
+<span class="sd">directions. We could transpose and reshape the data to be (n, x*y*z), so that</span>
+<span class="sd">we could directly plug it into the above equation. However, I have chosen to</span>
+<span class="sd">keep the data as is and implement the relevant equations rewritten in the</span>
+<span class="sd">following form: Y.T = x.T B.T, or in python syntax data = np.dot(sh_coef, B.T)</span>
+<span class="sd">where data is Y.T and sh_coef is x.T.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">diag</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">empty</span><span class="p">,</span> <span class="n">eye</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">unique</span><span class="p">,</span> <span class="n">dot</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="k">import</span> <span class="n">pinv</span><span class="p">,</span> <span class="n">svd</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="k">import</span> <span class="n">randint</span>
+
+<span class="kn">from</span> <span class="nn">dipy.reconst.odf</span> <span class="k">import</span> <span class="n">OdfModel</span><span class="p">,</span> <span class="n">OdfFit</span>
+<span class="kn">from</span> <span class="nn">dipy.core.geometry</span> <span class="k">import</span> <span class="n">cart2sphere</span>
+<span class="kn">from</span> <span class="nn">dipy.core.onetime</span> <span class="k">import</span> <span class="n">auto_attr</span>
+<span class="kn">from</span> <span class="nn">dipy.reconst.cache</span> <span class="k">import</span> <span class="n">Cache</span>
+
+<span class="kn">from</span> <span class="nn">distutils.version</span> <span class="k">import</span> <span class="n">LooseVersion</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">lpn</span><span class="p">,</span> <span class="n">lpmv</span><span class="p">,</span> <span class="n">gammaln</span>
+
+<span class="k">if</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">short_version</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="s">&#39;0.15.0&#39;</span><span class="p">):</span>
+    <span class="n">SCIPY_15_PLUS</span> <span class="o">=</span> <span class="k">True</span>
+    <span class="kn">import</span> <span class="nn">scipy.special</span> <span class="k">as</span> <span class="nn">sps</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">SCIPY_15_PLUS</span> <span class="o">=</span> <span class="k">False</span>
+
+
+<span class="k">def</span> <span class="nf">_copydoc</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">bandit</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">__doc__</span>
+        <span class="k">return</span> <span class="n">f</span>
+    <span class="k">return</span> <span class="n">bandit</span>
+
+
+<span class="k">def</span> <span class="nf">forward_sdeconv_mat</span><span class="p">(</span><span class="n">r_rh</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Build forward spherical deconvolution matrix</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    r_rh : ndarray</span>
+<span class="sd">        Rotational harmonics coefficients for the single fiber response</span>
+<span class="sd">        function. Each element `rh[i]` is associated with spherical harmonics</span>
+<span class="sd">        of degree `2*i`.</span>
+<span class="sd">    n : ndarray</span>
+<span class="sd">        The degree of spherical harmonic function associated with each row of</span>
+<span class="sd">        the deconvolution matrix. Only even degrees are allowed</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    R : ndarray (N, N)</span>
+<span class="sd">        Deconvolution matrix with shape (N, N)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;n has odd degrees, expecting only even degrees&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">r_rh</span><span class="p">[</span><span class="n">n</span> <span class="o">//</span> <span class="mi">2</span><span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">sh_to_rh</span><span class="p">(</span><span class="n">r_sh</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Spherical harmonics (SH) to rotational harmonics (RH)</span>
+
+<span class="sd">    Calculate the rotational harmonic decomposition up to</span>
+<span class="sd">    harmonic order `m`, degree `n` for an axially and antipodally</span>
+<span class="sd">    symmetric function. Note that all ``m != 0`` coefficients</span>
+<span class="sd">    will be ignored as axial symmetry is assumed. Hence, there</span>
+<span class="sd">    will be ``(sh_order/2 + 1)`` non-zero coefficients.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    r_sh : ndarray (N,)</span>
+<span class="sd">        ndarray of SH coefficients for the single fiber response function.</span>
+<span class="sd">        These coefficients must correspond to the real spherical harmonic</span>
+<span class="sd">        functions produced by `shm.real_sph_harm`.</span>
+<span class="sd">    m : ndarray (N,)</span>
+<span class="sd">        The order of the spherical harmonic function associated with each</span>
+<span class="sd">        coefficient.</span>
+<span class="sd">    n : ndarray (N,)</span>
+<span class="sd">        The degree of the spherical harmonic function associated with each</span>
+<span class="sd">        coefficient.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    r_rh : ndarray (``(sh_order + 1)*(sh_order + 2)/2``,)</span>
+<span class="sd">        Rotational harmonics coefficients representing the input `r_sh`</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    shm.real_sph_harm, shm.real_sym_sh_basis</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Tournier, J.D., et al. NeuroImage 2007. Robust determination of the</span>
+<span class="sd">        fibre orientation distribution in diffusion MRI: Non-negativity</span>
+<span class="sd">        constrained super-resolved spherical deconvolution</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="c"># The delta function at theta = phi = 0 is known to have zero coefficients</span>
+    <span class="c"># where m != 0, therefore we need only compute the coefficients at m=0.</span>
+    <span class="n">dirac_sh</span> <span class="o">=</span> <span class="n">gen_dirac</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">r_rh</span> <span class="o">=</span> <span class="n">r_sh</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">/</span> <span class="n">dirac_sh</span>
+    <span class="k">return</span> <span class="n">r_rh</span>
+
+
+<span class="k">def</span> <span class="nf">gen_dirac</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Generate Dirac delta function orientated in (theta, phi) on the sphere</span>
+
+<span class="sd">    The spherical harmonics (SH) representation of this Dirac is returned as</span>
+<span class="sd">    coefficients to spherical harmonic functions produced by</span>
+<span class="sd">    `shm.real_sph_harm`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    m : ndarray (N,)</span>
+<span class="sd">        The order of the spherical harmonic function associated with each</span>
+<span class="sd">        coefficient.</span>
+<span class="sd">    n : ndarray (N,)</span>
+<span class="sd">        The degree of the spherical harmonic function associated with each</span>
+<span class="sd">        coefficient.</span>
+<span class="sd">    theta : float [0, 2*pi]</span>
+<span class="sd">        The azimuthal (longitudinal) coordinate.</span>
+<span class="sd">    phi : float [0, pi]</span>
+<span class="sd">        The polar (colatitudinal) coordinate.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    shm.real_sph_harm, shm.real_sym_sh_basis</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dirac : ndarray</span>
+<span class="sd">        SH coefficients representing the Dirac function. The shape of this is</span>
+<span class="sd">        `(m + 2) * (m + 1) / 2`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">real_sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">spherical_harmonics</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">lpmv</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">complex</span><span class="p">)</span>
+    <span class="n">val</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mf">4.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="n">val</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">gammaln</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">gammaln</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">val</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">m</span> <span class="o">*</span> <span class="n">theta</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">val</span>
+
+<span class="k">if</span> <span class="n">SCIPY_15_PLUS</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">spherical_harmonics</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">sps</span><span class="o">.</span><span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+
+<span class="n">spherical_harmonics</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="s">r&quot;&quot;&quot; Compute spherical harmonics</span>
+
+<span class="s">    This may take scalar or array arguments. The inputs will be broadcasted</span>
+<span class="s">    against each other.</span>
+
+<span class="s">    Parameters</span>
+<span class="s">    ----------</span>
+<span class="s">    m : int ``|m| &lt;= n``</span>
+<span class="s">        The order of the harmonic.</span>
+<span class="s">    n : int ``&gt;= 0``</span>
+<span class="s">        The degree of the harmonic.</span>
+<span class="s">    theta : float [0, 2*pi]</span>
+<span class="s">        The azimuthal (longitudinal) coordinate.</span>
+<span class="s">    phi : float [0, pi]</span>
+<span class="s">        The polar (colatitudinal) coordinate.</span>
+
+<span class="s">    Returns</span>
+<span class="s">    -------</span>
+<span class="s">    y_mn : complex float</span>
+<span class="s">        The harmonic $Y^m_n$ sampled at `theta` and `phi`.</span>
+
+<span class="s">    Notes</span>
+<span class="s">    -----</span>
+<span class="s">    This is a faster implementation of scipy.special.sph_harm for</span>
+<span class="s">    scipy version &lt; 0.15.0. For scipy 0.15 and onwards, we use the scipy</span>
+<span class="s">    implementation of the function</span>
+<span class="s">    &quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">real_sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot; Compute real spherical harmonics.</span>
+
+<span class="sd">    Where the real harmonic $Y^m_n$ is defined to be:</span>
+
+<span class="sd">        Imag($Y^m_n$) * sqrt(2)     if m &gt; 0</span>
+<span class="sd">        $Y^0_n$                     if m = 0</span>
+<span class="sd">        Real($Y^|m|_n$) * sqrt(2)   if m &lt; 0</span>
+
+<span class="sd">    This may take scalar or array arguments. The inputs will be broadcasted</span>
+<span class="sd">    against each other.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    m : int ``|m| &lt;= n``</span>
+<span class="sd">        The order of the harmonic.</span>
+<span class="sd">    n : int ``&gt;= 0``</span>
+<span class="sd">        The degree of the harmonic.</span>
+<span class="sd">    theta : float [0, 2*pi]</span>
+<span class="sd">        The azimuthal (longitudinal) coordinate.</span>
+<span class="sd">    phi : float [0, pi]</span>
+<span class="sd">        The polar (colatitudinal) coordinate.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    y_mn : real float</span>
+<span class="sd">        The real harmonic $Y^m_n$ sampled at `theta` and `phi`.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    scipy.special.sph_harm</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># dipy uses a convention for theta and phi that is reversed with respect to</span>
+    <span class="c"># function signature of scipy.special.sph_harm</span>
+    <span class="n">sh</span> <span class="o">=</span> <span class="n">spherical_harmonics</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">n</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+
+    <span class="n">real_sh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">m</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sh</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">sh</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
+    <span class="n">real_sh</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">m</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">real_sh</span>
+
+
+<span class="k">def</span> <span class="nf">real_sym_sh_mrtrix</span><span class="p">(</span><span class="n">sh_order</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute real spherical harmonics as in mrtrix, where the real harmonic</span>
+<span class="sd">    $Y^m_n$ is defined to be::</span>
+
+<span class="sd">        Real($Y^m_n$)       if m &gt; 0</span>
+<span class="sd">        $Y^0_n$             if m = 0</span>
+<span class="sd">        Imag($Y^|m|_n$)     if m &lt; 0</span>
+
+<span class="sd">    This may take scalar or array arguments. The inputs will be broadcasted</span>
+<span class="sd">    against each other.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    sh_order : int</span>
+<span class="sd">        The maximum degree or the spherical harmonic basis.</span>
+<span class="sd">    theta : float [0, pi]</span>
+<span class="sd">        The polar (colatitudinal) coordinate.</span>
+<span class="sd">    phi : float [0, 2*pi]</span>
+<span class="sd">        The azimuthal (longitudinal) coordinate.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    y_mn : real float</span>
+<span class="sd">        The real harmonic $Y^m_n$ sampled at `theta` and `phi` as</span>
+<span class="sd">        implemented in mrtrix.  Warning: the basis is Tournier et al</span>
+<span class="sd">        2004 and 2007 is slightly different.</span>
+<span class="sd">    m : array</span>
+<span class="sd">        The order of the harmonics.</span>
+<span class="sd">    n : array</span>
+<span class="sd">        The degree of the harmonics.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">sph_harm_ind_list</span><span class="p">(</span><span class="n">sh_order</span><span class="p">)</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="o">-</span><span class="n">m</span>
+    <span class="n">real_sh</span> <span class="o">=</span> <span class="n">real_sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+    <span class="n">real_sh</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">m</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">real_sh</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span>
+
+
+<span class="k">def</span> <span class="nf">real_sym_sh_basis</span><span class="p">(</span><span class="n">sh_order</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Samples a real symmetric spherical harmonic basis at point on the sphere</span>
+
+<span class="sd">    Samples the basis functions up to order `sh_order` at points on the sphere</span>
+<span class="sd">    given by `theta` and `phi`. The basis functions are defined here the same</span>
+<span class="sd">    way as in fibernavigator [1]_ where the real harmonic $Y^m_n$ is defined to</span>
+<span class="sd">    be:</span>
+
+<span class="sd">        Imag($Y^m_n$) * sqrt(2)     if m &gt; 0</span>
+<span class="sd">        $Y^0_n$                     if m = 0</span>
+<span class="sd">        Real($Y^|m|_n$) * sqrt(2)   if m &lt; 0</span>
+
+<span class="sd">    This may take scalar or array arguments. The inputs will be broadcasted</span>
+<span class="sd">    against each other.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    sh_order : int</span>
+<span class="sd">        even int &gt; 0, max spherical harmonic degree</span>
+<span class="sd">    theta : float [0, 2*pi]</span>
+<span class="sd">        The azimuthal (longitudinal) coordinate.</span>
+<span class="sd">    phi : float [0, pi]</span>
+<span class="sd">        The polar (colatitudinal) coordinate.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    y_mn : real float</span>
+<span class="sd">        The real harmonic $Y^m_n$ sampled at `theta` and `phi`</span>
+<span class="sd">    m : array</span>
+<span class="sd">        The order of the harmonics.</span>
+<span class="sd">    n : array</span>
+<span class="sd">        The degree of the harmonics.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] https://github.com/scilus/fibernavigator</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">sph_harm_ind_list</span><span class="p">(</span><span class="n">sh_order</span><span class="p">)</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">real_sh</span> <span class="o">=</span> <span class="n">real_sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">real_sh</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span>
+
+
+<span class="n">sph_harm_lookup</span> <span class="o">=</span> <span class="p">{</span><span class="k">None</span><span class="p">:</span> <span class="n">real_sym_sh_basis</span><span class="p">,</span>
+                   <span class="s">&quot;mrtrix&quot;</span><span class="p">:</span> <span class="n">real_sym_sh_mrtrix</span><span class="p">,</span>
+                   <span class="s">&quot;fibernav&quot;</span><span class="p">:</span> <span class="n">real_sym_sh_basis</span><span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">sph_harm_ind_list</span><span class="p">(</span><span class="n">sh_order</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the degree (n) and order (m) of all the symmetric spherical</span>
+<span class="sd">    harmonics of degree less then or equal to `sh_order`. The results, `m_list`</span>
+<span class="sd">    and `n_list` are kx1 arrays, where k depends on sh_order. They can be</span>
+<span class="sd">    passed to :func:`real_sph_harm`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sh_order : int</span>
+<span class="sd">        even int &gt; 0, max degree to return</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    m_list : array</span>
+<span class="sd">        orders of even spherical harmonics</span>
+<span class="sd">    n_list : array</span>
+<span class="sd">        degrees of even spherical harmonics</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    real_sph_harm</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">sh_order</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;sh_order must be an even integer &gt;= 0&#39;</span><span class="p">)</span>
+
+    <span class="n">n_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sh_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">n_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">n_range</span><span class="p">,</span> <span class="n">n_range</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">ncoef</span> <span class="o">=</span> <span class="p">(</span><span class="n">sh_order</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">sh_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">m_list</span> <span class="o">=</span> <span class="n">empty</span><span class="p">(</span><span class="n">ncoef</span><span class="p">,</span> <span class="s">&#39;int&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">n_range</span><span class="p">:</span>
+        <span class="n">m_list</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">ii</span><span class="p">,</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c"># makes the arrays ncoef by 1, allows for easy broadcasting later in code</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">m_list</span><span class="p">,</span> <span class="n">n_list</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">order_from_ncoef</span><span class="p">(</span><span class="n">ncoef</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a number n of coefficients, calculate back the sh_order</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Solve the quadratic equation derived from :</span>
+    <span class="c"># ncoef = (sh_order + 2) * (sh_order + 1) / 2</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">9</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">ncoef</span><span class="p">)))</span><span class="o">/</span><span class="mi">2</span>
+
+
+<span class="k">def</span> <span class="nf">smooth_pinv</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">L</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Regularized pseudo-inverse</span>
+
+<span class="sd">    Computes a regularized least square inverse of B</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    B : array_like (n, m)</span>
+<span class="sd">        Matrix to be inverted</span>
+<span class="sd">    L : array_like (n,)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    inv : ndarray (m, n)</span>
+<span class="sd">        regularized least square inverse of B</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    In the literature this inverse is often written $(B^{T}B+L^{2})^{-1}B^{T}$.</span>
+<span class="sd">    However here this inverse is implemented using the pseudo-inverse because it</span>
+<span class="sd">    is more numerically stable than the direct implementation of the matrix</span>
+<span class="sd">    product.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">diag</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+    <span class="n">inv</span> <span class="o">=</span> <span class="n">pinv</span><span class="p">(</span><span class="n">concatenate</span><span class="p">((</span><span class="n">B</span><span class="p">,</span> <span class="n">L</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">inv</span><span class="p">[:,</span> <span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)]</span>
+
+
+<span class="k">def</span> <span class="nf">lazy_index</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Produces a lazy index</span>
+
+<span class="sd">    Returns a slice that can be used for indexing an array, if no slice can be</span>
+<span class="sd">    made index is returned as is.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">index</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s">&#39;b&#39;</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">slice</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">step</span> <span class="o">=</span> <span class="n">unique</span><span class="p">(</span><span class="n">diff</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">step</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">index</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">slice</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">step</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">_gfa_sh</span><span class="p">(</span><span class="n">coef</span><span class="p">,</span> <span class="n">sh0_index</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The gfa of the odf, computed from the spherical harmonic coefficients</span>
+
+<span class="sd">    This is a private function because it only works for coefficients of</span>
+<span class="sd">    normalized sh bases.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coef : array</span>
+<span class="sd">        The coefficients, using a normalized sh basis, that represent each odf.</span>
+<span class="sd">    sh0_index : int</span>
+<span class="sd">        The index of the coefficient associated with the 0th order sh harmonic.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    gfa_values : array</span>
+<span class="sd">        The gfa of each odf.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">coef_sq</span> <span class="o">=</span> <span class="n">coef</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">numer</span> <span class="o">=</span> <span class="n">coef_sq</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">sh0_index</span><span class="p">]</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="p">(</span><span class="n">coef_sq</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c"># The sum of the square of the coefficients being zero is the same as all</span>
+    <span class="c"># the coefficients being zero</span>
+    <span class="n">allzero</span> <span class="o">=</span> <span class="n">denom</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="c"># By adding 1 to numer and denom where both and are 0, we prevent 0/0</span>
+    <span class="n">numer</span> <span class="o">=</span> <span class="n">numer</span> <span class="o">+</span> <span class="n">allzero</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="n">denom</span> <span class="o">+</span> <span class="n">allzero</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="p">(</span><span class="n">numer</span> <span class="o">/</span> <span class="n">denom</span><span class="p">))</span>
+
+
+<span class="k">class</span> <span class="nc">SphHarmModel</span><span class="p">(</span><span class="n">OdfModel</span><span class="p">,</span> <span class="n">Cache</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;To be subclassed by all models that return a SphHarmFit when fit.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">sampling_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sphere</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The matrix needed to sample ODFs from coefficients of the model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sphere : Sphere</span>
+<span class="sd">            Points used to sample ODF.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sampling_matrix : array</span>
+<span class="sd">            The size of the matrix will be (N, M) where N is the number of</span>
+<span class="sd">            vertices on sphere and M is the number of coefficients needed by</span>
+<span class="sd">            the model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sampling_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_get</span><span class="p">(</span><span class="s">&quot;sampling_matrix&quot;</span><span class="p">,</span> <span class="n">sphere</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sampling_matrix</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">sh_order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sh_order</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="n">sphere</span><span class="o">.</span><span class="n">theta</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">sphere</span><span class="o">.</span><span class="n">phi</span>
+            <span class="n">sampling_matrix</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">real_sym_sh_basis</span><span class="p">(</span><span class="n">sh_order</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cache_set</span><span class="p">(</span><span class="s">&quot;sampling_matrix&quot;</span><span class="p">,</span> <span class="n">sphere</span><span class="p">,</span> <span class="n">sampling_matrix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sampling_matrix</span>
+
+
+<span class="k">class</span> <span class="nc">QballBaseModel</span><span class="p">(</span><span class="n">SphHarmModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;To be subclassed by Qball type models.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gtab</span><span class="p">,</span> <span class="n">sh_order</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mf">0.006</span><span class="p">,</span> <span class="n">min_signal</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span>
+                 <span class="n">assume_normed</span><span class="o">=</span><span class="k">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a model that can be used to fit or sample diffusion data</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        gtab : GradientTable</span>
+<span class="sd">            Diffusion gradients used to acquire data</span>
+<span class="sd">        sh_order : even int &gt;= 0</span>
+<span class="sd">            the spherical harmonic order of the model</span>
+<span class="sd">        smooth : float between 0 and 1, optional</span>
+<span class="sd">            The regularization parameter of the model</span>
+<span class="sd">        min_signal : float, &gt; 0, optional</span>
+<span class="sd">            During fitting, all signal values less than `min_signal` are</span>
+<span class="sd">            clipped to `min_signal`. This is done primarily to avoid values</span>
+<span class="sd">            less than or equal to zero when taking logs.</span>
+<span class="sd">        assume_normed : bool, optional</span>
+<span class="sd">            If True, clipping and normalization of the data with respect to the</span>
+<span class="sd">            mean B0 signal are skipped during mode fitting. This is an advanced</span>
+<span class="sd">            feature and should be used with care.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        normalize_data</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SphHarmModel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gtab</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_where_b0s</span> <span class="o">=</span> <span class="n">lazy_index</span><span class="p">(</span><span class="n">gtab</span><span class="o">.</span><span class="n">b0s_mask</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_where_dwi</span> <span class="o">=</span> <span class="n">lazy_index</span><span class="p">(</span><span class="o">~</span><span class="n">gtab</span><span class="o">.</span><span class="n">b0s_mask</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assume_normed</span> <span class="o">=</span> <span class="n">assume_normed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_signal</span> <span class="o">=</span> <span class="n">min_signal</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">gtab</span><span class="o">.</span><span class="n">gradients</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_where_dwi</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span> <span class="o">=</span> <span class="n">cart2sphere</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+        <span class="n">B</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">real_sym_sh_basis</span><span class="p">(</span><span class="n">sh_order</span><span class="p">,</span> <span class="n">theta</span><span class="p">[:,</span> <span class="k">None</span><span class="p">],</span> <span class="n">phi</span><span class="p">[:,</span> <span class="k">None</span><span class="p">])</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">legendre0</span> <span class="o">=</span> <span class="n">lpn</span><span class="p">(</span><span class="n">sh_order</span><span class="p">,</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">F</span> <span class="o">=</span> <span class="n">legendre0</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sh_order</span> <span class="o">=</span> <span class="n">sh_order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">B</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_fit_matrix</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">smooth</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_fit_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Should be set in a subclass and is called by __init__&quot;&quot;&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;User must implement this method in a subclass&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fits the model to diffusion data and returns the model fit&quot;&quot;&quot;</span>
+        <span class="c"># Normalize the data and fit coefficients</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">assume_normed</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">normalize_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_where_b0s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_signal</span><span class="p">)</span>
+
+        <span class="c"># Compute coefficients using abstract method</span>
+        <span class="n">coef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shm_coef</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="c"># Apply the mask to the coefficients</span>
+        <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+            <span class="n">coef</span> <span class="o">*=</span> <span class="n">mask</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="k">None</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">SphHarmFit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coef</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">SphHarmFit</span><span class="p">(</span><span class="n">OdfFit</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Diffusion data fit to a spherical harmonic model&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">shm_coef</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shm_coef</span> <span class="o">=</span> <span class="n">shm_coef</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shm_coef</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Allowing indexing into fit&quot;&quot;&quot;</span>
+        <span class="c"># Index shm_coefficients</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">coef_index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="p">(</span><span class="bp">Ellipsis</span><span class="p">,)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">coef_index</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="n">new_coef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shm_coef</span><span class="p">[</span><span class="n">coef_index</span><span class="p">]</span>
+
+        <span class="c"># Index mask</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="n">new_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+            <span class="k">assert</span> <span class="n">new_mask</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">new_coef</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_mask</span> <span class="o">=</span> <span class="k">None</span>
+
+        <span class="k">return</span> <span class="n">SphHarmFit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">new_coef</span><span class="p">,</span> <span class="n">new_mask</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">odf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sphere</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Samples the odf function on the points of a sphere</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sphere : Sphere</span>
+<span class="sd">            The points on which to sample the odf.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        values : ndarray</span>
+<span class="sd">            The value of the odf on each point of `sphere`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">sampling_matrix</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shm_coef</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="nd">@auto_attr</span>
+    <span class="k">def</span> <span class="nf">gfa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_gfa_sh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shm_coef</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">shm_coeff</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The spherical harmonic coefficients of the odf</span>
+
+<span class="sd">        Make this a property for now, if there is a usecase for modifying</span>
+<span class="sd">        the coefficients we can add a setter or expose the coefficients more</span>
+<span class="sd">        directly</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shm_coef</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gtab</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">S0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predict the diffusion signal from the model coefficients.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        gtab : a GradientTable class instance</span>
+<span class="sd">            The directions and bvalues on which prediction is desired</span>
+
+<span class="sd">        S0 : float array</span>
+<span class="sd">           The mean non-diffusion-weighted signal in each voxel.</span>
+<span class="sd">           Default: 1.0 in all voxels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="s">&#39;predict&#39;</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;This model does not have prediction implemented yet&quot;</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shm_coeff</span><span class="p">,</span> <span class="n">gtab</span><span class="p">,</span> <span class="n">S0</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">CsaOdfModel</span><span class="p">(</span><span class="n">QballBaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Implementation of Constant Solid Angle reconstruction method.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Aganj, I., et. al. 2009. ODF Reconstruction in Q-Ball Imaging With</span>
+<span class="sd">           Solid Angle Consideration.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">min</span> <span class="o">=</span> <span class="o">.</span><span class="mi">001</span>
+    <span class="nb">max</span> <span class="o">=</span> <span class="o">.</span><span class="mi">999</span>
+    <span class="n">_n0_const</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_fit_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">smooth</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The fit matrix, is used by fit_coefficients to return the</span>
+<span class="sd">        coefficients of the odf&quot;&quot;&quot;</span>
+        <span class="n">invB</span> <span class="o">=</span> <span class="n">smooth_pinv</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">smooth</span><span class="p">)</span> <span class="o">*</span> <span class="n">L</span><span class="p">)</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">L</span><span class="p">[:,</span> <span class="k">None</span><span class="p">]</span>
+        <span class="n">F</span> <span class="o">=</span> <span class="n">F</span><span class="p">[:,</span> <span class="k">None</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fit_matrix</span> <span class="o">=</span> <span class="p">(</span><span class="n">F</span> <span class="o">*</span> <span class="n">L</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">invB</span>
+
+    <span class="k">def</span> <span class="nf">_get_shm_coef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the coefficients of the model&quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_where_dwi</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">)</span>
+        <span class="n">loglog_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="n">sh_coef</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">loglog_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">sh_coef</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n0_const</span>
+        <span class="k">return</span> <span class="n">sh_coef</span>
+
+
+<span class="k">class</span> <span class="nc">OpdtModel</span><span class="p">(</span><span class="n">QballBaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Implementation of Orientation Probability Density Transform</span>
+<span class="sd">    reconstruction method.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Tristan-Vega, A., et. al. 2010. A new methodology for estimation of</span>
+<span class="sd">           fiber populations in white matter of the brain with Funk-Radon</span>
+<span class="sd">           transform.</span>
+<span class="sd">    .. [2] Tristan-Vega, A., et. al. 2009. Estimation of fiber orientation</span>
+<span class="sd">           probability density functions in high angular resolution diffusion</span>
+<span class="sd">           imaging.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_set_fit_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">smooth</span><span class="p">):</span>
+        <span class="n">invB</span> <span class="o">=</span> <span class="n">smooth_pinv</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">smooth</span><span class="p">)</span> <span class="o">*</span> <span class="n">L</span><span class="p">)</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">L</span><span class="p">[:,</span> <span class="k">None</span><span class="p">]</span>
+        <span class="n">F</span> <span class="o">=</span> <span class="n">F</span><span class="p">[:,</span> <span class="k">None</span><span class="p">]</span>
+        <span class="n">delta_b</span> <span class="o">=</span> <span class="n">F</span> <span class="o">*</span> <span class="n">L</span> <span class="o">*</span> <span class="n">invB</span>
+        <span class="n">delta_q</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">F</span> <span class="o">*</span> <span class="n">invB</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fit_matrix</span> <span class="o">=</span> <span class="n">delta_b</span><span class="p">,</span> <span class="n">delta_q</span>
+
+    <span class="k">def</span> <span class="nf">_get_shm_coef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the coefficients of the model&quot;&quot;&quot;</span>
+        <span class="n">delta_b</span><span class="p">,</span> <span class="n">delta_q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_matrix</span>
+        <span class="k">return</span> <span class="n">_slowadc_formula</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_where_dwi</span><span class="p">],</span> <span class="n">delta_b</span><span class="p">,</span> <span class="n">delta_q</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_slowadc_formula</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">delta_b</span><span class="p">,</span> <span class="n">delta_q</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;formula used in SlowAdcOpdfModel&quot;&quot;&quot;</span>
+    <span class="n">logd</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dot</span><span class="p">(</span><span class="n">logd</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.5</span> <span class="o">-</span> <span class="n">logd</span><span class="p">)</span> <span class="o">*</span> <span class="n">data</span><span class="p">,</span> <span class="n">delta_q</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">-</span> <span class="n">dot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">delta_b</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">QballModel</span><span class="p">(</span><span class="n">QballBaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Implementation of regularized Qball reconstruction method.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Descoteaux, M., et. al. 2007. Regularized, fast, and robust</span>
+<span class="sd">           analytical Q-ball imaging.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_set_fit_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">smooth</span><span class="p">):</span>
+        <span class="n">invB</span> <span class="o">=</span> <span class="n">smooth_pinv</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">smooth</span><span class="p">)</span> <span class="o">*</span> <span class="n">L</span><span class="p">)</span>
+        <span class="n">F</span> <span class="o">=</span> <span class="n">F</span><span class="p">[:,</span> <span class="k">None</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fit_matrix</span> <span class="o">=</span> <span class="n">F</span> <span class="o">*</span> <span class="n">invB</span>
+
+    <span class="k">def</span> <span class="nf">_get_shm_coef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the coefficients of the model&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">dot</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_where_dwi</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">normalize_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">where_b0</span><span class="p">,</span> <span class="n">min_signal</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Normalizes the data with respect to the mean b0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;float32&#39;</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="o">!=</span> <span class="s">&#39;f&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;out must be floating point&quot;</span><span class="p">)</span>
+        <span class="n">out</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">data</span>
+
+    <span class="n">out</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">min_signal</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+    <span class="n">b0</span> <span class="o">=</span> <span class="n">out</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">where_b0</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">/=</span> <span class="n">b0</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="k">None</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span> <span class="nf">hat</span><span class="p">(</span><span class="n">B</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the hat matrix for the design matrix B</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="k">False</span><span class="p">)</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">U</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">H</span>
+
+
+<span class="k">def</span> <span class="nf">lcr_matrix</span><span class="p">(</span><span class="n">H</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a matrix for computing leveraged, centered residuals from data</span>
+
+<span class="sd">    if r = (d-Hd), the leveraged centered residuals are lcr = (r/l)-mean(r/l)</span>
+<span class="sd">    ruturns the matrix R, such lcr = Rd</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">H</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">H</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">H</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;H should be a square matrix&#39;</span><span class="p">)</span>
+
+    <span class="n">leverages</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">H</span><span class="o">.</span><span class="n">diagonal</span><span class="p">())</span>
+    <span class="n">leverages</span> <span class="o">=</span> <span class="n">leverages</span><span class="p">[:,</span> <span class="k">None</span><span class="p">]</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="p">(</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">H</span><span class="p">))</span> <span class="o">-</span> <span class="n">H</span><span class="p">)</span> <span class="o">/</span> <span class="n">leverages</span>
+    <span class="k">return</span> <span class="n">R</span> <span class="o">-</span> <span class="n">R</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">bootstrap_data_array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">permute</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Applies the Residual Bootstraps to the data given H and R</span>
+
+<span class="sd">    data must be normalized, ie 0 &lt; data &lt;= 1</span>
+
+<span class="sd">    This function, and the bootstrap_data_voxel function, calculate</span>
+<span class="sd">    residual-bootsrap samples given a Hat matrix and a Residual matrix. These</span>
+<span class="sd">    samples can be used for non-parametric statistics or for bootstrap</span>
+<span class="sd">    probabilistic tractography:</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] J. I. Berman, et al., &quot;Probabilistic streamline q-ball tractography</span>
+<span class="sd">           using the residual bootstrap&quot; 2008.</span>
+<span class="sd">    .. [2] HA Haroon, et al., &quot;Using the model-based residual bootstrap to</span>
+<span class="sd">           quantify uncertainty in fiber orientations from Q-ball analysis&quot;</span>
+<span class="sd">           2009.</span>
+<span class="sd">    .. [3] B. Jeurissen, et al., &quot;Probabilistic Fiber Tracking Using the</span>
+<span class="sd">           Residual Bootstrap with Constrained Spherical Deconvolution&quot; 2011.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">permute</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">permute</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">assert</span> <span class="n">R</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">H</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">permute</span><span class="p">)</span> <span class="o">==</span> <span class="n">R</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">R</span><span class="p">[</span><span class="n">permute</span><span class="p">]</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="n">H</span> <span class="o">+</span> <span class="n">R</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span>
+
+
+<span class="k">def</span> <span class="nf">bootstrap_data_voxel</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">permute</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Like bootstrap_data_array but faster when for a single voxel</span>
+
+<span class="sd">    data must be 1d and normalized</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">permute</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">permute</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">R</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">boot_data</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">H</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">boot_data</span> <span class="o">+=</span> <span class="n">r</span><span class="p">[</span><span class="n">permute</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">boot_data</span>
+
+
+<span class="k">class</span> <span class="nc">ResidualBootstrapWrapper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a residual bootstrap sample of the signal_object when indexed</span>
+
+<span class="sd">    Wraps a signal_object, this signal object can be an interpolator. When</span>
+<span class="sd">    indexed, the the wrapper indexes the signal_object to get the signal.</span>
+<span class="sd">    There wrapper than samples the residual boostrap distribution of signal and</span>
+<span class="sd">    returns that sample.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal_object</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">where_dwi</span><span class="p">,</span> <span class="n">min_signal</span><span class="o">=</span><span class="mf">1.</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Builds a ResidualBootstrapWapper</span>
+
+<span class="sd">        Given some linear model described by B, the design matrix, and a</span>
+<span class="sd">        signal_object, returns an object which can sample the residual</span>
+<span class="sd">        bootstrap distribution of the signal. We assume that the signals are</span>
+<span class="sd">        normalized so we clip the bootsrap samples to be between `min_signal`</span>
+<span class="sd">        and 1.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        signal_object : some object that can be indexed</span>
+<span class="sd">            This object should return diffusion weighted signals when indexed.</span>
+<span class="sd">        B : ndarray, ndim=2</span>
+<span class="sd">            The design matrix of the spherical harmonics model used to fit the</span>
+<span class="sd">            data. This is the model that will be used to compute the residuals</span>
+<span class="sd">            and sample the residual bootstrap distribution</span>
+<span class="sd">        where_dwi :</span>
+<span class="sd">            indexing object to find diffusion weighted signals from signal</span>
+<span class="sd">        min_signal : float</span>
+<span class="sd">            The lowest allowable signal.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_signal_object</span> <span class="o">=</span> <span class="n">signal_object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_H</span> <span class="o">=</span> <span class="n">hat</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_R</span> <span class="o">=</span> <span class="n">lcr_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_H</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min_signal</span> <span class="o">=</span> <span class="n">min_signal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_where_dwi</span> <span class="o">=</span> <span class="n">where_dwi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">signal_object</span><span class="o">.</span><span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">voxel_size</span> <span class="o">=</span> <span class="n">signal_object</span><span class="o">.</span><span class="n">voxel_size</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indexes self._signal_object and bootstraps the result&quot;&quot;&quot;</span>
+        <span class="n">signal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_signal_object</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">dwi_signal</span> <span class="o">=</span> <span class="n">signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_where_dwi</span><span class="p">]</span>
+        <span class="n">boot_signal</span> <span class="o">=</span> <span class="n">bootstrap_data_voxel</span><span class="p">(</span><span class="n">dwi_signal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_H</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_R</span><span class="p">)</span>
+        <span class="n">boot_signal</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_min_signal</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">boot_signal</span><span class="p">)</span>
+        <span class="n">signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_where_dwi</span><span class="p">]</span> <span class="o">=</span> <span class="n">boot_signal</span>
+        <span class="k">return</span> <span class="n">signal</span>
+
+
+<span class="k">def</span> <span class="nf">sf_to_sh</span><span class="p">(</span><span class="n">sf</span><span class="p">,</span> <span class="n">sphere</span><span class="p">,</span> <span class="n">sh_order</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">basis_type</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Spherical function to spherical harmonics (SH).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sf : ndarray</span>
+<span class="sd">        Values of a function on the given `sphere`.</span>
+<span class="sd">    sphere : Sphere</span>
+<span class="sd">        The points on which the sf is defined.</span>
+<span class="sd">    sh_order : int, optional</span>
+<span class="sd">        Maximum SH order in the SH fit.  For `sh_order`, there will be</span>
+<span class="sd">        ``(sh_order + 1) * (sh_order_2) / 2`` SH coefficients (default 4).</span>
+<span class="sd">    basis_type : {None, &#39;mrtrix&#39;, &#39;fibernav&#39;}</span>
+<span class="sd">        ``None`` for the default dipy basis,</span>
+<span class="sd">        ``mrtrix`` for the MRtrix basis, and</span>
+<span class="sd">        ``fibernav`` for the FiberNavigator basis</span>
+<span class="sd">        (default ``None``).</span>
+<span class="sd">    smooth : float, optional</span>
+<span class="sd">        Lambda-regularization in the SH fit (default 0.0).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sh : ndarray</span>
+<span class="sd">        SH coefficients representing the input function.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sph_harm_basis</span> <span class="o">=</span> <span class="n">sph_harm_lookup</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">basis_type</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">sph_harm_basis</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Invalid basis name.&quot;</span><span class="p">)</span>
+    <span class="n">B</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">sph_harm_basis</span><span class="p">(</span><span class="n">sh_order</span><span class="p">,</span> <span class="n">sphere</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="n">sphere</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span>
+
+    <span class="n">L</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">invB</span> <span class="o">=</span> <span class="n">smooth_pinv</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">smooth</span><span class="p">)</span> <span class="o">*</span> <span class="n">L</span><span class="p">)</span>
+    <span class="n">sh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">sf</span><span class="p">,</span> <span class="n">invB</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sh</span>
+
+
+<span class="k">def</span> <span class="nf">sh_to_sf</span><span class="p">(</span><span class="n">sh</span><span class="p">,</span> <span class="n">sphere</span><span class="p">,</span> <span class="n">sh_order</span><span class="p">,</span> <span class="n">basis_type</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Spherical harmonics (SH) to spherical function (SF).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sh : ndarray</span>
+<span class="sd">        SH coefficients representing a spherical function.</span>
+<span class="sd">    sphere : Sphere</span>
+<span class="sd">        The points on which to sample the spherical function.</span>
+<span class="sd">    sh_order : int, optional</span>
+<span class="sd">        Maximum SH order in the SH fit.  For `sh_order`, there will be</span>
+<span class="sd">        ``(sh_order + 1) * (sh_order_2) / 2`` SH coefficients (default 4).</span>
+<span class="sd">    basis_type : {None, &#39;mrtrix&#39;, &#39;fibernav&#39;}</span>
+<span class="sd">        ``None`` for the default dipy basis,</span>
+<span class="sd">        ``mrtrix`` for the MRtrix basis, and</span>
+<span class="sd">        ``fibernav`` for the FiberNavigator basis</span>
+<span class="sd">        (default ``None``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sf : ndarray</span>
+<span class="sd">         Spherical function values on the `sphere`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sph_harm_basis</span> <span class="o">=</span> <span class="n">sph_harm_lookup</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">basis_type</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">sph_harm_basis</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Invalid basis name.&quot;</span><span class="p">)</span>
+    <span class="n">B</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">sph_harm_basis</span><span class="p">(</span><span class="n">sh_order</span><span class="p">,</span> <span class="n">sphere</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="n">sphere</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span>
+
+    <span class="n">sf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">sh</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sf</span>
+
+
+<span class="k">def</span> <span class="nf">sh_to_sf_matrix</span><span class="p">(</span><span class="n">sphere</span><span class="p">,</span> <span class="n">sh_order</span><span class="p">,</span> <span class="n">basis_type</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">return_inv</span><span class="o">=</span><span class="k">True</span><span class="p">,</span>
+                    <span class="n">smooth</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Matrix that transforms Spherical harmonics (SH) to spherical</span>
+<span class="sd">    function (SF).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sphere : Sphere</span>
+<span class="sd">        The points on which to sample the spherical function.</span>
+<span class="sd">    sh_order : int, optional</span>
+<span class="sd">        Maximum SH order in the SH fit.  For `sh_order`, there will be</span>
+<span class="sd">        ``(sh_order + 1) * (sh_order_2) / 2`` SH coefficients (default 4).</span>
+<span class="sd">    basis_type : {None, &#39;mrtrix&#39;, &#39;fibernav&#39;}</span>
+<span class="sd">        ``None`` for the default dipy basis,</span>
+<span class="sd">        ``mrtrix`` for the MRtrix basis, and</span>
+<span class="sd">        ``fibernav`` for the FiberNavigator basis</span>
+<span class="sd">        (default ``None``).</span>
+<span class="sd">    return_inv : bool</span>
+<span class="sd">        If True then the inverse of the matrix is also returned</span>
+<span class="sd">    smooth : float, optional</span>
+<span class="sd">        Lambda-regularization in the SH fit (default 0.0).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    B : ndarray</span>
+<span class="sd">        Matrix that transforms spherical harmonics to spherical function</span>
+<span class="sd">        ``sf = np.dot(sh, B)``.</span>
+<span class="sd">    invB : ndarray</span>
+<span class="sd">        Inverse of B.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sph_harm_basis</span> <span class="o">=</span> <span class="n">sph_harm_lookup</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">basis_type</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">sph_harm_basis</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Invalid basis name.&quot;</span><span class="p">)</span>
+    <span class="n">B</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">sph_harm_basis</span><span class="p">(</span><span class="n">sh_order</span><span class="p">,</span> <span class="n">sphere</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="n">sphere</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_inv</span><span class="p">:</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">invB</span> <span class="o">=</span> <span class="n">smooth_pinv</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">smooth</span><span class="p">)</span> <span class="o">*</span> <span class="n">L</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">B</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">invB</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">return</span> <span class="n">B</span><span class="o">.</span><span class="n">T</span>
+
+
+<div class="viewcode-block" id="calculate_max_order"><a class="viewcode-back" href="../../../reference/AFQ.tests.html#AFQ.tests.test_csd.calculate_max_order">[docs]</a><span class="k">def</span> <span class="nf">calculate_max_order</span><span class="p">(</span><span class="n">n_coeffs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the maximal harmonic order, given that you know the</span>
+<span class="sd">        number of parameters that were estimated.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n_coeffs : int</span>
+<span class="sd">            The number of SH coefficients</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        L : int</span>
+<span class="sd">            The maximal SH order, given the number of coefficients</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The calculation in this function proceeds according to the following</span>
+<span class="sd">        logic:</span>
+<span class="sd">        .. math::</span>
+<span class="sd">           n = \frac{1}{2} (L+1) (L+2)</span>
+<span class="sd">           \rarrow 2n = L^2 + 3L + 2</span>
+<span class="sd">           \rarrow L^2 + 3L + 2 - 2n = 0</span>
+<span class="sd">           \rarrow L^2 + 3L + 2(1-n) = 0</span>
+<span class="sd">           \rarrow L_{1,2} = \frac{-3 \pm \sqrt{9 - 8 (1-n)}}{2}</span>
+<span class="sd">           \rarrow L{1,2} = \frac{-3 \pm \sqrt{1 + 8n}}{2}</span>
+
+<span class="sd">        Finally, the positive value is chosen between the two options.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">L1</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">3</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">n_coeffs</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">L2</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">3</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">n_coeffs</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="nb">max</span><span class="p">([</span><span class="n">L1</span><span class="p">,</span> <span class="n">L2</span><span class="p">]))</span></div>
+
+
+<span class="k">def</span> <span class="nf">anisotropic_power</span><span class="p">(</span><span class="n">sh_coeffs</span><span class="p">,</span> <span class="n">norm_factor</span><span class="o">=</span><span class="mf">0.00001</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                      <span class="n">non_negative</span><span class="o">=</span><span class="k">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates anisotropic power map with a given SH coefficient matrix</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sh_coeffs : ndarray</span>
+<span class="sd">        A ndarray where the last dimension is the</span>
+<span class="sd">        SH coeff estimates for that voxel.</span>
+<span class="sd">    norm_factor: float, optional</span>
+<span class="sd">        The value to normalize the ap values. Default is 10^-5.</span>
+<span class="sd">    power : int, optional</span>
+<span class="sd">        The degree to which power maps are calculated. Default: 2.</span>
+<span class="sd">    non_negative: bool, optional</span>
+<span class="sd">        Whether to rectify the resulting map to be non-negative.</span>
+<span class="sd">        Default: True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    log_ap : ndarray</span>
+<span class="sd">        The log of the resulting power image.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Calculate AP image based on a IxJxKxC SH coeffecient matrix based on the</span>
+<span class="sd">    equation:</span>
+<span class="sd">    .. math::</span>
+<span class="sd">        AP = \sum_{l=2,4,6,...}{\frac{1}{2l+1} \sum_{m=-l}^l{|a_{l,m}|^n}}</span>
+
+<span class="sd">    Where the last dimension, C, is made of a flattened array of $l$x$m$</span>
+<span class="sd">    coefficients, where $l$ are the SH orders, and $m = 2l+1$,</span>
+<span class="sd">    So l=1 has 1 coeffecient, l=2 has 5, ... l=8 has 17 and so on.</span>
+<span class="sd">    A l=2 SH coeffecient matrix will then be composed of a IxJxKx6 volume.</span>
+<span class="sd">    The power, $n$ is usually set to $n=2$.</span>
+
+<span class="sd">    The final AP image is then shifted by -log(normal_factor), to be strictly non-negative. Remaining values &lt; 0 are discarded (set to 0), per default,</span>
+<span class="sd">    and this option is controlled throug the `non_negative` key word argument.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1]  Dell&#39;Acqua, F., Lacerda, L., Catani, M., Simmons, A., 2014.</span>
+<span class="sd">            Anisotropic Power Maps: A diffusion contrast to reveal low</span>
+<span class="sd">            anisotropy tissues from HARDI data,</span>
+<span class="sd">            in: Proceedings of International Society for Magnetic Resonance in</span>
+<span class="sd">            Medicine. Milan, Italy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dim</span> <span class="o">=</span> <span class="n">sh_coeffs</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">n_coeffs</span> <span class="o">=</span> <span class="n">sh_coeffs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">max_order</span> <span class="o">=</span> <span class="n">calculate_max_order</span><span class="p">(</span><span class="n">n_coeffs</span><span class="p">)</span>
+    <span class="n">ap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+    <span class="n">n_start</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_order</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">n_stop</span> <span class="o">=</span> <span class="n">n_start</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">L</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ap_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sh_coeffs</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">n_start</span><span class="p">:</span><span class="n">n_stop</span><span class="p">])</span> <span class="o">**</span> <span class="n">power</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">ap</span> <span class="o">+=</span> <span class="n">ap_i</span>
+        <span class="n">n_start</span> <span class="o">=</span> <span class="n">n_stop</span>
+
+    <span class="c"># Shift the map to be mostly non-negative:</span>
+    <span class="n">log_ap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ap</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">norm_factor</span><span class="p">)</span>
+
+    <span class="c"># Deal with residual negative values:</span>
+    <span class="k">if</span> <span class="n">non_negative</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log_ap</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="c"># zero all values &lt; 0</span>
+            <span class="n">log_ap</span><span class="p">[</span><span class="n">log_ap</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># assume this is a singleton float (input was 1D):</span>
+            <span class="k">if</span> <span class="n">log_ap</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">log_ap</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

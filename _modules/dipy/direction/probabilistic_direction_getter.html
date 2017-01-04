@@ -1,0 +1,482 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dipy.direction.probabilistic_direction_getter &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>dipy.direction.probabilistic_direction_getter</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for dipy.direction.probabilistic_direction_getter</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implementation of a probabilistic direction getter based on sampling from</span>
+<span class="sd">discrete distribution (pmf) at each step of the tracking.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">dipy.direction.peaks</span> <span class="k">import</span> <span class="n">peak_directions</span><span class="p">,</span> <span class="n">default_sphere</span>
+<span class="kn">from</span> <span class="nn">dipy.reconst.shm</span> <span class="k">import</span> <span class="n">order_from_ncoef</span><span class="p">,</span> <span class="n">sph_harm_lookup</span>
+<span class="kn">from</span> <span class="nn">dipy.tracking.local.direction_getter</span> <span class="k">import</span> <span class="n">DirectionGetter</span>
+<span class="kn">from</span> <span class="nn">dipy.tracking.local.interpolation</span> <span class="k">import</span> <span class="n">trilinear_interpolate4d</span>
+
+
+<span class="k">def</span> <span class="nf">_asarray</span><span class="p">(</span><span class="n">cython_memview</span><span class="p">):</span>
+    <span class="c"># TODO: figure out the best way to get an array from a memory view.</span>
+    <span class="c"># `np.array(view)` works, but is quite slow. Views are also &quot;array_like&quot;,</span>
+    <span class="c"># but using them as arrays seems to also be quite slow.</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">fromiter</span><span class="p">(</span><span class="n">cython_memview</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">PmfGen</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">SimplePmfGen</span><span class="p">(</span><span class="n">PmfGen</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmf_array</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">pmf_array</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;pmf should not have negative values&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pmf_array</span> <span class="o">=</span> <span class="n">pmf_array</span>
+
+    <span class="k">def</span> <span class="nf">get_pmf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">trilinear_interpolate4d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pmf_array</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">SHCoeffPmfGen</span><span class="p">(</span><span class="n">PmfGen</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shcoeff</span><span class="p">,</span> <span class="n">sphere</span><span class="p">,</span> <span class="n">basis_type</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shcoeff</span> <span class="o">=</span> <span class="n">shcoeff</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sphere</span> <span class="o">=</span> <span class="n">sphere</span>
+        <span class="n">sh_order</span> <span class="o">=</span> <span class="n">order_from_ncoef</span><span class="p">(</span><span class="n">shcoeff</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">basis</span> <span class="o">=</span> <span class="n">sph_harm_lookup</span><span class="p">[</span><span class="n">basis_type</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;%s is not a known basis type.&quot;</span> <span class="o">%</span> <span class="n">basis_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_B</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="n">sh_order</span><span class="p">,</span> <span class="n">sphere</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="n">sphere</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_pmf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="n">coeff</span> <span class="o">=</span> <span class="n">trilinear_interpolate4d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shcoeff</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+        <span class="n">pmf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_B</span><span class="p">,</span> <span class="n">coeff</span><span class="p">)</span>
+        <span class="n">pmf</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">pmf</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pmf</span>
+
+
+<span class="k">class</span> <span class="nc">PeakDirectionGetter</span><span class="p">(</span><span class="n">DirectionGetter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An abstract class for DirectionGetters that use the peak_directions</span>
+<span class="sd">    machinery.&quot;&quot;&quot;</span>
+
+    <span class="n">sphere</span> <span class="o">=</span> <span class="n">default_sphere</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sphere</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sphere</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sphere</span> <span class="o">=</span> <span class="n">sphere</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pf_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+
+    <span class="k">def</span> <span class="nf">_peak_directions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets directions using parameters provided at init.</span>
+
+<span class="sd">        Blob can be any function defined on ``self.sphere``, ie an ODF, PMF,</span>
+<span class="sd">        FOD.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">peak_directions</span><span class="p">(</span><span class="n">blob</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sphere</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_pf_kwargs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="ProbabilisticDirectionGetter"><a class="viewcode-back" href="../../../reference/AFQ.tractography.html#AFQ.tractography.ProbabilisticDirectionGetter">[docs]</a><span class="k">class</span> <span class="nc">ProbabilisticDirectionGetter</span><span class="p">(</span><span class="n">PeakDirectionGetter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Randomly samples direction of a sphere based on probability mass</span>
+<span class="sd">    function (pmf).</span>
+
+<span class="sd">    The main constructors for this class are current from_pmf and from_shcoeff.</span>
+<span class="sd">    The pmf gives the probability that each direction on the sphere should be</span>
+<span class="sd">    chosen as the next direction. To get the true pmf from the &quot;raw pmf&quot;</span>
+<span class="sd">    directions more than ``max_angle`` degrees from the incoming direction are</span>
+<span class="sd">    set to 0 and the result is normalized.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ProbabilisticDirectionGetter.from_pmf"><a class="viewcode-back" href="../../../reference/AFQ.tractography.html#AFQ.tractography.ProbabilisticDirectionGetter.from_pmf">[docs]</a>    <span class="k">def</span> <span class="nf">from_pmf</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span> <span class="n">pmf</span><span class="p">,</span> <span class="n">max_angle</span><span class="p">,</span> <span class="n">sphere</span><span class="p">,</span> <span class="n">pmf_threshold</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for making a DirectionGetter from an array of Pmfs</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pmf : array, 4d</span>
+<span class="sd">            The pmf to be used for tracking at each voxel.</span>
+<span class="sd">        max_angle : float, [0, 90]</span>
+<span class="sd">            The maximum allowed angle between incoming direction and new</span>
+<span class="sd">            direction.</span>
+<span class="sd">        sphere : Sphere</span>
+<span class="sd">            The set of directions to be used for tracking.</span>
+<span class="sd">        pmf_threshold : float [0., 1.]</span>
+<span class="sd">            Used to remove direction from the probability mass function for</span>
+<span class="sd">            selecting the tracking direction.</span>
+<span class="sd">        relative_peak_threshold : float in [0., 1.]</span>
+<span class="sd">            Used for extracting initial tracking directions. Passed to</span>
+<span class="sd">            peak_directions.</span>
+<span class="sd">        min_separation_angle : float in [0, 90]</span>
+<span class="sd">            Used for extracting initial tracking directions. Passed to</span>
+<span class="sd">            peak_directions.</span>
+
+<span class="sd">        See also</span>
+<span class="sd">        --------</span>
+<span class="sd">        dipy.direction.peaks.peak_directions</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pmf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">pmf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pmf</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;pmf should be a 4d array.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pmf</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sphere</span><span class="o">.</span><span class="n">theta</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;The last dimension of pmf should match the number of &quot;</span>
+                   <span class="s">&quot;points in sphere.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">pmf_gen</span> <span class="o">=</span> <span class="n">SimplePmfGen</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">klass</span><span class="p">(</span><span class="n">pmf_gen</span><span class="p">,</span> <span class="n">max_angle</span><span class="p">,</span> <span class="n">sphere</span><span class="p">,</span> <span class="n">pmf_threshold</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ProbabilisticDirectionGetter.from_shcoeff"><a class="viewcode-back" href="../../../reference/AFQ.tractography.html#AFQ.tractography.ProbabilisticDirectionGetter.from_shcoeff">[docs]</a>    <span class="k">def</span> <span class="nf">from_shcoeff</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span> <span class="n">shcoeff</span><span class="p">,</span> <span class="n">max_angle</span><span class="p">,</span> <span class="n">sphere</span><span class="p">,</span> <span class="n">pmf_threshold</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                     <span class="n">basis_type</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Probabilistic direction getter from a distribution of directions</span>
+<span class="sd">        on the sphere.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        shcoeff : array</span>
+<span class="sd">            The distribution of tracking directions at each voxel represented</span>
+<span class="sd">            as a function on the sphere using the real spherical harmonic</span>
+<span class="sd">            basis. For example the FOD of the Constrained Spherical</span>
+<span class="sd">            Deconvolution model can be used this way. This distribution will</span>
+<span class="sd">            be discretized using ``sphere`` and tracking directions will be</span>
+<span class="sd">            chosen from the vertices of ``sphere`` based on the distribution.</span>
+<span class="sd">        max_angle : float, [0, 90]</span>
+<span class="sd">            The maximum allowed angle between incoming direction and new</span>
+<span class="sd">            direction.</span>
+<span class="sd">        sphere : Sphere</span>
+<span class="sd">            The set of directions to be used for tracking.</span>
+<span class="sd">        pmf_threshold : float [0., 1.]</span>
+<span class="sd">            Used to remove direction from the probability mass function for</span>
+<span class="sd">            selecting the tracking direction.</span>
+<span class="sd">        basis_type : name of basis</span>
+<span class="sd">            The basis that ``shcoeff`` are associated with.</span>
+<span class="sd">            ``dipy.reconst.shm.real_sym_sh_basis`` is used by default.</span>
+<span class="sd">        relative_peak_threshold : float in [0., 1.]</span>
+<span class="sd">            Used for extracting initial tracking directions. Passed to</span>
+<span class="sd">            peak_directions.</span>
+<span class="sd">        min_separation_angle : float in [0, 90]</span>
+<span class="sd">            Used for extracting initial tracking directions. Passed to</span>
+<span class="sd">            peak_directions.</span>
+
+<span class="sd">        See also</span>
+<span class="sd">        --------</span>
+<span class="sd">        dipy.direction.peaks.peak_directions</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pmf_gen</span> <span class="o">=</span> <span class="n">SHCoeffPmfGen</span><span class="p">(</span><span class="n">shcoeff</span><span class="p">,</span> <span class="n">sphere</span><span class="p">,</span> <span class="n">basis_type</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">klass</span><span class="p">(</span><span class="n">pmf_gen</span><span class="p">,</span> <span class="n">max_angle</span><span class="p">,</span> <span class="n">sphere</span><span class="p">,</span> <span class="n">pmf_threshold</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProbabilisticDirectionGetter.__init__"><a class="viewcode-back" href="../../../reference/AFQ.tractography.html#AFQ.tractography.ProbabilisticDirectionGetter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmf_gen</span><span class="p">,</span> <span class="n">max_angle</span><span class="p">,</span> <span class="n">sphere</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">pmf_threshold</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Direction getter from a pmf generator.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pmf_gen : PmfGen</span>
+<span class="sd">            Used to get probability mass function for selecting tracking</span>
+<span class="sd">            directions.</span>
+<span class="sd">        max_angle : float, [0, 90]</span>
+<span class="sd">            The maximum allowed angle between incoming direction and new</span>
+<span class="sd">            direction.</span>
+<span class="sd">        sphere : Sphere</span>
+<span class="sd">            The set of directions to be used for tracking.</span>
+<span class="sd">        pmf_threshold : float [0., 1.]</span>
+<span class="sd">            Used to remove direction from the probability mass function for</span>
+<span class="sd">            selecting the tracking direction.</span>
+<span class="sd">        relative_peak_threshold : float in [0., 1.]</span>
+<span class="sd">            Used for extracting initial tracking directions. Passed to</span>
+<span class="sd">            peak_directions.</span>
+<span class="sd">        min_separation_angle : float in [0, 90]</span>
+<span class="sd">            Used for extracting initial tracking directions. Passed to</span>
+<span class="sd">            peak_directions.</span>
+
+<span class="sd">        See also</span>
+<span class="sd">        --------</span>
+<span class="sd">        dipy.direction.peaks.peak_directions</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PeakDirectionGetter</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sphere</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pmf_gen</span> <span class="o">=</span> <span class="n">pmf_gen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pmf_threshold</span> <span class="o">=</span> <span class="n">pmf_threshold</span>
+        <span class="c"># The vertices need to be in a contiguous array</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sphere</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">cos_similarity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">max_angle</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_adjacency_matrix</span><span class="p">(</span><span class="n">sphere</span><span class="p">,</span> <span class="n">cos_similarity</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_set_adjacency_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sphere</span><span class="p">,</span> <span class="n">cos_similarity</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a dictionary where each key is a direction from sphere and</span>
+<span class="sd">        each value is a boolean array indicating which directions are less than</span>
+<span class="sd">        max_angle degrees from the key&quot;&quot;&quot;</span>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">sphere</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">sphere</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">cos_similarity</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sphere</span><span class="o">.</span><span class="n">vertices</span><span class="p">]</span>
+        <span class="n">adj_matrix</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">matrix</span><span class="p">))</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="o">-</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sphere</span><span class="o">.</span><span class="n">vertices</span><span class="p">]</span>
+        <span class="n">adj_matrix</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">matrix</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_adj_matrix</span> <span class="o">=</span> <span class="n">adj_matrix</span>
+
+<div class="viewcode-block" id="ProbabilisticDirectionGetter.initial_direction"><a class="viewcode-back" href="../../../reference/AFQ.tractography.html#AFQ.tractography.ProbabilisticDirectionGetter.initial_direction">[docs]</a>    <span class="k">def</span> <span class="nf">initial_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns best directions at seed location to start tracking.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        point : ndarray, shape (3,)</span>
+<span class="sd">            The point in an image at which to lookup tracking directions.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        directions : ndarray, shape (N, 3)</span>
+<span class="sd">            Possible tracking directions from point. ``N`` may be 0, all</span>
+<span class="sd">            directions should be unique.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pmf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmf_gen</span><span class="o">.</span><span class="n">get_pmf</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peak_directions</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProbabilisticDirectionGetter.get_direction"><a class="viewcode-back" href="../../../reference/AFQ.tractography.html#AFQ.tractography.ProbabilisticDirectionGetter.get_direction">[docs]</a>    <span class="k">def</span> <span class="nf">get_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Samples a pmf to updates ``direction`` array with a new direction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        point : memory-view (or ndarray), shape (3,)</span>
+<span class="sd">            The point in an image at which to lookup tracking directions.</span>
+<span class="sd">        direction : memory-view (or ndarray), shape (3,)</span>
+<span class="sd">            Previous tracking direction.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        status : int</span>
+<span class="sd">            Returns 0 `direction` was updated with a new tracking direction, or</span>
+<span class="sd">            1 otherwise.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># point and direction are passed in as cython memory views</span>
+        <span class="n">pmf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmf_gen</span><span class="o">.</span><span class="n">get_pmf</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="n">pmf</span><span class="p">[</span><span class="n">pmf</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmf_threshold</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">cdf</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_adj_matrix</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">direction</span><span class="p">)]</span> <span class="o">*</span> <span class="n">pmf</span><span class="p">)</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">cdf</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="n">random_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="n">cdf</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">cdf</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">random_sample</span><span class="p">,</span> <span class="s">&#39;right&#39;</span><span class="p">)</span>
+
+        <span class="n">newdir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="c"># Update direction and return 0 for error</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">newdir</span><span class="p">,</span> <span class="n">_asarray</span><span class="p">(</span><span class="n">direction</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">direction</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">newdir</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">direction</span><span class="p">[:]</span> <span class="o">=</span> <span class="o">-</span><span class="n">newdir</span>
+        <span class="k">return</span> <span class="mi">0</span></div></div>
+
+
+<div class="viewcode-block" id="DeterministicMaximumDirectionGetter"><a class="viewcode-back" href="../../../reference/AFQ.tractography.html#AFQ.tractography.DeterministicMaximumDirectionGetter">[docs]</a><span class="k">class</span> <span class="nc">DeterministicMaximumDirectionGetter</span><span class="p">(</span><span class="n">ProbabilisticDirectionGetter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return direction of a sphere with the highest probability mass</span>
+<span class="sd">    function (pmf).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="DeterministicMaximumDirectionGetter.get_direction"><a class="viewcode-back" href="../../../reference/AFQ.tractography.html#AFQ.tractography.DeterministicMaximumDirectionGetter.get_direction">[docs]</a>    <span class="k">def</span> <span class="nf">get_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Find direction with the highest pmf to updates ``direction`` array</span>
+<span class="sd">        with a new direction.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        point : memory-view (or ndarray), shape (3,)</span>
+<span class="sd">            The point in an image at which to lookup tracking directions.</span>
+<span class="sd">        direction : memory-view (or ndarray), shape (3,)</span>
+<span class="sd">            Previous tracking direction.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        status : int</span>
+<span class="sd">            Returns 0 `direction` was updated with a new tracking direction, or</span>
+<span class="sd">            1 otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># point and direction are passed in as cython memory views</span>
+        <span class="n">pmf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmf_gen</span><span class="o">.</span><span class="n">get_pmf</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="n">pmf</span><span class="p">[</span><span class="n">pmf</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmf_threshold</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">cdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adj_matrix</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">direction</span><span class="p">)]</span> <span class="o">*</span> <span class="n">pmf</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">cdf</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pmf</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+
+        <span class="n">newdir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="c"># Update direction and return 0 for error</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">newdir</span><span class="p">,</span> <span class="n">_asarray</span><span class="p">(</span><span class="n">direction</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">direction</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">newdir</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">direction</span><span class="p">[:]</span> <span class="o">=</span> <span class="o">-</span><span class="n">newdir</span>
+        <span class="k">return</span> <span class="mi">0</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

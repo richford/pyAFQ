@@ -1,0 +1,1087 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dipy.data.fetcher &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.data.html"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>dipy.data.fetcher</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for dipy.data.fetcher</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
+
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">join</span> <span class="k">as</span> <span class="n">pjoin</span>
+<span class="kn">from</span> <span class="nn">hashlib</span> <span class="k">import</span> <span class="n">md5</span>
+<span class="kn">from</span> <span class="nn">shutil</span> <span class="k">import</span> <span class="n">copyfileobj</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">nibabel</span> <span class="k">as</span> <span class="nn">nib</span>
+
+<span class="kn">import</span> <span class="nn">tarfile</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="kn">from</span> <span class="nn">dipy.core.gradients</span> <span class="k">import</span> <span class="n">gradient_table</span>
+<span class="kn">from</span> <span class="nn">dipy.io.gradients</span> <span class="k">import</span> <span class="n">read_bvals_bvecs</span>
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urllib2</span> <span class="k">import</span> <span class="n">urlopen</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urllib.request</span> <span class="k">import</span> <span class="n">urlopen</span>
+
+
+<span class="c"># Set a user-writeable file-system location to put files:</span>
+<span class="n">dipy_home</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&#39;~&#39;</span><span class="p">),</span> <span class="s">&#39;.dipy&#39;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">FetcherError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">def</span> <span class="nf">_log</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helper function to keep track of things.</span>
+<span class="sd">    For now, just prints the message</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">update_progressbar</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">total_length</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Show progressbar</span>
+
+<span class="sd">    Takes a number between 0 and 1 to indicate progress from 0 to 100%.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Try to set the bar_length according to the console size</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s">&#39;tput cols&#39;</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">bar_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="mi">46</span>
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="p">(</span><span class="n">bar_length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)):</span>
+            <span class="n">bar_length</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="c"># Default value if determination of console size fails</span>
+        <span class="n">bar_length</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="n">block</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">bar_length</span> <span class="o">*</span> <span class="n">progress</span><span class="p">))</span>
+    <span class="n">size_string</span> <span class="o">=</span> <span class="s">&quot;{0:.2f} MB&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">total_length</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">))</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Download Progress: [{0}] {1:.2f}%  of {2}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="s">&quot;#&quot;</span> <span class="o">*</span> <span class="n">block</span> <span class="o">+</span> <span class="s">&quot;-&quot;</span> <span class="o">*</span> <span class="p">(</span><span class="n">bar_length</span> <span class="o">-</span> <span class="n">block</span><span class="p">),</span> <span class="n">progress</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size_string</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">copyfileobj_withprogress</span><span class="p">(</span><span class="n">fsrc</span><span class="p">,</span> <span class="n">fdst</span><span class="p">,</span> <span class="n">total_length</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">16</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">):</span>
+    <span class="n">copied</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="k">True</span><span class="p">:</span>
+        <span class="n">buf</span> <span class="o">=</span> <span class="n">fsrc</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">buf</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">fdst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+        <span class="n">copied</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+        <span class="n">progress</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">copied</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">total_length</span><span class="p">)</span>
+        <span class="n">update_progressbar</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">total_length</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_already_there_msg</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Prints a message indicating that a certain data-set is already in place</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Dataset is already in place. If you want to fetch it again &#39;</span>
+    <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;please first remove the folder %s &#39;</span> <span class="o">%</span> <span class="n">folder</span>
+    <span class="n">_log</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_file_md5</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the md5 checksum of a file&quot;&quot;&quot;</span>
+    <span class="n">md5_data</span> <span class="o">=</span> <span class="n">md5</span><span class="p">()</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">128</span> <span class="o">*</span> <span class="n">md5_data</span><span class="o">.</span><span class="n">block_size</span><span class="p">),</span> <span class="n">b</span><span class="s">&#39;&#39;</span><span class="p">):</span>
+            <span class="n">md5_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">md5_data</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">check_md5</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">stored_md5</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the md5 of filename and check if it matches with the supplied</span>
+<span class="sd">    string md5</span>
+
+<span class="sd">    Input</span>
+<span class="sd">    -----</span>
+<span class="sd">    filename : string</span>
+<span class="sd">        Path to a file.</span>
+<span class="sd">    md5 : string</span>
+<span class="sd">        Known md5 of filename to check against. If None (default), checking is</span>
+<span class="sd">        skipped</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">stored_md5</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">computed_md5</span> <span class="o">=</span> <span class="n">_get_file_md5</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">stored_md5</span> <span class="o">!=</span> <span class="n">computed_md5</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;The downloaded file, %s, does not have the expected md5</span>
+<span class="s">   checksum of &quot;%s&quot;. Instead, the md5 checksum was: &quot;%s&quot;. This could mean that</span>
+<span class="s">   something is wrong with the file or that the upstream file has been updated.</span>
+<span class="s">   You can try downloading the file again or updating to the newest version of</span>
+<span class="s">   dipy.&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">stored_md5</span><span class="p">,</span>
+                <span class="n">computed_md5</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">FetcherError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_file_data</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">closing</span><span class="p">(</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">))</span> <span class="k">as</span> <span class="n">opener</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">response_size</span> <span class="o">=</span> <span class="n">opener</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;content-length&#39;</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">response_size</span> <span class="o">=</span> <span class="k">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># python3.x</span>
+            <span class="c"># returns none if header not found</span>
+            <span class="n">response_size</span> <span class="o">=</span> <span class="n">opener</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="s">&quot;Content-Length&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">response_size</span> <span class="ow">is</span> <span class="k">None</span><span class="p">):</span>
+                <span class="n">copyfileobj</span><span class="p">(</span><span class="n">opener</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">copyfileobj_withprogress</span><span class="p">(</span><span class="n">opener</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">response_size</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">fetch_data</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">data_size</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Downloads files to folder and checks their md5 checksums</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    files : dictionary</span>
+<span class="sd">        For each file in `files` the value should be (url, md5). The file will</span>
+<span class="sd">        be downloaded from url if the file does not already exist or if the</span>
+<span class="sd">        file exists but the md5 checksum does not match.</span>
+<span class="sd">    folder : str</span>
+<span class="sd">        The directory where to save the file, the directory will be created if</span>
+<span class="sd">        it does not already exist.</span>
+<span class="sd">    data_size : str, optional</span>
+<span class="sd">        A string describing the size of the data (e.g. &quot;91 MB&quot;) to be logged to</span>
+<span class="sd">        the screen. Default does not produce any information about data size.</span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    FetcherError</span>
+<span class="sd">        Raises if the md5 checksum of the file does not match the expected</span>
+<span class="sd">        value. The downloaded file is not deleted when this error is raised.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
+        <span class="n">_log</span><span class="p">(</span><span class="s">&quot;Creating new folder %s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">folder</span><span class="p">))</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">data_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">_log</span><span class="p">(</span><span class="s">&#39;Data size is approximately %s&#39;</span> <span class="o">%</span> <span class="n">data_size</span><span class="p">)</span>
+
+    <span class="n">all_skip</span> <span class="o">=</span> <span class="k">True</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">url</span><span class="p">,</span> <span class="n">md5</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="n">f</span><span class="p">]</span>
+        <span class="n">fullpath</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fullpath</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">_get_file_md5</span><span class="p">(</span><span class="n">fullpath</span><span class="p">)</span> <span class="o">==</span> <span class="n">md5</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">all_skip</span> <span class="o">=</span> <span class="k">False</span>
+        <span class="n">_log</span><span class="p">(</span><span class="s">&#39;Downloading &quot;%s&quot; to %s&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">folder</span><span class="p">))</span>
+        <span class="n">_get_file_data</span><span class="p">(</span><span class="n">fullpath</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+        <span class="n">check_md5</span><span class="p">(</span><span class="n">fullpath</span><span class="p">,</span> <span class="n">md5</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">all_skip</span><span class="p">:</span>
+        <span class="n">_already_there_msg</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_log</span><span class="p">(</span><span class="s">&quot;Files successfully downloaded to %s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">folder</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_make_fetcher</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">baseurl</span><span class="p">,</span> <span class="n">remote_fnames</span><span class="p">,</span> <span class="n">local_fnames</span><span class="p">,</span>
+                  <span class="n">md5_list</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">data_size</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+                  <span class="n">unzip</span><span class="o">=</span><span class="k">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Create a new fetcher</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        The name of the fetcher function.</span>
+<span class="sd">    folder : str</span>
+<span class="sd">        The full path to the folder in which the files would be placed locally.</span>
+<span class="sd">        Typically, this is something like &#39;pjoin(dipy_home, &#39;foo&#39;)&#39;</span>
+<span class="sd">    baseurl : str</span>
+<span class="sd">        The URL from which this fetcher reads files</span>
+<span class="sd">    remote_fnames : list of strings</span>
+<span class="sd">        The names of the files in the baseurl location</span>
+<span class="sd">    local_fnames : list of strings</span>
+<span class="sd">        The names of the files to be saved on the local filesystem</span>
+<span class="sd">    md5_list : list of strings, optional</span>
+<span class="sd">        The md5 checksums of the files. Used to verify the content of the</span>
+<span class="sd">        files. Default: None, skipping checking md5.</span>
+<span class="sd">    doc : str, optional.</span>
+<span class="sd">        Documentation of the fetcher.</span>
+<span class="sd">    data_size : str, optional.</span>
+<span class="sd">        If provided, is sent as a message to the user before downloading</span>
+<span class="sd">        starts.</span>
+<span class="sd">    msg : str, optional.</span>
+<span class="sd">        A message to print to screen when fetching takes place. Default (None)</span>
+<span class="sd">        is to print nothing</span>
+<span class="sd">    unzip : bool, optional</span>
+<span class="sd">        Whether to unzip the file(s) after downloading them. Supports zip, gz,</span>
+<span class="sd">        and tar.gz files.</span>
+<span class="sd">    returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fetcher : function</span>
+<span class="sd">        A function that, when called, fetches data according to the designated</span>
+<span class="sd">        inputs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">fetcher</span><span class="p">():</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">remote_fnames</span><span class="p">,</span> <span class="n">local_fnames</span><span class="p">)):</span>
+            <span class="n">files</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">baseurl</span> <span class="o">+</span> <span class="n">f</span><span class="p">,</span> <span class="n">md5_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span>
+                        <span class="n">md5_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span> <span class="k">else</span> <span class="k">None</span><span class="p">)</span>
+        <span class="n">fetch_data</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">data_size</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">msg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="k">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unzip</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">local_fnames</span><span class="p">:</span>
+                <span class="n">split_ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">split_ext</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;.gz&#39;</span> <span class="ow">or</span> <span class="n">split_ext</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;.bz2&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">split_ext</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;.tar&#39;</span><span class="p">:</span>
+                        <span class="n">ar</span> <span class="o">=</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span>
+                        <span class="n">ar</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">folder</span><span class="p">)</span>
+                        <span class="n">ar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;File extension is not recognized&#39;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">split_ext</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;.zip&#39;</span><span class="p">:</span>
+                    <span class="n">z</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">f</span><span class="p">),</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+                    <span class="n">z</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+                    <span class="n">z</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;File extension is not recognized&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">files</span><span class="p">,</span> <span class="n">folder</span>
+
+    <span class="n">fetcher</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">fetcher</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="n">doc</span>
+    <span class="k">return</span> <span class="n">fetcher</span>
+
+
+<span class="n">fetch_isbi2013_2shell</span> <span class="o">=</span> <span class="n">_make_fetcher</span><span class="p">(</span>
+    <span class="s">&quot;fetch_isbi2013_2shell&quot;</span><span class="p">,</span>
+    <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span> <span class="s">&#39;isbi2013&#39;</span><span class="p">),</span>
+    <span class="s">&#39;https://dl.dropboxusercontent.com/u/2481924/isbi2013_merlet/&#39;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s">&#39;2shells-1500-2500-N64-SNR-30.nii.gz&#39;</span><span class="p">,</span>
+     <span class="s">&#39;2shells-1500-2500-N64.bval&#39;</span><span class="p">,</span>
+     <span class="s">&#39;2shells-1500-2500-N64.bvec&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;phantom64.nii.gz&#39;</span><span class="p">,</span> <span class="s">&#39;phantom64.bval&#39;</span><span class="p">,</span> <span class="s">&#39;phantom64.bvec&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;42911a70f232321cf246315192d69c42&#39;</span><span class="p">,</span>
+     <span class="s">&#39;90e8cf66e0f4d9737a3b3c0da24df5ea&#39;</span><span class="p">,</span>
+     <span class="s">&#39;4b7aa2757a1ccab140667b76e8075cb1&#39;</span><span class="p">],</span>
+    <span class="n">doc</span><span class="o">=</span><span class="s">&quot;Download a 2-shell software phantom dataset&quot;</span><span class="p">,</span>
+    <span class="n">data_size</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">fetch_stanford_labels</span> <span class="o">=</span> <span class="n">_make_fetcher</span><span class="p">(</span>
+    <span class="s">&quot;fetch_stanford_labels&quot;</span><span class="p">,</span>
+    <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span> <span class="s">&#39;stanford_hardi&#39;</span><span class="p">),</span>
+    <span class="s">&#39;https://stacks.stanford.edu/file/druid:yx282xq2090/&#39;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s">&quot;aparc-reduced.nii.gz&quot;</span><span class="p">,</span> <span class="s">&quot;label_info.txt&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&quot;aparc-reduced.nii.gz&quot;</span><span class="p">,</span> <span class="s">&quot;label_info.txt&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;742de90090d06e687ce486f680f6d71a&#39;</span><span class="p">,</span>
+     <span class="s">&#39;39db9f0f5e173d7a2c2e51b07d5d711b&#39;</span><span class="p">],</span>
+    <span class="n">doc</span><span class="o">=</span><span class="s">&quot;Download reduced freesurfer aparc image from stanford web site&quot;</span><span class="p">)</span>
+
+<span class="n">fetch_sherbrooke_3shell</span> <span class="o">=</span> <span class="n">_make_fetcher</span><span class="p">(</span>
+    <span class="s">&quot;fetch_sherbrooke_3shell&quot;</span><span class="p">,</span>
+    <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span> <span class="s">&#39;sherbrooke_3shell&#39;</span><span class="p">),</span>
+    <span class="s">&#39;https://dl.dropboxusercontent.com/u/2481924/sherbrooke_data/&#39;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s">&#39;3shells-1000-2000-3500-N193.nii.gz&#39;</span><span class="p">,</span>
+     <span class="s">&#39;3shells-1000-2000-3500-N193.bval&#39;</span><span class="p">,</span>
+     <span class="s">&#39;3shells-1000-2000-3500-N193.bvec&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;HARDI193.nii.gz&#39;</span><span class="p">,</span> <span class="s">&#39;HARDI193.bval&#39;</span><span class="p">,</span> <span class="s">&#39;HARDI193.bvec&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;0b735e8f16695a37bfbd66aab136eb66&#39;</span><span class="p">,</span>
+     <span class="s">&#39;e9b9bb56252503ea49d31fb30a0ac637&#39;</span><span class="p">,</span>
+     <span class="s">&#39;0c83f7e8b917cd677ad58a078658ebb7&#39;</span><span class="p">],</span>
+    <span class="n">doc</span><span class="o">=</span><span class="s">&quot;Download a 3shell HARDI dataset with 192 gradient direction&quot;</span><span class="p">)</span>
+
+
+<span class="n">fetch_stanford_hardi</span> <span class="o">=</span> <span class="n">_make_fetcher</span><span class="p">(</span>
+    <span class="s">&quot;fetch_stanford_hardi&quot;</span><span class="p">,</span>
+    <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span> <span class="s">&#39;stanford_hardi&#39;</span><span class="p">),</span>
+    <span class="s">&#39;https://stacks.stanford.edu/file/druid:yx282xq2090/&#39;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s">&#39;dwi.nii.gz&#39;</span><span class="p">,</span> <span class="s">&#39;dwi.bvals&#39;</span><span class="p">,</span> <span class="s">&#39;dwi.bvecs&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;HARDI150.nii.gz&#39;</span><span class="p">,</span> <span class="s">&#39;HARDI150.bval&#39;</span><span class="p">,</span> <span class="s">&#39;HARDI150.bvec&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;0b18513b46132b4d1051ed3364f2acbc&#39;</span><span class="p">,</span>
+     <span class="s">&#39;4e08ee9e2b1d2ec3fddb68c70ae23c36&#39;</span><span class="p">,</span>
+     <span class="s">&#39;4c63a586f29afc6a48a5809524a76cb4&#39;</span><span class="p">],</span>
+    <span class="n">doc</span><span class="o">=</span><span class="s">&quot;Download a HARDI dataset with 160 gradient directions&quot;</span><span class="p">)</span>
+
+<span class="n">fetch_stanford_t1</span> <span class="o">=</span> <span class="n">_make_fetcher</span><span class="p">(</span>
+    <span class="s">&quot;fetch_stanford_t1&quot;</span><span class="p">,</span>
+    <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span> <span class="s">&#39;stanford_hardi&#39;</span><span class="p">),</span>
+    <span class="s">&#39;https://stacks.stanford.edu/file/druid:yx282xq2090/&#39;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s">&#39;t1.nii.gz&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;t1.nii.gz&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;a6a140da6a947d4131b2368752951b0a&#39;</span><span class="p">])</span>
+
+<span class="n">fetch_stanford_pve_maps</span> <span class="o">=</span> <span class="n">_make_fetcher</span><span class="p">(</span>
+    <span class="s">&quot;fetch_stanford_pve_maps&quot;</span><span class="p">,</span>
+    <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span> <span class="s">&#39;stanford_hardi&#39;</span><span class="p">),</span>
+    <span class="s">&#39;https://stacks.stanford.edu/file/druid:yx282xq2090/&#39;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s">&#39;pve_csf.nii.gz&#39;</span><span class="p">,</span> <span class="s">&#39;pve_gm.nii.gz&#39;</span><span class="p">,</span> <span class="s">&#39;pve_wm.nii.gz&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;pve_csf.nii.gz&#39;</span><span class="p">,</span> <span class="s">&#39;pve_gm.nii.gz&#39;</span><span class="p">,</span> <span class="s">&#39;pve_wm.nii.gz&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;2c498e4fed32bca7f726e28aa86e9c18&#39;</span><span class="p">,</span>
+     <span class="s">&#39;1654b20aeb35fc2734a0d7928b713874&#39;</span><span class="p">,</span>
+     <span class="s">&#39;2e244983cf92aaf9f9d37bc7716b37d5&#39;</span><span class="p">])</span>
+
+<span class="n">fetch_taiwan_ntu_dsi</span> <span class="o">=</span> <span class="n">_make_fetcher</span><span class="p">(</span>
+    <span class="s">&quot;fetch_taiwan_ntu_dsi&quot;</span><span class="p">,</span>
+    <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span> <span class="s">&#39;taiwan_ntu_dsi&#39;</span><span class="p">),</span>
+    <span class="s">&quot;http://dl.dropbox.com/u/2481924/&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s">&#39;taiwan_ntu_dsi.nii.gz&#39;</span><span class="p">,</span> <span class="s">&#39;tawian_ntu_dsi.bval&#39;</span><span class="p">,</span>
+     <span class="s">&#39;taiwan_ntu_dsi.bvec&#39;</span><span class="p">,</span> <span class="s">&#39;license_taiwan_ntu_dsi.txt&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;DSI203.nii.gz&#39;</span><span class="p">,</span> <span class="s">&#39;DSI203.bval&#39;</span><span class="p">,</span> <span class="s">&#39;DSI203.bvec&#39;</span><span class="p">,</span> <span class="s">&#39;DSI203_license.txt&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;950408c0980a7154cb188666a885a91f&#39;</span><span class="p">,</span>
+     <span class="s">&#39;602e5cb5fad2e7163e8025011d8a6755&#39;</span><span class="p">,</span>
+     <span class="s">&#39;a95eb1be44748c20214dc7aa654f9e6b&#39;</span><span class="p">,</span>
+     <span class="s">&#39;7fa1d5e272533e832cc7453eeba23f44&#39;</span><span class="p">],</span>
+    <span class="n">doc</span><span class="o">=</span><span class="s">&quot;Download a DSI dataset with 203 gradient directions&quot;</span><span class="p">,</span>
+    <span class="n">msg</span><span class="o">=</span><span class="s">&quot;See DSI203_license.txt for LICENSE. For the complete datasets please visit : </span><span class="se">\</span>
+<span class="s">         http://dsi-studio.labsolver.org&quot;</span><span class="p">,</span>
+    <span class="n">data_size</span><span class="o">=</span><span class="s">&quot;91MB&quot;</span><span class="p">)</span>
+
+<span class="n">fetch_syn_data</span> <span class="o">=</span> <span class="n">_make_fetcher</span><span class="p">(</span>
+    <span class="s">&quot;fetch_syn_data&quot;</span><span class="p">,</span>
+    <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span> <span class="s">&#39;syn_test&#39;</span><span class="p">),</span>
+    <span class="s">&#39;https://dl.dropboxusercontent.com/u/5918983/&#39;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s">&#39;t1.nii.gz&#39;</span><span class="p">,</span> <span class="s">&#39;b0.nii.gz&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;t1.nii.gz&#39;</span><span class="p">,</span> <span class="s">&#39;b0.nii.gz&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;701bda02bb769655c7d4a9b1df2b73a6&#39;</span><span class="p">,</span>
+     <span class="s">&#39;e4b741f0c77b6039e67abb2885c97a78&#39;</span><span class="p">],</span>
+    <span class="n">data_size</span><span class="o">=</span><span class="s">&quot;12MB&quot;</span><span class="p">,</span>
+    <span class="n">doc</span><span class="o">=</span><span class="s">&quot;Download t1 and b0 volumes from the same session&quot;</span><span class="p">)</span>
+
+<span class="n">fetch_mni_template</span> <span class="o">=</span> <span class="n">_make_fetcher</span><span class="p">(</span>
+    <span class="s">&quot;fetch_mni_template&quot;</span><span class="p">,</span>
+    <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span> <span class="s">&#39;mni_template&#39;</span><span class="p">),</span>
+    <span class="s">&#39;https://ndownloader.figshare.com/files/&#39;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s">&#39;5572676?private_link=4b8666116a0128560fb5&#39;</span><span class="p">,</span>
+     <span class="s">&#39;5572673?private_link=93216e750d5a7e568bda&#39;</span><span class="p">,</span>
+     <span class="s">&#39;5572670?private_link=33c92d54d1afb9aa7ed2&#39;</span><span class="p">,</span>
+     <span class="s">&#39;5572661?private_link=584319b23e7343fed707&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;mni_icbm152_t2_tal_nlin_asym_09a.nii&#39;</span><span class="p">,</span>
+     <span class="s">&#39;mni_icbm152_t1_tal_nlin_asym_09a.nii&#39;</span><span class="p">,</span>
+     <span class="s">&#39;mni_icbm152_t1_tal_nlin_asym_09c_mask.nii&#39;</span><span class="p">,</span>
+     <span class="s">&#39;mni_icbm152_t1_tal_nlin_asym_09c.nii&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;f41f2e1516d880547fbf7d6a83884f0d&#39;</span><span class="p">,</span>
+     <span class="s">&#39;1ea8f4f1e41bc17a94602e48141fdbc8&#39;</span><span class="p">,</span>
+     <span class="s">&#39;a243e249cd01a23dc30f033b9656a786&#39;</span><span class="p">,</span>
+     <span class="s">&#39;3d5dd9b0cd727a17ceec610b782f66c1&#39;</span><span class="p">],</span>
+    <span class="n">doc</span><span class="o">=</span><span class="s">&quot;fetch the MNI 2009a T1 and T2, and 2009c T1 and T1 mask files&quot;</span><span class="p">,</span>
+    <span class="n">data_size</span><span class="o">=</span><span class="s">&quot;70MB&quot;</span><span class="p">)</span>
+
+<span class="n">fetch_scil_b0</span> <span class="o">=</span> <span class="n">_make_fetcher</span><span class="p">(</span>
+    <span class="s">&quot;fetch_scil_b0&quot;</span><span class="p">,</span>
+    <span class="n">dipy_home</span><span class="p">,</span>
+    <span class="s">&#39;http://scil.dinf.usherbrooke.ca/wp-content/data/&#39;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s">&#39;datasets_multi-site_all_companies.zip&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;datasets_multi-site_all_companies.zip&#39;</span><span class="p">],</span>
+    <span class="k">None</span><span class="p">,</span>
+    <span class="n">doc</span><span class="o">=</span><span class="s">&quot;Download b=0 datasets from multiple MR systems (GE, Philips, Siemens) </span><span class="se">\</span>
+<span class="s">         and different magnetic fields (1.5T and 3T)&quot;</span><span class="p">,</span>
+    <span class="n">data_size</span><span class="o">=</span><span class="s">&quot;9.2MB&quot;</span><span class="p">,</span>
+    <span class="n">unzip</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+
+<span class="n">fetch_viz_icons</span> <span class="o">=</span> <span class="n">_make_fetcher</span><span class="p">(</span><span class="s">&quot;fetch_viz_icons&quot;</span><span class="p">,</span>
+                                <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span> <span class="s">&quot;icons&quot;</span><span class="p">),</span>
+                                <span class="s">&#39;https://dl.dropboxusercontent.com/u/2481924/&#39;</span><span class="p">,</span>
+                                <span class="p">[</span><span class="s">&#39;icomoon.tar.gz&#39;</span><span class="p">],</span>
+                                <span class="p">[</span><span class="s">&#39;icomoon.tar.gz&#39;</span><span class="p">],</span>
+                                <span class="p">[</span><span class="s">&#39;94a07cba06b4136b6687396426f1e380&#39;</span><span class="p">],</span>
+                                <span class="n">data_size</span><span class="o">=</span><span class="s">&quot;12KB&quot;</span><span class="p">,</span>
+                                <span class="n">doc</span><span class="o">=</span><span class="s">&quot;Download icons for dipy.viz&quot;</span><span class="p">,</span>
+                                <span class="n">unzip</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+
+<span class="n">fetch_bundles_2_subjects</span> <span class="o">=</span> <span class="n">_make_fetcher</span><span class="p">(</span>
+    <span class="s">&quot;fetch_bundles_2_subjects&quot;</span><span class="p">,</span>
+    <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span> <span class="s">&#39;exp_bundles_and_maps&#39;</span><span class="p">),</span>
+    <span class="s">&#39;https://dl.dropboxusercontent.com/u/2481924/&#39;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s">&#39;bundles_2_subjects.tar.gz&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;bundles_2_subjects.tar.gz&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;97756fbef11ce2df31f1bedf1fc7aac7&#39;</span><span class="p">],</span>
+    <span class="n">data_size</span><span class="o">=</span><span class="s">&quot;234MB&quot;</span><span class="p">,</span>
+    <span class="n">doc</span><span class="o">=</span><span class="s">&quot;Download 2 subjects from the SNAIL dataset with their bundles&quot;</span><span class="p">,</span>
+    <span class="n">unzip</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+
+<span class="n">fetch_ivim</span> <span class="o">=</span> <span class="n">_make_fetcher</span><span class="p">(</span>
+    <span class="s">&quot;fetch_ivim&quot;</span><span class="p">,</span>
+    <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span> <span class="s">&#39;ivim&#39;</span><span class="p">),</span>
+    <span class="s">&#39;https://ndownloader.figshare.com/files/&#39;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s">&#39;5305243&#39;</span><span class="p">,</span> <span class="s">&#39;5305246&#39;</span><span class="p">,</span> <span class="s">&#39;5305249&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;ivim.nii.gz&#39;</span><span class="p">,</span> <span class="s">&#39;ivim.bval&#39;</span><span class="p">,</span> <span class="s">&#39;ivim.bvec&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;cda596f89dc2676af7d9bf1cabccf600&#39;</span><span class="p">,</span> 
+    <span class="s">&#39;f03d89f84aa9a9397103a400e43af43a&#39;</span><span class="p">,</span>
+    <span class="s">&#39;fb633a06b02807355e49ccd85cb92565&#39;</span><span class="p">],</span>
+    <span class="n">doc</span><span class="o">=</span><span class="s">&quot;Download IVIM dataset&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">read_scil_b0</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Load GE 3T b0 image form the scil b0 dataset.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    img : obj,</span>
+<span class="sd">        Nifti1Image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span>
+                 <span class="s">&#39;datasets_multi-site_all_companies&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;3T&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;GE&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;b0.nii.gz&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">read_siemens_scil_b0</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Load Siemens 1.5T b0 image form the scil b0 dataset.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    img : obj,</span>
+<span class="sd">        Nifti1Image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span>
+                 <span class="s">&#39;datasets_multi-site_all_companies&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;1.5T&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;Siemens&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;b0.nii.gz&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">read_isbi2013_2shell</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Load ISBI 2013 2-shell synthetic dataset</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    img : obj,</span>
+<span class="sd">        Nifti1Image</span>
+<span class="sd">    gtab : obj,</span>
+<span class="sd">        GradientTable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">files</span><span class="p">,</span> <span class="n">folder</span> <span class="o">=</span> <span class="n">fetch_isbi2013_2shell</span><span class="p">()</span>
+    <span class="n">fraw</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;phantom64.nii.gz&#39;</span><span class="p">)</span>
+    <span class="n">fbval</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;phantom64.bval&#39;</span><span class="p">)</span>
+    <span class="n">fbvec</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;phantom64.bvec&#39;</span><span class="p">)</span>
+    <span class="n">bvals</span><span class="p">,</span> <span class="n">bvecs</span> <span class="o">=</span> <span class="n">read_bvals_bvecs</span><span class="p">(</span><span class="n">fbval</span><span class="p">,</span> <span class="n">fbvec</span><span class="p">)</span>
+    <span class="n">gtab</span> <span class="o">=</span> <span class="n">gradient_table</span><span class="p">(</span><span class="n">bvals</span><span class="p">,</span> <span class="n">bvecs</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fraw</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="n">gtab</span>
+
+
+<span class="k">def</span> <span class="nf">read_sherbrooke_3shell</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Load Sherbrooke 3-shell HARDI dataset</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    img : obj,</span>
+<span class="sd">        Nifti1Image</span>
+<span class="sd">    gtab : obj,</span>
+<span class="sd">        GradientTable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">files</span><span class="p">,</span> <span class="n">folder</span> <span class="o">=</span> <span class="n">fetch_sherbrooke_3shell</span><span class="p">()</span>
+    <span class="n">fraw</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;HARDI193.nii.gz&#39;</span><span class="p">)</span>
+    <span class="n">fbval</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;HARDI193.bval&#39;</span><span class="p">)</span>
+    <span class="n">fbvec</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;HARDI193.bvec&#39;</span><span class="p">)</span>
+    <span class="n">bvals</span><span class="p">,</span> <span class="n">bvecs</span> <span class="o">=</span> <span class="n">read_bvals_bvecs</span><span class="p">(</span><span class="n">fbval</span><span class="p">,</span> <span class="n">fbvec</span><span class="p">)</span>
+    <span class="n">gtab</span> <span class="o">=</span> <span class="n">gradient_table</span><span class="p">(</span><span class="n">bvals</span><span class="p">,</span> <span class="n">bvecs</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fraw</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="n">gtab</span>
+
+
+<span class="k">def</span> <span class="nf">read_stanford_labels</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Read stanford hardi data and label map&quot;&quot;&quot;</span>
+    <span class="c"># First get the hardi data</span>
+    <span class="n">fetch_stanford_hardi</span><span class="p">()</span>
+    <span class="n">hard_img</span><span class="p">,</span> <span class="n">gtab</span> <span class="o">=</span> <span class="n">read_stanford_hardi</span><span class="p">()</span>
+    <span class="c"># Fetch and load</span>
+    <span class="n">files</span><span class="p">,</span> <span class="n">folder</span> <span class="o">=</span> <span class="n">fetch_stanford_labels</span><span class="p">()</span>
+    <span class="n">labels_file</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&quot;aparc-reduced.nii.gz&quot;</span><span class="p">)</span>
+    <span class="n">labels_img</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">labels_file</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">hard_img</span><span class="p">,</span> <span class="n">gtab</span><span class="p">,</span> <span class="n">labels_img</span>
+
+
+<span class="k">def</span> <span class="nf">read_stanford_hardi</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Load Stanford HARDI dataset</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    img : obj,</span>
+<span class="sd">        Nifti1Image</span>
+<span class="sd">    gtab : obj,</span>
+<span class="sd">        GradientTable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">files</span><span class="p">,</span> <span class="n">folder</span> <span class="o">=</span> <span class="n">fetch_stanford_hardi</span><span class="p">()</span>
+    <span class="n">fraw</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;HARDI150.nii.gz&#39;</span><span class="p">)</span>
+    <span class="n">fbval</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;HARDI150.bval&#39;</span><span class="p">)</span>
+    <span class="n">fbvec</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;HARDI150.bvec&#39;</span><span class="p">)</span>
+    <span class="n">bvals</span><span class="p">,</span> <span class="n">bvecs</span> <span class="o">=</span> <span class="n">read_bvals_bvecs</span><span class="p">(</span><span class="n">fbval</span><span class="p">,</span> <span class="n">fbvec</span><span class="p">)</span>
+    <span class="n">gtab</span> <span class="o">=</span> <span class="n">gradient_table</span><span class="p">(</span><span class="n">bvals</span><span class="p">,</span> <span class="n">bvecs</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fraw</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="n">gtab</span>
+
+
+<span class="k">def</span> <span class="nf">read_stanford_t1</span><span class="p">():</span>
+    <span class="n">files</span><span class="p">,</span> <span class="n">folder</span> <span class="o">=</span> <span class="n">fetch_stanford_t1</span><span class="p">()</span>
+    <span class="n">f_t1</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;t1.nii.gz&#39;</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f_t1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span>
+
+
+<span class="k">def</span> <span class="nf">read_stanford_pve_maps</span><span class="p">():</span>
+    <span class="n">files</span><span class="p">,</span> <span class="n">folder</span> <span class="o">=</span> <span class="n">fetch_stanford_pve_maps</span><span class="p">()</span>
+    <span class="n">f_pve_csf</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;pve_csf.nii.gz&#39;</span><span class="p">)</span>
+    <span class="n">f_pve_gm</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;pve_gm.nii.gz&#39;</span><span class="p">)</span>
+    <span class="n">f_pve_wm</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;pve_wm.nii.gz&#39;</span><span class="p">)</span>
+    <span class="n">img_pve_csf</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f_pve_csf</span><span class="p">)</span>
+    <span class="n">img_pve_gm</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f_pve_gm</span><span class="p">)</span>
+    <span class="n">img_pve_wm</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f_pve_wm</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">img_pve_csf</span><span class="p">,</span> <span class="n">img_pve_gm</span><span class="p">,</span> <span class="n">img_pve_wm</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">read_taiwan_ntu_dsi</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Load Taiwan NTU dataset</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    img : obj,</span>
+<span class="sd">        Nifti1Image</span>
+<span class="sd">    gtab : obj,</span>
+<span class="sd">        GradientTable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">files</span><span class="p">,</span> <span class="n">folder</span> <span class="o">=</span> <span class="n">fetch_taiwan_ntu_dsi</span><span class="p">()</span>
+    <span class="n">fraw</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;DSI203.nii.gz&#39;</span><span class="p">)</span>
+    <span class="n">fbval</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;DSI203.bval&#39;</span><span class="p">)</span>
+    <span class="n">fbvec</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;DSI203.bvec&#39;</span><span class="p">)</span>
+    <span class="n">bvals</span><span class="p">,</span> <span class="n">bvecs</span> <span class="o">=</span> <span class="n">read_bvals_bvecs</span><span class="p">(</span><span class="n">fbval</span><span class="p">,</span> <span class="n">fbvec</span><span class="p">)</span>
+    <span class="n">bvecs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="p">(</span><span class="n">bvecs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">/</span>
+                 <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">bvecs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">*</span> <span class="n">bvecs</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))[:,</span> <span class="k">None</span><span class="p">])</span>
+    <span class="n">gtab</span> <span class="o">=</span> <span class="n">gradient_table</span><span class="p">(</span><span class="n">bvals</span><span class="p">,</span> <span class="n">bvecs</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fraw</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="n">gtab</span>
+
+
+<span class="k">def</span> <span class="nf">read_syn_data</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Load t1 and b0 volumes from the same session</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    t1 : obj,</span>
+<span class="sd">        Nifti1Image</span>
+<span class="sd">    b0 : obj,</span>
+<span class="sd">        Nifti1Image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">files</span><span class="p">,</span> <span class="n">folder</span> <span class="o">=</span> <span class="n">fetch_syn_data</span><span class="p">()</span>
+    <span class="n">t1_name</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;t1.nii.gz&#39;</span><span class="p">)</span>
+    <span class="n">b0_name</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;b0.nii.gz&#39;</span><span class="p">)</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">t1_name</span><span class="p">)</span>
+    <span class="n">b0</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">b0_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">t1</span><span class="p">,</span> <span class="n">b0</span>
+
+<span class="n">mni_notes</span> <span class="o">=</span> \
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The templates were downloaded from the MNI (McGill University)</span>
+<span class="sd">    `website &lt;http://www.bic.mni.mcgill.ca/ServicesAtlases/ICBM152NLin2009&gt;`_</span>
+<span class="sd">    in July 2015.</span>
+
+<span class="sd">    The following publications should be referenced when using these templates:</span>
+
+<span class="sd">    .. [1] VS Fonov, AC Evans, K Botteron, CR Almli, RC McKinstry, DL Collins</span>
+<span class="sd">           and BDCG, Unbiased average age-appropriate atlases for pediatric</span>
+<span class="sd">           studies, NeuroImage, 54:1053-8119,</span>
+<span class="sd">           DOI: 10.1016/j.neuroimage.2010.07.033</span>
+
+<span class="sd">    .. [2] VS Fonov, AC Evans, RC McKinstry, CR Almli and DL Collins,</span>
+<span class="sd">            Unbiased nonlinear average age-appropriate brain templates from</span>
+<span class="sd">            birth to adulthood, NeuroImage, 47:S102</span>
+<span class="sd">            Organization for Human Brain Mapping 2009 Annual Meeting,</span>
+<span class="sd">            DOI: http://dx.doi.org/10.1016/S1053-8119(09)70884-5</span>
+
+<span class="sd">    License for the MNI templates:</span>
+<span class="sd">    -----------------------------</span>
+<span class="sd">    Copyright (C) 1993-2004, Louis Collins McConnell Brain Imaging Centre,</span>
+<span class="sd">    Montreal Neurological Institute, McGill University. Permission to use,</span>
+<span class="sd">    copy, modify, and distribute this software and its documentation for any</span>
+<span class="sd">    purpose and without fee is hereby granted, provided that the above</span>
+<span class="sd">    copyright notice appear in all copies. The authors and McGill University</span>
+<span class="sd">    make no representations about the suitability of this software for any</span>
+<span class="sd">    purpose. It is provided &quot;as is&quot; without express or implied warranty. The</span>
+<span class="sd">    authors are not responsible for any data loss, equipment damage, property</span>
+<span class="sd">    loss, or injury to subjects or patients resulting from the use or misuse</span>
+<span class="sd">    of this software package.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">read_mni_template</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="n">contrast</span><span class="o">=</span><span class="s">&quot;T2&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read the MNI template from disk</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    version: string</span>
+<span class="sd">        There are two MNI templates 2009a and 2009c, so options available are:</span>
+<span class="sd">        &quot;a&quot; and &quot;c&quot;.</span>
+<span class="sd">    contrast : list or string, optional</span>
+<span class="sd">        Which of the contrast templates to read. For version &quot;a&quot; two contrasts</span>
+<span class="sd">        are available: &quot;T1&quot; and &quot;T2&quot;. Similarly for version &quot;c&quot; there are two</span>
+<span class="sd">        options, &quot;T1&quot; and &quot;mask&quot;. You can input contrast as a string or a list</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list : contains the nibabel.Nifti1Image objects requested, according to the</span>
+<span class="sd">        order they were requested in the input.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Get only the T1 file for version c:</span>
+<span class="sd">    &gt;&gt;&gt; T1_nifti = read_mni_template(&quot;c&quot;, contrast = &quot;T1&quot;) # doctest: +SKIP</span>
+<span class="sd">    Get both files in this order for version a:</span>
+<span class="sd">    &gt;&gt;&gt; T1_nifti, T2_nifti = read_mni_template(contrast = [&quot;T1&quot;, &quot;T2&quot;]) # doctest: +SKIP</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">files</span><span class="p">,</span> <span class="n">folder</span> <span class="o">=</span> <span class="n">fetch_mni_template</span><span class="p">()</span>
+    <span class="n">file_dict_a</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;T1&quot;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;mni_icbm152_t1_tal_nlin_asym_09a.nii&#39;</span><span class="p">),</span>
+                   <span class="s">&quot;T2&quot;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;mni_icbm152_t2_tal_nlin_asym_09a.nii&#39;</span><span class="p">)}</span>
+
+    <span class="n">file_dict_c</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&quot;T1&quot;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span>
+            <span class="n">folder</span><span class="p">,</span> <span class="s">&#39;mni_icbm152_t1_tal_nlin_asym_09c.nii&#39;</span><span class="p">),</span> <span class="s">&quot;mask&quot;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span>
+            <span class="n">folder</span><span class="p">,</span> <span class="s">&#39;mni_icbm152_t1_tal_nlin_asym_09c_mask.nii&#39;</span><span class="p">)}</span>
+
+    <span class="k">if</span> <span class="n">contrast</span> <span class="o">==</span> <span class="s">&quot;T2&quot;</span> <span class="ow">and</span> <span class="n">version</span> <span class="o">==</span> <span class="s">&quot;c&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;No T2 image for MNI template 2009c&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">contrast</span> <span class="o">==</span> <span class="s">&quot;mask&quot;</span> <span class="ow">and</span> <span class="n">version</span> <span class="o">==</span> <span class="s">&quot;a&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;No template mask available for MNI 2009a&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">contrast</span><span class="p">,</span> <span class="nb">str</span><span class="p">))</span> <span class="ow">and</span> <span class="n">version</span> <span class="o">==</span> <span class="s">&quot;c&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">contrast</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s">&quot;T2&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;No T2 image for MNI template 2009c&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="s">&quot;a&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">contrast</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_dict_a</span><span class="p">[</span><span class="n">contrast</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">contrast</span><span class="p">:</span>
+                <span class="n">out_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_dict_a</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+    <span class="k">elif</span> <span class="n">version</span> <span class="o">==</span> <span class="s">&quot;c&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">contrast</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_dict_c</span><span class="p">[</span><span class="n">contrast</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">contrast</span><span class="p">:</span>
+                <span class="n">out_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_dict_c</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Only 2009a and 2009c versions are available&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out_list</span>
+
+
+<span class="c"># Add the references to both MNI-related functions:</span>
+<span class="n">read_mni_template</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="n">mni_notes</span>
+<span class="n">fetch_mni_template</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="n">mni_notes</span>
+
+
+<span class="k">def</span> <span class="nf">fetch_cenir_multib</span><span class="p">(</span><span class="n">with_raw</span><span class="o">=</span><span class="k">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetch &#39;HCP-like&#39; data, collected at multiple b-values</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    with_raw : bool</span>
+<span class="sd">        Whether to fetch the raw data. Per default, this is False, which means</span>
+<span class="sd">        that only eddy-current/motion corrected data is fetched</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">folder</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span> <span class="s">&#39;cenir_multib&#39;</span><span class="p">)</span>
+
+    <span class="n">fname_list</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;4D_dwi_eddycor_B200.nii.gz&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;dwi_bvals_B200&#39;</span><span class="p">,</span> <span class="s">&#39;dwi_bvecs_B200&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;4D_dwieddycor_B400.nii.gz&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;bvals_B400&#39;</span><span class="p">,</span> <span class="s">&#39;bvecs_B400&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;4D_dwieddycor_B1000.nii.gz&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;bvals_B1000&#39;</span><span class="p">,</span> <span class="s">&#39;bvecs_B1000&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;4D_dwieddycor_B2000.nii.gz&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;bvals_B2000&#39;</span><span class="p">,</span> <span class="s">&#39;bvecs_B2000&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;4D_dwieddycor_B3000.nii.gz&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;bvals_B3000&#39;</span><span class="p">,</span> <span class="s">&#39;bvecs_B3000&#39;</span><span class="p">]</span>
+
+    <span class="n">md5_list</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;fd704aa3deb83c1c7229202cb3db8c48&#39;</span><span class="p">,</span>
+                <span class="s">&#39;80ae5df76a575fe5bf9f1164bb0d4cfb&#39;</span><span class="p">,</span>
+                <span class="s">&#39;18e90f8a3e6a4db2457e5b1ba1cc98a9&#39;</span><span class="p">,</span>
+                <span class="s">&#39;3d0f2b8ef7b6a4a3aa5c4f7a90c9cfec&#39;</span><span class="p">,</span>
+                <span class="s">&#39;c38056c40c9cc42372232d6e75c47f54&#39;</span><span class="p">,</span>
+                <span class="s">&#39;810d79b4c30cb7dff3b2000017d5f72a&#39;</span><span class="p">,</span>
+                <span class="s">&#39;dde8037601a14436b2173f4345b5fd17&#39;</span><span class="p">,</span>
+                <span class="s">&#39;97de6a492ae304f39e0b418b6ebac64c&#39;</span><span class="p">,</span>
+                <span class="s">&#39;f28a0faa701bdfc66e31bde471a5b992&#39;</span><span class="p">,</span>
+                <span class="s">&#39;c5e4b96e3afdee99c0e994eff3b2331a&#39;</span><span class="p">,</span>
+                <span class="s">&#39;9c83b8d5caf9c3def240f320f2d2f56c&#39;</span><span class="p">,</span>
+                <span class="s">&#39;05446bd261d57193d8dbc097e06db5ff&#39;</span><span class="p">,</span>
+                <span class="s">&#39;f0d70456ce424fda2cecd48e64f3a151&#39;</span><span class="p">,</span>
+                <span class="s">&#39;336accdb56acbbeff8dac1748d15ceb8&#39;</span><span class="p">,</span>
+                <span class="s">&#39;27089f3baaf881d96f6a9da202e3d69b&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">with_raw</span><span class="p">:</span>
+        <span class="n">fname_list</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s">&#39;4D_dwi_B200.nii.gz&#39;</span><span class="p">,</span> <span class="s">&#39;4D_dwi_B400.nii.gz&#39;</span><span class="p">,</span>
+                           <span class="s">&#39;4D_dwi_B1000.nii.gz&#39;</span><span class="p">,</span> <span class="s">&#39;4D_dwi_B2000.nii.gz&#39;</span><span class="p">,</span>
+                           <span class="s">&#39;4D_dwi_B3000.nii.gz&#39;</span><span class="p">])</span>
+        <span class="n">md5_list</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s">&#39;a8c36e76101f2da2ca8119474ded21d5&#39;</span><span class="p">,</span>
+                         <span class="s">&#39;a0e7939f6d977458afbb2f4659062a79&#39;</span><span class="p">,</span>
+                         <span class="s">&#39;87fc307bdc2e56e105dffc81b711a808&#39;</span><span class="p">,</span>
+                         <span class="s">&#39;7c23e8a5198624aa29455f0578025d4f&#39;</span><span class="p">,</span>
+                         <span class="s">&#39;4e4324c676f5a97b3ded8bbb100bf6e5&#39;</span><span class="p">])</span>
+
+    <span class="n">files</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">baseurl</span> <span class="o">=</span> <span class="s">&#39;https://digital.lib.washington.edu/researchworks/bitstream/handle/1773/33311/&#39;</span>
+
+    <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">fname_list</span><span class="p">,</span> <span class="n">md5_list</span><span class="p">):</span>
+        <span class="n">files</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">baseurl</span> <span class="o">+</span> <span class="n">f</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+
+    <span class="n">fetch_data</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">folder</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">files</span><span class="p">,</span> <span class="n">folder</span>
+
+
+<span class="k">def</span> <span class="nf">read_cenir_multib</span><span class="p">(</span><span class="n">bvals</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read CENIR multi b-value data</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    bvals : list or int</span>
+<span class="sd">        The b-values to read from file (200, 400, 1000, 2000, 3000).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    gtab : a GradientTable class instance</span>
+<span class="sd">    img : nibabel.Nifti1Image</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">files</span><span class="p">,</span> <span class="n">folder</span> <span class="o">=</span> <span class="n">fetch_cenir_multib</span><span class="p">(</span><span class="n">with_raw</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">bvals</span> <span class="ow">is</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">bvals</span> <span class="o">=</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">3000</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bvals</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">bvals</span> <span class="o">=</span> <span class="p">[</span><span class="n">bvals</span><span class="p">]</span>
+    <span class="n">file_dict</span> <span class="o">=</span> <span class="p">{</span><span class="mi">200</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;DWI&#39;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;4D_dwi_eddycor_B200.nii.gz&#39;</span><span class="p">),</span>
+                       <span class="s">&#39;bvals&#39;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;dwi_bvals_B200&#39;</span><span class="p">),</span>
+                       <span class="s">&#39;bvecs&#39;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;dwi_bvecs_B200&#39;</span><span class="p">)},</span>
+                 <span class="mi">400</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;DWI&#39;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;4D_dwieddycor_B400.nii.gz&#39;</span><span class="p">),</span>
+                       <span class="s">&#39;bvals&#39;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;bvals_B400&#39;</span><span class="p">),</span>
+                       <span class="s">&#39;bvecs&#39;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;bvecs_B400&#39;</span><span class="p">)},</span>
+                 <span class="mi">1000</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;DWI&#39;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;4D_dwieddycor_B1000.nii.gz&#39;</span><span class="p">),</span>
+                        <span class="s">&#39;bvals&#39;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;bvals_B1000&#39;</span><span class="p">),</span>
+                        <span class="s">&#39;bvecs&#39;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;bvecs_B1000&#39;</span><span class="p">)},</span>
+                 <span class="mi">2000</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;DWI&#39;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;4D_dwieddycor_B2000.nii.gz&#39;</span><span class="p">),</span>
+                        <span class="s">&#39;bvals&#39;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;bvals_B2000&#39;</span><span class="p">),</span>
+                        <span class="s">&#39;bvecs&#39;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;bvecs_B2000&#39;</span><span class="p">)},</span>
+                 <span class="mi">3000</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;DWI&#39;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;4D_dwieddycor_B3000.nii.gz&#39;</span><span class="p">),</span>
+                        <span class="s">&#39;bvals&#39;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;bvals_B3000&#39;</span><span class="p">),</span>
+                        <span class="s">&#39;bvecs&#39;</span><span class="p">:</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;bvecs_B3000&#39;</span><span class="p">)}}</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">bval_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">bvec_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">bval</span> <span class="ow">in</span> <span class="n">bvals</span><span class="p">:</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_dict</span><span class="p">[</span><span class="n">bval</span><span class="p">][</span><span class="s">&#39;DWI&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">get_data</span><span class="p">())</span>
+        <span class="n">bval_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">file_dict</span><span class="p">[</span><span class="n">bval</span><span class="p">][</span><span class="s">&#39;bvals&#39;</span><span class="p">]))</span>
+        <span class="n">bvec_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">file_dict</span><span class="p">[</span><span class="n">bval</span><span class="p">][</span><span class="s">&#39;bvecs&#39;</span><span class="p">]))</span>
+
+    <span class="c"># All affines are the same, so grab the last one:</span>
+    <span class="n">aff</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_dict</span><span class="p">[</span><span class="n">bval</span><span class="p">][</span><span class="s">&#39;DWI&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">get_affine</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">nib</span><span class="o">.</span><span class="n">Nifti1Image</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">aff</span><span class="p">),</span>
+            <span class="n">gradient_table</span><span class="p">(</span><span class="n">bval_list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">bvec_list</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+
+
+<span class="n">CENIR_notes</span> <span class="o">=</span> \
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Details of the acquisition and processing, and additional meta-data are</span>
+<span class="sd">    available through `UW researchworks &lt;https://digital.lib.washington.edu/researchworks/handle/1773/33311&gt;`_</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="n">fetch_cenir_multib</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="n">CENIR_notes</span>
+<span class="n">read_cenir_multib</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="n">CENIR_notes</span>
+
+
+<span class="k">def</span> <span class="nf">read_viz_icons</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s">&#39;icomoon&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s">&#39;infinity.png&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Read specific icon from specific style</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    style : str</span>
+<span class="sd">        Current icon style. Default is icomoon.</span>
+<span class="sd">    fname : str</span>
+<span class="sd">        Filename of icon. This should be found in folder HOME/.dipy/style/.</span>
+<span class="sd">        Default is infinity.png.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    path : str</span>
+<span class="sd">        Complete path of icon.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">folder</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span> <span class="s">&#39;icons&#39;</span><span class="p">,</span> <span class="n">style</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">read_bundles_2_subjects</span><span class="p">(</span><span class="n">subj_id</span><span class="o">=</span><span class="s">&#39;subj_1&#39;</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;fa&#39;</span><span class="p">],</span>
+                            <span class="n">bundles</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;af.left&#39;</span><span class="p">,</span> <span class="s">&#39;cst.right&#39;</span><span class="p">,</span> <span class="s">&#39;cc_1&#39;</span><span class="p">]):</span>
+    <span class="sd">r&quot;&quot;&quot; Read images and streamlines from 2 subjects of the SNAIL dataset</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    subj_id : string</span>
+<span class="sd">        Either ``subj_1`` or ``subj_2``.</span>
+<span class="sd">    metrics : list</span>
+<span class="sd">        Either [&#39;fa&#39;] or [&#39;t1&#39;] or [&#39;fa&#39;, &#39;t1&#39;]</span>
+<span class="sd">    bundles : list</span>
+<span class="sd">        Example [&#39;af.left&#39;, &#39;cst.right&#39;, &#39;cc_1&#39;]. See all the available bundles</span>
+<span class="sd">        in the ``exp_bundles_maps/bundles_2_subjects`` directory of your</span>
+<span class="sd">        ``$HOME/.dipy`` folder.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dix : dict</span>
+<span class="sd">        Dictionary with data of the metrics and the bundles as keys.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If you are using these datasets please cite the following publications.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    .. [1] Renauld, E., M. Descoteaux, M. Bernier, E. Garyfallidis,</span>
+<span class="sd">    K. Whittingstall, &quot;Morphology of thalamus, LGN and optic radiation do not</span>
+<span class="sd">    influence EEG alpha waves&quot;, Plos One (under submission), 2015.</span>
+
+<span class="sd">    .. [2] Garyfallidis, E., O. Ocegueda, D. Wassermann,</span>
+<span class="sd">    M. Descoteaux. Robust and efficient linear registration of fascicles in the</span>
+<span class="sd">    space of streamlines , Neuroimage, 117:124-140, 2015.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dname</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">dipy_home</span><span class="p">,</span> <span class="s">&#39;exp_bundles_and_maps&#39;</span><span class="p">,</span> <span class="s">&#39;bundles_2_subjects&#39;</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">nibabel</span> <span class="k">import</span> <span class="n">trackvis</span> <span class="k">as</span> <span class="n">tv</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="s">&#39;t1&#39;</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">pjoin</span><span class="p">(</span><span class="n">dname</span><span class="p">,</span> <span class="n">subj_id</span><span class="p">,</span> <span class="s">&#39;t1_warped.nii.gz&#39;</span><span class="p">))</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+        <span class="n">affine</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">get_affine</span><span class="p">()</span>
+        <span class="n">res</span><span class="p">[</span><span class="s">&#39;t1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+
+    <span class="k">if</span> <span class="s">&#39;fa&#39;</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+        <span class="n">img_fa</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">pjoin</span><span class="p">(</span><span class="n">dname</span><span class="p">,</span> <span class="n">subj_id</span><span class="p">,</span> <span class="s">&#39;fa_1x1x1.nii.gz&#39;</span><span class="p">))</span>
+        <span class="n">fa</span> <span class="o">=</span> <span class="n">img_fa</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+        <span class="n">affine</span> <span class="o">=</span> <span class="n">img_fa</span><span class="o">.</span><span class="n">get_affine</span><span class="p">()</span>
+        <span class="n">res</span><span class="p">[</span><span class="s">&#39;fa&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fa</span>
+
+    <span class="n">res</span><span class="p">[</span><span class="s">&#39;affine&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">affine</span>
+
+    <span class="k">for</span> <span class="n">bun</span> <span class="ow">in</span> <span class="n">bundles</span><span class="p">:</span>
+
+        <span class="n">streams</span><span class="p">,</span> <span class="n">hdr</span> <span class="o">=</span> <span class="n">tv</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">pjoin</span><span class="p">(</span><span class="n">dname</span><span class="p">,</span> <span class="n">subj_id</span><span class="p">,</span>
+                                     <span class="s">&#39;bundles&#39;</span><span class="p">,</span> <span class="s">&#39;bundles_&#39;</span> <span class="o">+</span> <span class="n">bun</span> <span class="o">+</span> <span class="s">&#39;.trk&#39;</span><span class="p">),</span>
+                               <span class="n">points_space</span><span class="o">=</span><span class="s">&quot;rasmm&quot;</span><span class="p">)</span>
+        <span class="n">streamlines</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">]</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">bun</span><span class="p">]</span> <span class="o">=</span> <span class="n">streamlines</span>
+
+    <span class="k">return</span> <span class="n">res</span>
+
+<span class="k">def</span> <span class="nf">read_ivim</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Load IVIM dataset</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    img : obj,</span>
+<span class="sd">        Nifti1Image</span>
+<span class="sd">    gtab : obj,</span>
+<span class="sd">        GradientTable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">files</span><span class="p">,</span> <span class="n">folder</span> <span class="o">=</span> <span class="n">fetch_ivim</span><span class="p">()</span>
+    <span class="n">fraw</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;ivim.nii.gz&#39;</span><span class="p">)</span>
+    <span class="n">fbval</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;ivim.bval&#39;</span><span class="p">)</span>
+    <span class="n">fbvec</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;ivim.bvec&#39;</span><span class="p">)</span>
+    <span class="n">bvals</span><span class="p">,</span> <span class="n">bvecs</span> <span class="o">=</span> <span class="n">read_bvals_bvecs</span><span class="p">(</span><span class="n">fbval</span><span class="p">,</span> <span class="n">fbvec</span><span class="p">)</span>
+    <span class="n">gtab</span> <span class="o">=</span> <span class="n">gradient_table</span><span class="p">(</span><span class="n">bvals</span><span class="p">,</span> <span class="n">bvecs</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fraw</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="n">gtab</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

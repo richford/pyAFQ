@@ -1,0 +1,77 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`tractography`
+===================
+.. automodule:: AFQ.tractography
+
+.. currentmodule:: AFQ.tractography
+.. autosummary::
+
+   DeterministicMaximumDirectionGetter
+   LocalTracking
+   ProbabilisticDirectionGetter
+   ThresholdTissueClassifier
+   tensor_odf
+   track
+
+
+.. currentmodule:: AFQ.tractography
+
+
+:class:`DeterministicMaximumDirectionGetter`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: DeterministicMaximumDirectionGetter
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`LocalTracking`
+~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: LocalTracking
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`ProbabilisticDirectionGetter`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: ProbabilisticDirectionGetter
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+
+:class:`ThresholdTissueClassifier`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. autoclass:: ThresholdTissueClassifier
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+  .. automethod:: __init__
+
+tensor_odf
+~~~~~~~~~~
+
+.. autofunction:: tensor_odf
+
+track
+~~~~~
+
+.. autofunction:: track
+

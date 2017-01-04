@@ -1,0 +1,386 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>data &mdash; AFQ 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="AFQ 0.1.0 documentation" href="../index.html"/>
+        <link rel="up" title="API Reference" href="index.html"/>
+        <link rel="next" title="dki" href="AFQ.dki.html"/>
+        <link rel="prev" title="csd" href="AFQ.csd.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> AFQ</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_afq_api.html">AFQ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_tract_profile.html">Plotting tract profiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="AFQ.html"><code class="docutils literal"><span class="pre">AFQ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.api.html"><code class="docutils literal"><span class="pre">api</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.csd.html"><code class="docutils literal"><span class="pre">csd</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dki.html"><code class="docutils literal"><span class="pre">dki</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.dti.html"><code class="docutils literal"><span class="pre">dti</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.registration.html"><code class="docutils literal"><span class="pre">registration</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.segmentation.html"><code class="docutils literal"><span class="pre">segmentation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.tractography.html"><code class="docutils literal"><span class="pre">tractography</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="AFQ.viz.html"><code class="docutils literal"><span class="pre">viz</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">AFQ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">API Reference</a> &raquo;</li>
+      
+    <li><code class="docutils literal"><span class="pre">data</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/reference/AFQ.data.rst.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="module-AFQ.data">
+<span id="data"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">data</span></code><a class="headerlink" href="#module-AFQ.data" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.data.fetch_callosum_templates" title="AFQ.data.fetch_callosum_templates"><code class="xref py py-obj docutils literal"><span class="pre">fetch_callosum_templates</span></code></a>()</td>
+<td>Download AFQ callosum templates</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.data.fetch_hcp" title="AFQ.data.fetch_hcp"><code class="xref py py-obj docutils literal"><span class="pre">fetch_hcp</span></code></a>(subjects)</td>
+<td>Fetch HCP diffusion data and arrange it in a manner that resembles the BIDS [R7] specification.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.data.fetch_stanford_hardi_tractography" title="AFQ.data.fetch_stanford_hardi_tractography"><code class="xref py py-obj docutils literal"><span class="pre">fetch_stanford_hardi_tractography</span></code></a>()</td>
+<td>Download Stanford HARDI tractography and mapping.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.data.fetch_templates" title="AFQ.data.fetch_templates"><code class="xref py py-obj docutils literal"><span class="pre">fetch_templates</span></code></a>()</td>
+<td>Download AFQ callosum templates</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.data.organize_stanford_data" title="AFQ.data.organize_stanford_data"><code class="xref py py-obj docutils literal"><span class="pre">organize_stanford_data</span></code></a>([path])</td>
+<td>Create the expected file-system structure for the Stanford HARDI data-set</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.data.read_callosum_templates" title="AFQ.data.read_callosum_templates"><code class="xref py py-obj docutils literal"><span class="pre">read_callosum_templates</span></code></a>()</td>
+<td>Load AFQ callosum templates from file</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.data.read_stanford_hardi_tractography" title="AFQ.data.read_stanford_hardi_tractography"><code class="xref py py-obj docutils literal"><span class="pre">read_stanford_hardi_tractography</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#AFQ.data.read_templates" title="AFQ.data.read_templates"><code class="xref py py-obj docutils literal"><span class="pre">read_templates</span></code></a>()</td>
+<td>Load AFQ templates from file</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#AFQ.data.read_trk" title="AFQ.data.read_trk"><code class="xref py py-obj docutils literal"><span class="pre">read_trk</span></code></a>(fname)</td>
+<td>Read from a .trk file, return streamlines and header</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="fetch-callosum-templates">
+<h2>fetch_callosum_templates<a class="headerlink" href="#fetch-callosum-templates" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.data.fetch_callosum_templates">
+<code class="descclassname">AFQ.data.</code><code class="descname">fetch_callosum_templates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AFQ.data.fetch_callosum_templates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download AFQ callosum templates</p>
+</dd></dl>
+
+</div>
+<div class="section" id="fetch-hcp">
+<h2>fetch_hcp<a class="headerlink" href="#fetch-hcp" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.data.fetch_hcp">
+<code class="descclassname">AFQ.data.</code><code class="descname">fetch_hcp</code><span class="sig-paren">(</span><em>subjects</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/data.html#fetch_hcp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.data.fetch_hcp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch HCP diffusion data and arrange it in a manner that resembles the
+BIDS <a class="reference internal" href="#r8" id="id2">[R8]</a> specification.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>subjects</strong> : list</p>
+<blockquote>
+<div><p>Each item is an integer, identifying one of the HCP subjects</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict with remote and local names of these files.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>To use this function, you need to have a file &#8216;~/.aws/credentials&#8217;, that
+includes a section:</p>
+<p>[hcp]
+AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXX
+AWS_SECRET_ACCESS_KEY=XXXXXXXXXXXXXXXX</p>
+<p>The keys are credentials that you can get from HCP (see <a class="reference external" href="https://wiki.humanconnectome.org/display/PublicData/How+To+Connect+to+Connectome+Data+via+AWS">https://wiki.humanconnectome.org/display/PublicData/How+To+Connect+to+Connectome+Data+via+AWS</a>)  # noqa</p>
+<p>Local filenames are changed to match our expected conventions.</p>
+<table class="docutils citation" frame="void" id="r8" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[R8]</a></td><td>Gorgolewski et al. (2016). The brain imaging data structure,
+a format for organizing and describing outputs of neuroimaging
+experiments. Scientific Data, 3::160044. DOI: 10.1038/sdata.2016.44.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="fetch-stanford-hardi-tractography">
+<h2>fetch_stanford_hardi_tractography<a class="headerlink" href="#fetch-stanford-hardi-tractography" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.data.fetch_stanford_hardi_tractography">
+<code class="descclassname">AFQ.data.</code><code class="descname">fetch_stanford_hardi_tractography</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AFQ.data.fetch_stanford_hardi_tractography" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download Stanford HARDI tractography and mapping. For testing
+purposes</p>
+</dd></dl>
+
+</div>
+<div class="section" id="fetch-templates">
+<h2>fetch_templates<a class="headerlink" href="#fetch-templates" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.data.fetch_templates">
+<code class="descclassname">AFQ.data.</code><code class="descname">fetch_templates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AFQ.data.fetch_templates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download AFQ callosum templates</p>
+</dd></dl>
+
+</div>
+<div class="section" id="organize-stanford-data">
+<h2>organize_stanford_data<a class="headerlink" href="#organize-stanford-data" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.data.organize_stanford_data">
+<code class="descclassname">AFQ.data.</code><code class="descname">organize_stanford_data</code><span class="sig-paren">(</span><em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/data.html#organize_stanford_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.data.organize_stanford_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the expected file-system structure for the Stanford HARDI data-set</p>
+</dd></dl>
+
+</div>
+<div class="section" id="read-callosum-templates">
+<h2>read_callosum_templates<a class="headerlink" href="#read-callosum-templates" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.data.read_callosum_templates">
+<code class="descclassname">AFQ.data.</code><code class="descname">read_callosum_templates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/data.html#read_callosum_templates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.data.read_callosum_templates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load AFQ callosum templates from file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">dict with: keys: names of template ROIs and values: nibabel Nifti1Image</p>
+<p class="last">objects from each of the ROI nifti files.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="read-stanford-hardi-tractography">
+<h2>read_stanford_hardi_tractography<a class="headerlink" href="#read-stanford-hardi-tractography" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.data.read_stanford_hardi_tractography">
+<code class="descclassname">AFQ.data.</code><code class="descname">read_stanford_hardi_tractography</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/data.html#read_stanford_hardi_tractography"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.data.read_stanford_hardi_tractography" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="read-templates">
+<h2>read_templates<a class="headerlink" href="#read-templates" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.data.read_templates">
+<code class="descclassname">AFQ.data.</code><code class="descname">read_templates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/data.html#read_templates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.data.read_templates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load AFQ templates from file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">dict with: keys: names of template ROIs and values: nibabel Nifti1Image</p>
+<p class="last">objects from each of the ROI nifti files.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="read-trk">
+<h2>read_trk<a class="headerlink" href="#read-trk" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="AFQ.data.read_trk">
+<code class="descclassname">AFQ.data.</code><code class="descname">read_trk</code><span class="sig-paren">(</span><em>fname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/AFQ/utils/streamlines.html#read_trk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AFQ.data.read_trk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read from a .trk file, return streamlines and header</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>fname</strong> : str</p>
+<blockquote>
+<div><p>Full path to a trk file containing</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>list</strong> : list of streamlines (3D coordinates)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>We assume that all streamlines are provided with the &#8220;rasmm&#8221; points_space.
+That is, they have been transformed to the space reported by the affine
+associated with the image from whence it came, and saved with this affine
+(e.g., using <cite>write_trk</cite>).</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="AFQ.dki.html" class="btn btn-neutral float-right" title="dki">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="AFQ.csd.html" class="btn btn-neutral" title="csd"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Ariel Rokem and Jason Yeatman, The University of Washington eScience Institute.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
